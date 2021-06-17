@@ -74,17 +74,10 @@
             this.textBoxQRCode.Location = new System.Drawing.Point(12, 36);
             this.textBoxQRCode.Multiline = true;
             this.textBoxQRCode.Name = "textBoxQRCode";
+            this.textBoxQRCode.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxQRCode.Size = new System.Drawing.Size(510, 49);
             this.textBoxQRCode.TabIndex = 1;
-            this.textBoxQRCode.Text = "BEGIN:VCARD\n" +
-                                      "VERSION:3.0\n"+
-                                      "N:FirstName;LastName;NikName\n" +
-                                      "TITLE:Руководитель отдела\n" +
-                                      "ORG:АО \'РПК\'\n" +
-                                      "EMAIL;TYPE=INTERNET:info@cad.ru\n" +
-                                      "TEL;TYPE=voice,work:7(495)7440004,175\n" +
-                                      "TEL;TYPE=voice,cell:\n" + 
-                                      "END:VCARD";
+            this.textBoxQRCode.Text = "BEGIN:VCARD\r\nVERSION:3.0\nN:FirstName;LastName;NikName\nTITLE:Руководитель отдела\nOR" + "G:АО \'РПК\'\nEMAIL;TYPE=INTERNET:info@cad.ru\nTEL;TYPE=voice,work:7(495)7440004,175" +     "\nTEL;TYPE=voice,cell:\nEND:VCARD";
             this.textBoxQRCode.TextChanged += new System.EventHandler(this.textBoxQRCode_TextChanged);
             // 
             // pictureBoxQRCode
