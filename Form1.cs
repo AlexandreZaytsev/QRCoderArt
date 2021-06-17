@@ -22,6 +22,15 @@ namespace RicQRCoderArt
         private void Form1_Load(object sender, EventArgs e)
         {
             comboBoxECC.SelectedIndex = 0; //Pre-select ECC level "L"
+            textBoxQRCode.Text = "BEGIN:VCARD\r\n"+
+                                 "VERSION:3.0\r\n" +
+                                 "N:FirstName;LastName;NikName\r\n" +
+                                 "TITLE:Руководитель отдела\r\n" +
+                                 "ORG:АО \'РПК\'\r\n" +
+                                 "EMAIL;TYPE=INTERNET:info@cad.ru\r\n" +
+                                 "TEL;TYPE=voice,work:7(495)7440004,175\r\n" +
+                                 "TEL;TYPE=voice,cell:\r\n" +
+                                 "END:VCARD";
             RenderQrCode();
         }
 
