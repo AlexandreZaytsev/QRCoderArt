@@ -59,9 +59,10 @@
             // buttonGenerate
             // 
             this.buttonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonGenerate.Location = new System.Drawing.Point(12, 560);
+            this.buttonGenerate.Location = new System.Drawing.Point(15, 625);
+            this.buttonGenerate.Margin = new System.Windows.Forms.Padding(4);
             this.buttonGenerate.Name = "buttonGenerate";
-            this.buttonGenerate.Size = new System.Drawing.Size(114, 23);
+            this.buttonGenerate.Size = new System.Drawing.Size(152, 28);
             this.buttonGenerate.TabIndex = 0;
             this.buttonGenerate.Text = "Generate";
             this.buttonGenerate.UseVisualStyleBackColor = true;
@@ -71,11 +72,12 @@
             // 
             this.textBoxQRCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxQRCode.Location = new System.Drawing.Point(12, 36);
+            this.textBoxQRCode.Location = new System.Drawing.Point(16, 44);
+            this.textBoxQRCode.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxQRCode.Multiline = true;
             this.textBoxQRCode.Name = "textBoxQRCode";
             this.textBoxQRCode.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxQRCode.Size = new System.Drawing.Size(510, 49);
+            this.textBoxQRCode.Size = new System.Drawing.Size(506, 59);
             this.textBoxQRCode.TabIndex = 1;
             this.textBoxQRCode.TextChanged += new System.EventHandler(this.textBoxQRCode_TextChanged);
             // 
@@ -86,9 +88,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBoxQRCode.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBoxQRCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBoxQRCode.Location = new System.Drawing.Point(12, 144);
+            this.pictureBoxQRCode.Location = new System.Drawing.Point(16, 177);
+            this.pictureBoxQRCode.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBoxQRCode.Name = "pictureBoxQRCode";
-            this.pictureBoxQRCode.Size = new System.Drawing.Size(510, 410);
+            this.pictureBoxQRCode.Size = new System.Drawing.Size(506, 440);
             this.pictureBoxQRCode.TabIndex = 2;
             this.pictureBoxQRCode.TabStop = false;
             // 
@@ -101,74 +104,92 @@
             "M",
             "Q",
             "H"});
-            this.comboBoxECC.Location = new System.Drawing.Point(72, 12);
+            this.comboBoxECC.Location = new System.Drawing.Point(96, 15);
+            this.comboBoxECC.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxECC.Name = "comboBoxECC";
-            this.comboBoxECC.Size = new System.Drawing.Size(37, 21);
+            this.comboBoxECC.Size = new System.Drawing.Size(48, 24);
             this.comboBoxECC.TabIndex = 3;
             this.comboBoxECC.SelectedIndexChanged += new System.EventHandler(this.comboBoxECC_SelectedIndexChanged);
             // 
             // labelECC
             // 
             this.labelECC.AutoSize = true;
-            this.labelECC.Location = new System.Drawing.Point(9, 16);
+            this.labelECC.Location = new System.Drawing.Point(12, 20);
+            this.labelECC.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelECC.Name = "labelECC";
-            this.labelECC.Size = new System.Drawing.Size(57, 13);
+            this.labelECC.Size = new System.Drawing.Size(74, 17);
             this.labelECC.TabIndex = 4;
             this.labelECC.Text = "ECC-Level";
             // 
             // labelIcon
             // 
-            this.labelIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelIcon.AutoSize = true;
-            this.labelIcon.Location = new System.Drawing.Point(115, 95);
+            this.labelIcon.Location = new System.Drawing.Point(153, 114);
+            this.labelIcon.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelIcon.Name = "labelIcon";
-            this.labelIcon.Size = new System.Drawing.Size(31, 13);
+            this.labelIcon.Size = new System.Drawing.Size(38, 17);
             this.labelIcon.TabIndex = 5;
             this.labelIcon.Text = "Icon:";
             // 
             // iconPath
             // 
-            this.iconPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.iconPath.Location = new System.Drawing.Point(152, 91);
+            this.iconPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.iconPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.iconPath.Location = new System.Drawing.Point(203, 111);
+            this.iconPath.Margin = new System.Windows.Forms.Padding(4);
             this.iconPath.Name = "iconPath";
-            this.iconPath.Size = new System.Drawing.Size(299, 20);
+            this.iconPath.Size = new System.Drawing.Size(290, 22);
             this.iconPath.TabIndex = 6;
             // 
             // selectIconBtn
             // 
-            this.selectIconBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.selectIconBtn.Location = new System.Drawing.Point(457, 91);
+            this.selectIconBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectIconBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.selectIconBtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.selectIconBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.selectIconBtn.Location = new System.Drawing.Point(495, 111);
+            this.selectIconBtn.Margin = new System.Windows.Forms.Padding(0);
             this.selectIconBtn.Name = "selectIconBtn";
-            this.selectIconBtn.Size = new System.Drawing.Size(61, 20);
+            this.selectIconBtn.Size = new System.Drawing.Size(28, 24);
             this.selectIconBtn.TabIndex = 7;
-            this.selectIconBtn.Text = "Select";
+            this.selectIconBtn.Text = "...";
             this.selectIconBtn.UseVisualStyleBackColor = true;
             this.selectIconBtn.Click += new System.EventHandler(this.selectIconBtn_Click);
             // 
             // labelIconsize
             // 
-            this.labelIconsize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelIconsize.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelIconsize.AutoSize = true;
-            this.labelIconsize.Location = new System.Drawing.Point(14, 95);
+            this.labelIconsize.Location = new System.Drawing.Point(19, 114);
+            this.labelIconsize.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelIconsize.Name = "labelIconsize";
-            this.labelIconsize.Size = new System.Drawing.Size(52, 13);
+            this.labelIconsize.Size = new System.Drawing.Size(67, 17);
             this.labelIconsize.TabIndex = 8;
             this.labelIconsize.Text = "Icon size:";
             // 
             // iconSize
             // 
-            this.iconSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.iconSize.Location = new System.Drawing.Point(72, 91);
+            this.iconSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.iconSize.Location = new System.Drawing.Point(96, 111);
+            this.iconSize.Margin = new System.Windows.Forms.Padding(4);
             this.iconSize.Name = "iconSize";
-            this.iconSize.Size = new System.Drawing.Size(37, 20);
+            this.iconSize.Size = new System.Drawing.Size(49, 22);
             this.iconSize.TabIndex = 9;
             // 
             // buttonSave
             // 
             this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSave.Location = new System.Drawing.Point(425, 558);
+            this.buttonSave.Location = new System.Drawing.Point(393, 625);
+            this.buttonSave.Margin = new System.Windows.Forms.Padding(4);
             this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(97, 25);
+            this.buttonSave.Size = new System.Drawing.Size(129, 31);
             this.buttonSave.TabIndex = 10;
             this.buttonSave.Text = "Save QR code";
             this.buttonSave.UseVisualStyleBackColor = true;
@@ -176,92 +197,111 @@
             // 
             // labelPreviewPrimaryColor
             // 
+            this.labelPreviewPrimaryColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelPreviewPrimaryColor.AutoSize = true;
-            this.labelPreviewPrimaryColor.Location = new System.Drawing.Point(300, 16);
+            this.labelPreviewPrimaryColor.Location = new System.Drawing.Point(233, 20);
+            this.labelPreviewPrimaryColor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelPreviewPrimaryColor.Name = "labelPreviewPrimaryColor";
-            this.labelPreviewPrimaryColor.Size = new System.Drawing.Size(74, 13);
+            this.labelPreviewPrimaryColor.Size = new System.Drawing.Size(101, 17);
             this.labelPreviewPrimaryColor.TabIndex = 12;
             this.labelPreviewPrimaryColor.Text = "Color: Primary ";
             // 
             // panelPreviewPrimaryColor
             // 
+            this.panelPreviewPrimaryColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPreviewPrimaryColor.BackColor = System.Drawing.Color.Black;
             this.panelPreviewPrimaryColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelPreviewPrimaryColor.Location = new System.Drawing.Point(380, 13);
+            this.panelPreviewPrimaryColor.Location = new System.Drawing.Point(340, 16);
+            this.panelPreviewPrimaryColor.Margin = new System.Windows.Forms.Padding(4);
             this.panelPreviewPrimaryColor.Name = "panelPreviewPrimaryColor";
-            this.panelPreviewPrimaryColor.Size = new System.Drawing.Size(32, 19);
+            this.panelPreviewPrimaryColor.Size = new System.Drawing.Size(42, 23);
             this.panelPreviewPrimaryColor.TabIndex = 13;
             this.panelPreviewPrimaryColor.Click += new System.EventHandler(this.panelPreviewPrimaryColor_Click);
             // 
             // labelPreviewBackgroundColor
             // 
+            this.labelPreviewBackgroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelPreviewBackgroundColor.AutoSize = true;
-            this.labelPreviewBackgroundColor.Location = new System.Drawing.Point(418, 16);
+            this.labelPreviewBackgroundColor.Location = new System.Drawing.Point(390, 20);
+            this.labelPreviewBackgroundColor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelPreviewBackgroundColor.Name = "labelPreviewBackgroundColor";
-            this.labelPreviewBackgroundColor.Size = new System.Drawing.Size(65, 13);
+            this.labelPreviewBackgroundColor.Size = new System.Drawing.Size(84, 17);
             this.labelPreviewBackgroundColor.TabIndex = 14;
             this.labelPreviewBackgroundColor.Text = "Background";
             // 
             // panelPreviewBackgroundColor
             // 
+            this.panelPreviewBackgroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPreviewBackgroundColor.BackColor = System.Drawing.Color.White;
             this.panelPreviewBackgroundColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelPreviewBackgroundColor.Location = new System.Drawing.Point(489, 13);
+            this.panelPreviewBackgroundColor.Location = new System.Drawing.Point(485, 16);
+            this.panelPreviewBackgroundColor.Margin = new System.Windows.Forms.Padding(4);
             this.panelPreviewBackgroundColor.Name = "panelPreviewBackgroundColor";
-            this.panelPreviewBackgroundColor.Size = new System.Drawing.Size(29, 19);
+            this.panelPreviewBackgroundColor.Size = new System.Drawing.Size(38, 23);
             this.panelPreviewBackgroundColor.TabIndex = 15;
             this.panelPreviewBackgroundColor.Click += new System.EventHandler(this.panelPreviewBackgroundColor_Click);
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(115, 117);
+            this.label1.Location = new System.Drawing.Point(153, 146);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(23, 13);
+            this.label1.Size = new System.Drawing.Size(30, 17);
             this.label1.TabIndex = 16;
             this.label1.Text = "Art:";
             // 
             // artPath
             // 
-            this.artPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.artPath.Location = new System.Drawing.Point(152, 114);
+            this.artPath.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.artPath.Location = new System.Drawing.Point(203, 143);
+            this.artPath.Margin = new System.Windows.Forms.Padding(4);
             this.artPath.Name = "artPath";
-            this.artPath.Size = new System.Drawing.Size(299, 20);
+            this.artPath.Size = new System.Drawing.Size(290, 22);
             this.artPath.TabIndex = 17;
             // 
             // selectArtBtn
             // 
-            this.selectArtBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.selectArtBtn.Location = new System.Drawing.Point(457, 116);
+            this.selectArtBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectArtBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.selectArtBtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.selectArtBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.selectArtBtn.Location = new System.Drawing.Point(495, 142);
+            this.selectArtBtn.Margin = new System.Windows.Forms.Padding(4);
             this.selectArtBtn.Name = "selectArtBtn";
-            this.selectArtBtn.Size = new System.Drawing.Size(61, 20);
+            this.selectArtBtn.Size = new System.Drawing.Size(28, 24);
             this.selectArtBtn.TabIndex = 18;
-            this.selectArtBtn.Text = "Select";
+            this.selectArtBtn.Text = "...";
             this.selectArtBtn.UseVisualStyleBackColor = true;
             this.selectArtBtn.Click += new System.EventHandler(this.selectArtBtn_Click);
             // 
             // label2
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(14, 116);
+            this.label2.Location = new System.Drawing.Point(19, 146);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 13);
+            this.label2.Size = new System.Drawing.Size(63, 17);
             this.label2.TabIndex = 19;
             this.label2.Text = "Dot size:";
             // 
             // dotSize
             // 
-            this.dotSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.dotSize.Location = new System.Drawing.Point(72, 115);
+            this.dotSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.dotSize.Location = new System.Drawing.Point(96, 143);
+            this.dotSize.Margin = new System.Windows.Forms.Padding(4);
             this.dotSize.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.dotSize.Name = "dotSize";
-            this.dotSize.Size = new System.Drawing.Size(37, 20);
+            this.dotSize.Size = new System.Drawing.Size(49, 22);
             this.dotSize.TabIndex = 20;
             this.dotSize.Value = new decimal(new int[] {
             7,
@@ -271,9 +311,9 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(547, 595);
+            this.ClientSize = new System.Drawing.Size(721, 683);
             this.Controls.Add(this.dotSize);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.selectArtBtn);
@@ -295,7 +335,8 @@
             this.Controls.Add(this.textBoxQRCode);
             this.Controls.Add(this.buttonGenerate);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(559, 602);
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.MinimumSize = new System.Drawing.Size(739, 730);
             this.Name = "Form1";
             this.Text = "QRCoderArt";
             this.Load += new System.EventHandler(this.Form1_Load);
