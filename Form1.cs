@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using QRCoder;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Reflection;
 
 namespace RicQRCoderArt
 {
@@ -16,9 +17,16 @@ namespace RicQRCoderArt
     {
         public Form1()
         {
+
+            /*
+            //    System.Reflection.Assembly myAssembly = Assembly.LoadFile("");//
+            Assembly a = typeof(QRCode).Assembly;
+            */
+
             InitializeComponent();
             this.viewMode.DataSource = Enum.GetValues(typeof(ImageLayout));
             this.viewMode.SelectedIndex = 4;
+
 
         }
 
