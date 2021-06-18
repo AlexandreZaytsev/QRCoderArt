@@ -17,6 +17,9 @@ namespace RicQRCoderArt
         public Form1()
         {
             InitializeComponent();
+            this.viewMode.DataSource = Enum.GetValues(typeof(ImageLayout));
+            this.viewMode.SelectedIndex = 4;
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -50,7 +53,7 @@ namespace RicQRCoderArt
                 {
                     using (QRCode qrCode = new QRCode(qrCodeData))
                     {
-                        pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic(20, GetPrimaryColor(), GetBackgroundColor(),
+                        pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic((int)pixelSize.Value, GetPrimaryColor(), GetBackgroundColor(),
                             GetIconBitmap(), (int)iconSize.Value);
 
                         this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
@@ -169,20 +172,6 @@ namespace RicQRCoderArt
             }
         }
 
-        public void ExportToBmp(string path)
-        {
-
-        }
-
-        private void textBoxQRCode_TextChanged(object sender, EventArgs e)
-        {
-            RenderQrCode();
-        }
-
-        private void comboBoxECC_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            RenderQrCode();
-        }
 
         private void panelPreviewPrimaryColor_Click(object sender, EventArgs e)
         {
@@ -232,6 +221,16 @@ namespace RicQRCoderArt
             }
         }
 
+        private void setting_Changed(object sender, EventArgs e)
+        {
 
+
+            RenderQrCode();
+        }
+
+        private void viewMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            pictureBoxQRCode.BackgroundImageLayout = (ImageLayout)Enum.Parse(typeof(ImageLayout), viewMode.Text);// Enum.GetName(typeof(ImageLayout), "2"); //Enum.Parse(typeof(ImageLayout), sender.ToString());
+        }
     }
 }

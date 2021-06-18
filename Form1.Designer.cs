@@ -34,35 +34,43 @@
             this.pictureBoxQRCode = new System.Windows.Forms.PictureBox();
             this.comboBoxECC = new System.Windows.Forms.ComboBox();
             this.labelECC = new System.Windows.Forms.Label();
-            this.labelIcon = new System.Windows.Forms.Label();
-            this.iconPath = new System.Windows.Forms.TextBox();
-            this.selectIconBtn = new System.Windows.Forms.Button();
             this.labelIconsize = new System.Windows.Forms.Label();
             this.iconSize = new System.Windows.Forms.NumericUpDown();
             this.buttonSave = new System.Windows.Forms.Button();
             this.colorDialogPrimaryColor = new System.Windows.Forms.ColorDialog();
-            this.labelPreviewPrimaryColor = new System.Windows.Forms.Label();
             this.panelPreviewPrimaryColor = new System.Windows.Forms.Panel();
             this.labelPreviewBackgroundColor = new System.Windows.Forms.Label();
             this.panelPreviewBackgroundColor = new System.Windows.Forms.Panel();
             this.colorDialogBackgroundColor = new System.Windows.Forms.ColorDialog();
-            this.label1 = new System.Windows.Forms.Label();
             this.artPath = new System.Windows.Forms.TextBox();
             this.selectArtBtn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.dotSize = new System.Windows.Forms.NumericUpDown();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.pixelSize = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.selectIconBtn = new System.Windows.Forms.Button();
+            this.iconPath = new System.Windows.Forms.TextBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.viewMode = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxQRCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dotSize)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pixelSize)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonGenerate
             // 
             this.buttonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonGenerate.Location = new System.Drawing.Point(15, 625);
-            this.buttonGenerate.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonGenerate.Location = new System.Drawing.Point(398, 448);
             this.buttonGenerate.Name = "buttonGenerate";
-            this.buttonGenerate.Size = new System.Drawing.Size(152, 28);
+            this.buttonGenerate.Size = new System.Drawing.Size(139, 23);
             this.buttonGenerate.TabIndex = 0;
             this.buttonGenerate.Text = "Generate";
             this.buttonGenerate.UseVisualStyleBackColor = true;
@@ -72,14 +80,13 @@
             // 
             this.textBoxQRCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxQRCode.Location = new System.Drawing.Point(16, 44);
-            this.textBoxQRCode.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxQRCode.Location = new System.Drawing.Point(12, 12);
             this.textBoxQRCode.Multiline = true;
             this.textBoxQRCode.Name = "textBoxQRCode";
             this.textBoxQRCode.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxQRCode.Size = new System.Drawing.Size(506, 59);
+            this.textBoxQRCode.Size = new System.Drawing.Size(380, 126);
             this.textBoxQRCode.TabIndex = 1;
-            this.textBoxQRCode.TextChanged += new System.EventHandler(this.textBoxQRCode_TextChanged);
+            this.textBoxQRCode.TextChanged += new System.EventHandler(this.setting_Changed);
             // 
             // pictureBoxQRCode
             // 
@@ -88,10 +95,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBoxQRCode.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBoxQRCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBoxQRCode.Location = new System.Drawing.Point(16, 177);
-            this.pictureBoxQRCode.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBoxQRCode.Location = new System.Drawing.Point(12, 144);
             this.pictureBoxQRCode.Name = "pictureBoxQRCode";
-            this.pictureBoxQRCode.Size = new System.Drawing.Size(506, 440);
+            this.pictureBoxQRCode.Padding = new System.Windows.Forms.Padding(3);
+            this.pictureBoxQRCode.Size = new System.Drawing.Size(380, 358);
             this.pictureBoxQRCode.TabIndex = 2;
             this.pictureBoxQRCode.TabStop = false;
             // 
@@ -104,61 +111,20 @@
             "M",
             "Q",
             "H"});
-            this.comboBoxECC.Location = new System.Drawing.Point(96, 15);
-            this.comboBoxECC.Margin = new System.Windows.Forms.Padding(4);
+            this.comboBoxECC.Location = new System.Drawing.Point(69, 22);
             this.comboBoxECC.Name = "comboBoxECC";
-            this.comboBoxECC.Size = new System.Drawing.Size(48, 24);
+            this.comboBoxECC.Size = new System.Drawing.Size(63, 21);
             this.comboBoxECC.TabIndex = 3;
-            this.comboBoxECC.SelectedIndexChanged += new System.EventHandler(this.comboBoxECC_SelectedIndexChanged);
+            this.comboBoxECC.SelectedIndexChanged += new System.EventHandler(this.setting_Changed);
             // 
             // labelECC
             // 
             this.labelECC.AutoSize = true;
-            this.labelECC.Location = new System.Drawing.Point(12, 20);
-            this.labelECC.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelECC.Location = new System.Drawing.Point(6, 25);
             this.labelECC.Name = "labelECC";
-            this.labelECC.Size = new System.Drawing.Size(74, 17);
+            this.labelECC.Size = new System.Drawing.Size(57, 13);
             this.labelECC.TabIndex = 4;
             this.labelECC.Text = "ECC-Level";
-            // 
-            // labelIcon
-            // 
-            this.labelIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelIcon.AutoSize = true;
-            this.labelIcon.Location = new System.Drawing.Point(153, 114);
-            this.labelIcon.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelIcon.Name = "labelIcon";
-            this.labelIcon.Size = new System.Drawing.Size(38, 17);
-            this.labelIcon.TabIndex = 5;
-            this.labelIcon.Text = "Icon:";
-            // 
-            // iconPath
-            // 
-            this.iconPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.iconPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.iconPath.Location = new System.Drawing.Point(203, 111);
-            this.iconPath.Margin = new System.Windows.Forms.Padding(4);
-            this.iconPath.Name = "iconPath";
-            this.iconPath.Size = new System.Drawing.Size(290, 22);
-            this.iconPath.TabIndex = 6;
-            // 
-            // selectIconBtn
-            // 
-            this.selectIconBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.selectIconBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.selectIconBtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.selectIconBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.selectIconBtn.Location = new System.Drawing.Point(495, 111);
-            this.selectIconBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.selectIconBtn.Name = "selectIconBtn";
-            this.selectIconBtn.Size = new System.Drawing.Size(28, 24);
-            this.selectIconBtn.TabIndex = 7;
-            this.selectIconBtn.Text = "...";
-            this.selectIconBtn.UseVisualStyleBackColor = true;
-            this.selectIconBtn.Click += new System.EventHandler(this.selectIconBtn_Click);
             // 
             // labelIconsize
             // 
@@ -166,55 +132,50 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelIconsize.AutoSize = true;
-            this.labelIconsize.Location = new System.Drawing.Point(19, 114);
-            this.labelIconsize.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelIconsize.Location = new System.Drawing.Point(6, 25);
             this.labelIconsize.Name = "labelIconsize";
-            this.labelIconsize.Size = new System.Drawing.Size(67, 17);
+            this.labelIconsize.Size = new System.Drawing.Size(55, 13);
             this.labelIconsize.TabIndex = 8;
-            this.labelIconsize.Text = "Icon size:";
+            this.labelIconsize.Text = "Logo size:";
             // 
             // iconSize
             // 
             this.iconSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.iconSize.Location = new System.Drawing.Point(96, 111);
-            this.iconSize.Margin = new System.Windows.Forms.Padding(4);
+            this.iconSize.Location = new System.Drawing.Point(70, 23);
+            this.iconSize.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.iconSize.Name = "iconSize";
-            this.iconSize.Size = new System.Drawing.Size(49, 22);
+            this.iconSize.Size = new System.Drawing.Size(63, 20);
             this.iconSize.TabIndex = 9;
+            this.iconSize.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             // 
             // buttonSave
             // 
             this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSave.Location = new System.Drawing.Point(393, 625);
-            this.buttonSave.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonSave.Location = new System.Drawing.Point(398, 477);
             this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(129, 31);
+            this.buttonSave.Size = new System.Drawing.Size(139, 25);
             this.buttonSave.TabIndex = 10;
             this.buttonSave.Text = "Save QR code";
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.btn_save_Click);
-            // 
-            // labelPreviewPrimaryColor
-            // 
-            this.labelPreviewPrimaryColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelPreviewPrimaryColor.AutoSize = true;
-            this.labelPreviewPrimaryColor.Location = new System.Drawing.Point(233, 20);
-            this.labelPreviewPrimaryColor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelPreviewPrimaryColor.Name = "labelPreviewPrimaryColor";
-            this.labelPreviewPrimaryColor.Size = new System.Drawing.Size(101, 17);
-            this.labelPreviewPrimaryColor.TabIndex = 12;
-            this.labelPreviewPrimaryColor.Text = "Color: Primary ";
             // 
             // panelPreviewPrimaryColor
             // 
             this.panelPreviewPrimaryColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPreviewPrimaryColor.BackColor = System.Drawing.Color.Black;
             this.panelPreviewPrimaryColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelPreviewPrimaryColor.Location = new System.Drawing.Point(340, 16);
-            this.panelPreviewPrimaryColor.Margin = new System.Windows.Forms.Padding(4);
+            this.panelPreviewPrimaryColor.Location = new System.Drawing.Point(72, 160);
             this.panelPreviewPrimaryColor.Name = "panelPreviewPrimaryColor";
-            this.panelPreviewPrimaryColor.Size = new System.Drawing.Size(42, 23);
+            this.panelPreviewPrimaryColor.Size = new System.Drawing.Size(63, 19);
             this.panelPreviewPrimaryColor.TabIndex = 13;
             this.panelPreviewPrimaryColor.Click += new System.EventHandler(this.panelPreviewPrimaryColor_Click);
             // 
@@ -222,47 +183,33 @@
             // 
             this.labelPreviewBackgroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelPreviewBackgroundColor.AutoSize = true;
-            this.labelPreviewBackgroundColor.Location = new System.Drawing.Point(390, 20);
-            this.labelPreviewBackgroundColor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelPreviewBackgroundColor.Location = new System.Drawing.Point(6, 191);
             this.labelPreviewBackgroundColor.Name = "labelPreviewBackgroundColor";
-            this.labelPreviewBackgroundColor.Size = new System.Drawing.Size(84, 17);
+            this.labelPreviewBackgroundColor.Size = new System.Drawing.Size(54, 13);
             this.labelPreviewBackgroundColor.TabIndex = 14;
-            this.labelPreviewBackgroundColor.Text = "Background";
+            this.labelPreviewBackgroundColor.Text = "pixel Light";
             // 
             // panelPreviewBackgroundColor
             // 
             this.panelPreviewBackgroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPreviewBackgroundColor.BackColor = System.Drawing.Color.White;
             this.panelPreviewBackgroundColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelPreviewBackgroundColor.Location = new System.Drawing.Point(485, 16);
-            this.panelPreviewBackgroundColor.Margin = new System.Windows.Forms.Padding(4);
+            this.panelPreviewBackgroundColor.Location = new System.Drawing.Point(72, 185);
             this.panelPreviewBackgroundColor.Name = "panelPreviewBackgroundColor";
-            this.panelPreviewBackgroundColor.Size = new System.Drawing.Size(38, 23);
+            this.panelPreviewBackgroundColor.Size = new System.Drawing.Size(63, 19);
             this.panelPreviewBackgroundColor.TabIndex = 15;
             this.panelPreviewBackgroundColor.Click += new System.EventHandler(this.panelPreviewBackgroundColor_Click);
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(153, 146);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(30, 17);
-            this.label1.TabIndex = 16;
-            this.label1.Text = "Art:";
             // 
             // artPath
             // 
             this.artPath.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.artPath.Location = new System.Drawing.Point(203, 143);
-            this.artPath.Margin = new System.Windows.Forms.Padding(4);
+            this.artPath.Location = new System.Drawing.Point(9, 45);
             this.artPath.Name = "artPath";
-            this.artPath.Size = new System.Drawing.Size(290, 22);
+            this.artPath.Size = new System.Drawing.Size(103, 20);
             this.artPath.TabIndex = 17;
+            this.artPath.TextChanged += new System.EventHandler(this.setting_Changed);
             // 
             // selectArtBtn
             // 
@@ -270,10 +217,9 @@
             this.selectArtBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.selectArtBtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.selectArtBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.selectArtBtn.Location = new System.Drawing.Point(495, 142);
-            this.selectArtBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.selectArtBtn.Location = new System.Drawing.Point(111, 45);
             this.selectArtBtn.Name = "selectArtBtn";
-            this.selectArtBtn.Size = new System.Drawing.Size(28, 24);
+            this.selectArtBtn.Size = new System.Drawing.Size(21, 20);
             this.selectArtBtn.TabIndex = 18;
             this.selectArtBtn.Text = "...";
             this.selectArtBtn.UseVisualStyleBackColor = true;
@@ -282,10 +228,9 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 146);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(15, 21);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(63, 17);
+            this.label2.Size = new System.Drawing.Size(48, 13);
             this.label2.TabIndex = 19;
             this.label2.Text = "Dot size:";
             // 
@@ -293,56 +238,186 @@
             // 
             this.dotSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.dotSize.Location = new System.Drawing.Point(96, 143);
-            this.dotSize.Margin = new System.Windows.Forms.Padding(4);
+            this.dotSize.Location = new System.Drawing.Point(70, 19);
             this.dotSize.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.dotSize.Name = "dotSize";
-            this.dotSize.Size = new System.Drawing.Size(49, 22);
+            this.dotSize.Size = new System.Drawing.Size(62, 20);
             this.dotSize.TabIndex = 20;
             this.dotSize.Value = new decimal(new int[] {
             7,
             0,
             0,
             0});
+            this.dotSize.ValueChanged += new System.EventHandler(this.setting_Changed);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.pixelSize);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.labelECC);
+            this.groupBox1.Controls.Add(this.comboBoxECC);
+            this.groupBox1.Controls.Add(this.labelPreviewBackgroundColor);
+            this.groupBox1.Controls.Add(this.panelPreviewPrimaryColor);
+            this.groupBox1.Controls.Add(this.panelPreviewBackgroundColor);
+            this.groupBox1.Location = new System.Drawing.Point(398, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(139, 216);
+            this.groupBox1.TabIndex = 21;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "baseSetting";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(9, 136);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(51, 13);
+            this.label1.TabIndex = 17;
+            this.label1.Text = "pixel Size";
+            // 
+            // pixelSize
+            // 
+            this.pixelSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.pixelSize.BackColor = System.Drawing.SystemColors.Window;
+            this.pixelSize.Location = new System.Drawing.Point(72, 134);
+            this.pixelSize.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.pixelSize.Name = "pixelSize";
+            this.pixelSize.Size = new System.Drawing.Size(63, 20);
+            this.pixelSize.TabIndex = 16;
+            this.pixelSize.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.pixelSize.ValueChanged += new System.EventHandler(this.setting_Changed);
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 168);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(54, 13);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "pixel Dark";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.groupBox2.Controls.Add(this.selectIconBtn);
+            this.groupBox2.Controls.Add(this.iconPath);
+            this.groupBox2.Controls.Add(this.labelIconsize);
+            this.groupBox2.Controls.Add(this.iconSize);
+            this.groupBox2.Location = new System.Drawing.Point(398, 234);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(139, 86);
+            this.groupBox2.TabIndex = 22;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Logo (front layer)";
+            // 
+            // selectIconBtn
+            // 
+            this.selectIconBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectIconBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.selectIconBtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.selectIconBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.selectIconBtn.Location = new System.Drawing.Point(114, 46);
+            this.selectIconBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.selectIconBtn.Name = "selectIconBtn";
+            this.selectIconBtn.Size = new System.Drawing.Size(21, 20);
+            this.selectIconBtn.TabIndex = 11;
+            this.selectIconBtn.Text = "...";
+            this.selectIconBtn.UseVisualStyleBackColor = true;
+            this.selectIconBtn.Click += new System.EventHandler(this.selectIconBtn_Click);
+            // 
+            // iconPath
+            // 
+            this.iconPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.iconPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.iconPath.Location = new System.Drawing.Point(9, 46);
+            this.iconPath.Name = "iconPath";
+            this.iconPath.Size = new System.Drawing.Size(103, 20);
+            this.iconPath.TabIndex = 10;
+            this.iconPath.TextChanged += new System.EventHandler(this.setting_Changed);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.groupBox3.Controls.Add(this.label2);
+            this.groupBox3.Controls.Add(this.dotSize);
+            this.groupBox3.Controls.Add(this.selectArtBtn);
+            this.groupBox3.Controls.Add(this.artPath);
+            this.groupBox3.Location = new System.Drawing.Point(398, 326);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(139, 88);
+            this.groupBox3.TabIndex = 23;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Logo (rear layer)";
+            // 
+            // viewMode
+            // 
+            this.viewMode.FormattingEnabled = true;
+            this.viewMode.Items.AddRange(new object[] {
+            "Center",
+            "Zoom"});
+            this.viewMode.Location = new System.Drawing.Point(470, 420);
+            this.viewMode.Name = "viewMode";
+            this.viewMode.Size = new System.Drawing.Size(67, 21);
+            this.viewMode.TabIndex = 24;
+            this.viewMode.SelectedIndexChanged += new System.EventHandler(this.viewMode_SelectedIndexChanged);
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(405, 423);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(59, 13);
+            this.label4.TabIndex = 25;
+            this.label4.Text = "view Mode";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(721, 683);
-            this.Controls.Add(this.dotSize);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.selectArtBtn);
-            this.Controls.Add(this.artPath);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.panelPreviewBackgroundColor);
-            this.Controls.Add(this.labelPreviewBackgroundColor);
-            this.Controls.Add(this.panelPreviewPrimaryColor);
-            this.Controls.Add(this.labelPreviewPrimaryColor);
+            this.ClientSize = new System.Drawing.Size(542, 561);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.viewMode);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.buttonSave);
-            this.Controls.Add(this.iconSize);
-            this.Controls.Add(this.labelIconsize);
-            this.Controls.Add(this.selectIconBtn);
-            this.Controls.Add(this.iconPath);
-            this.Controls.Add(this.labelIcon);
-            this.Controls.Add(this.labelECC);
-            this.Controls.Add(this.comboBoxECC);
             this.Controls.Add(this.pictureBoxQRCode);
             this.Controls.Add(this.textBoxQRCode);
             this.Controls.Add(this.buttonGenerate);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(739, 730);
+            this.MinimumSize = new System.Drawing.Size(558, 600);
             this.Name = "Form1";
             this.Text = "QRCoderArt";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxQRCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dotSize)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pixelSize)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -355,23 +430,28 @@
         private System.Windows.Forms.PictureBox pictureBoxQRCode;
         private System.Windows.Forms.ComboBox comboBoxECC;
         private System.Windows.Forms.Label labelECC;
-        private System.Windows.Forms.Label labelIcon;
-        private System.Windows.Forms.TextBox iconPath;
-        private System.Windows.Forms.Button selectIconBtn;
         private System.Windows.Forms.Label labelIconsize;
         private System.Windows.Forms.NumericUpDown iconSize;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.ColorDialog colorDialogPrimaryColor;
-        private System.Windows.Forms.Label labelPreviewPrimaryColor;
         private System.Windows.Forms.Panel panelPreviewPrimaryColor;
-        private System.Windows.Forms.Label labelPreviewBackgroundColor;
         private System.Windows.Forms.Panel panelPreviewBackgroundColor;
         private System.Windows.Forms.ColorDialog colorDialogBackgroundColor;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox artPath;
         private System.Windows.Forms.Button selectArtBtn;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown dotSize;
+        private System.Windows.Forms.Label labelPreviewBackgroundColor;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button selectIconBtn;
+        private System.Windows.Forms.TextBox iconPath;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown pixelSize;
+        private System.Windows.Forms.ComboBox viewMode;
+        private System.Windows.Forms.Label label4;
     }
 }
 
