@@ -18,10 +18,8 @@ namespace RicQRCoderArt
         public Form1()
         {
 
-            /*
-            //    System.Reflection.Assembly myAssembly = Assembly.LoadFile("");//
-            Assembly a = typeof(QRCode).Assembly;
-            */
+            
+   
 
             InitializeComponent();
             this.viewMode.DataSource = Enum.GetValues(typeof(ImageLayout));

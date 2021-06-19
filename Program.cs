@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
+using QRCoder;
 
 namespace RicQRCoderArt
 {
@@ -15,96 +16,44 @@ namespace RicQRCoderArt
         [STAThread]
         static void Main()
         {
-
-            // This variable holds the amount of indenting that
-            // should be used when displaying each line of information.
-            Int32 indent = 0;
-            // Display information about the EXE assembly.
-            Assembly a = typeof(Program).Assembly;
-            Display(indent, "Assembly identity={0}", a.FullName);
-            Display(indent + 1, "Codebase={0}", a.CodeBase);
-
-            // Display the set of assemblies our assemblies reference.
-
-            Display(indent, "Referenced assemblies:");
-            foreach (AssemblyName an in a.GetReferencedAssemblies())
+            //https://blog.rc21net.ru/рефлексия-отражение-reflection-в-c-sharp/
+            //Assembly asm = System.Reflection.Assembly.Load("QRCoder");
+            Assembly asm = System.Reflection.Assembly.ReflectionOnlyLoad("QRCoder");
+            Type[] tAsm = asm.GetTypes();
+            Module[] mAsm = asm.GetModules(true);
+            Type[] etAsm = asm.GetExportedTypes();
+      //      MemberInfo[] members = typeof(tAsm).GetMembers();
+            foreach (MemberInfo minf in etAsm)
             {
-                Display(indent + 1, "Name={0}, Version={1}, Culture={2}, PublicKey token={3}", an.Name, an.Version, an.CultureInfo.Name, (BitConverter.ToString(an.GetPublicKeyToken())));
-            }
-            Display(indent, "");
+                //((System.RuntimeType)((System.RuntimeType)etAsm[25]).BaseType).Name 		Name	"Payload"	string
+                //       if (minf.GetCustomAttributes().BaseType.Name== "Payload")
+                //      {
 
-            // Display information about each assembly loading into this AppDomain.
-            foreach (Assembly b in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                Display(indent, "Assembly: {0}", b);
+                //    }
+//                DisplayAttributes(4, minf);
+                var attrs = minf.GetCustomAttributesData();
+                Display(0,"Member: {0}", minf.Name);
+       //         Display(1,minf);
 
-                // Display information about each module of this assembly.
-                foreach (Module m in b.GetModules(true))
+                // If the member is a method, display information about its parameters.
+
+                if (minf.MemberType == MemberTypes.Method)
                 {
-                    Display(indent + 1, "Module: {0}", m.Name);
-                }
-
-                // Display information about each type exported from this assembly.
-
-                indent += 1;
-                foreach (Type t in b.GetExportedTypes())
-                {
-                    Display(0, "");
-                    Display(indent, "Type: {0}", t);
-
-                    // For each type, show its members & their custom attributes.
-
-                    indent += 1;
-                    foreach (MemberInfo mi in t.GetMembers())
+                    foreach (ParameterInfo pinf in ((MethodInfo)minf).GetParameters())
                     {
-                        Display(indent, "Member: {0}", mi.Name);
-                        DisplayAttributes(indent, mi);
-
-                        // If the member is a method, display information about its parameters.
-
-                        if (mi.MemberType == MemberTypes.Method)
-                        {
-                            foreach (ParameterInfo pi in ((MethodInfo)mi).GetParameters())
-                            {
-                                Display(indent + 1, "Parameter: Type={0}, Name={1}", pi.ParameterType, pi.Name);
-                            }
-                        }
-
-                        // If the member is a property, display information about the property's accessor methods.
-                        if (mi.MemberType == MemberTypes.Property)
-                        {
-                            foreach (MethodInfo am in ((PropertyInfo)mi).GetAccessors())
-                            {
-                                Display(indent + 1, "Accessor method: {0}", am);
-                            }
-                        }
+                        Console.Write("Parameter: Type={0}, Name={1}", pinf.ParameterType, pinf.Name);
                     }
-                    indent -= 1;
                 }
-                indent -= 1;
+
+                // If the member is a property, display information about the property's accessor methods.
+                if (minf.MemberType == MemberTypes.Property)
+                {
+                    foreach (MethodInfo aminf in ((PropertyInfo)minf).GetAccessors())
+                    {
+                        Console.Write("Accessor method: {0}", aminf);
+                    }
+                }
             }
-                /*
-                            //"TestReflection" искомое пространство
-                            Type[] typelist = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.Namespace == "RicQRCoderArt").ToArray();
-                            foreach (Type type in typelist)
-                            {
-                                //создание объекта
-                                object targetObject = Activator.CreateInstance(Type.GetType(type.FullName));
-
-                                //что бы получить public методы без базовых(наследованных от object)
-                                var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-                                foreach (var methodInfo in methods)
-                                {
-                                    //вызов
-                             //       methodInfo.Invoke(targetObject, new object[] { });
-                                }
-                            }
-                */
-
-
-
-
-
 
 
                 Application.EnableVisualStyles();
@@ -141,7 +90,9 @@ namespace RicQRCoderArt
         public static void Display(Int32 indent, string format, params object[] param)
 
         {
-            Console.Write(new string(' ', indent * 2));
+//            System.Diagnostics.Debug.WriteLine(new string(' ', indent * 2));
+//            System.Diagnostics.Debug.WriteLine(format, param);
+            Console.Write(new string(' ', Math.Abs(indent) * 2));
             Console.WriteLine(format, param);
         }
 
