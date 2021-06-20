@@ -5,6 +5,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 using QRCoder;
+using System.Runtime;
+
+
+//using System.Collections.Generic;
+//using System.Reflection;
+//using ValidationFramework.Extensions;
+//using ValidationFramework.Reflection;
 
 namespace RicQRCoderArt
 {
@@ -19,72 +26,58 @@ namespace RicQRCoderArt
             //https://blog.rc21net.ru/рефлексия-отражение-reflection-в-c-sharp/
             //Assembly asm = System.Reflection.Assembly.Load("QRCoder");
             Assembly asm = System.Reflection.Assembly.ReflectionOnlyLoad("QRCoder");
-            Type[] tAsm = asm.GetTypes();
+            //      var b = HasCurrentTag(asm);
+ //           var st = (typeof)asm.GetTypes()[36].BaseType.Name;
             Module[] mAsm = asm.GetModules(true);
+            Type[] tAsm = asm.GetTypes();
             Type[] etAsm = asm.GetExportedTypes();
-      //      MemberInfo[] members = typeof(tAsm).GetMembers();
-            foreach (MemberInfo minf in etAsm)
+            //            https://johnlnelson.com/tag/assembly-gettypes/
+            //robust code always checks for null FIRST
+            if (etAsm != null && etAsm.Length > 0)
             {
-                //((System.RuntimeType)((System.RuntimeType)etAsm[25]).BaseType).Name 		Name	"Payload"	string
-                //       if (minf.GetCustomAttributes().BaseType.Name== "Payload")
-                //      {
+                //we'll create a StringBuilder for our formatted output
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
-                //    }
-//                DisplayAttributes(4, minf);
-                var attrs = minf.GetCustomAttributesData();
-                Display(0,"Member: {0}", minf.Name);
-       //         Display(1,minf);
-
-                // If the member is a method, display information about its parameters.
-
-                if (minf.MemberType == MemberTypes.Method)
+                //iterate through the Type[] array
+//                foreach (MemberInfo minf in tAsm)
+                foreach (Type type in tAsm)
                 {
-                    foreach (ParameterInfo pinf in ((MethodInfo)minf).GetParameters())
+                    if (type.BaseType.Name == "Payload")
                     {
-                        Console.Write("Parameter: Type={0}, Name={1}", pinf.ParameterType, pinf.Name);
+                        Display(0, "Member: {0}", type.Name);
                     }
-                }
+                    /*
+                    sb.AppendLine("===============================================================");
+                    sb.AppendLine(String.Format("Type Name: {0}", type.Name));
+                    sb.AppendLine("===============================================================");
 
-                // If the member is a property, display information about the property's accessor methods.
-                if (minf.MemberType == MemberTypes.Property)
-                {
-                    foreach (MethodInfo aminf in ((PropertyInfo)minf).GetAccessors())
+                    sb.AppendLine(String.Format("Type FullName: {0}", type.FullName));
+                    sb.AppendLine(String.Format("Namespace: {0}", type.Namespace));
+
+                    sb.AppendLine(String.Format("Is it a Class?: {0}", type.IsClass.ToString()));
+                    sb.AppendLine(String.Format("Is it an Interface?: {0}", type.IsInterface.ToString()));
+                    sb.AppendLine(String.Format("Is it Generic?: {0}", type.IsGenericType.ToString()));
+                    sb.AppendLine(String.Format("Is it Public?: {0}", type.IsPublic.ToString()));
+                    sb.AppendLine(String.Format("Is it Sealed?: {0}", type.IsSealed.ToString()));
+
+                    sb.AppendLine(String.Format("Qualified Name: {0}", type.AssemblyQualifiedName));
+
+                    if (type.BaseType != null && !String.IsNullOrEmpty(type.BaseType.Name))
                     {
-                        Console.Write("Accessor method: {0}", aminf);
+                        sb.AppendLine(String.Format("Base Type: {0}", type.BaseType.Name));
                     }
+
+                    //there are many, many more properties that an be shown...
+*/
                 }
+//                string output = sb.ToString();
             }
 
-
-                Application.EnableVisualStyles();
+            Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
         }
 
-        /*
-                public static Type[] GetTypesInNamespace(Assembly assembly, string nameSpace)
-                {
-                    return
-                      assembly.GetTypes()
-                              .Where(t => String.Equals(t.Namespace, nameSpace, StringComparison.Ordinal))
-                              .ToArray();
-                }
-        */
-
-        // Displays the custom attributes applied to the specified member.
-        public static void DisplayAttributes(Int32 indent, MemberInfo mi)
-        {
-            // Get the set of custom attributes; if none exist, just return.
-            object[] attrs = mi.GetCustomAttributes(false);
-            if (attrs.Length == 0) { return; }
-
-            // Display the custom attributes applied to this member.
-            Display(indent + 1, "Attributes:");
-            foreach (object o in attrs)
-            {
-                Display(indent + 2, "{0}", o.ToString());
-            }
-        }
 
         // Display a formatted string indented by the specified amount.
         public static void Display(Int32 indent, string format, params object[] param)
@@ -95,7 +88,5 @@ namespace RicQRCoderArt
             Console.Write(new string(' ', Math.Abs(indent) * 2));
             Console.WriteLine(format, param);
         }
-
     }
-
-    }
+}
