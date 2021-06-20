@@ -45,6 +45,61 @@ namespace RicQRCoderArt
                     if (type.BaseType.Name == "Payload")
                     {
                         Display(0, "Member: {0}", type.Name);
+                  //      IEnumerable<FieldInfo> fld = type.DeclaredFields.Count;
+
+                        //get the methods in the type
+                        MethodInfo[] methods = type.GetMethods();
+                        // type.DeclaringMethod.
+
+                        //https://johnlnelson.com/2014/06/17/system-reflection-working-with-the-type-class/
+                        //iterate the methods and write output
+                        //                        foreach (MethodInfo method in methods)
+
+                        //                        foreach (MethodInfo method in type.GetDeclaredMethods())
+                        //  foreach (FieldInfo field in type.GetDeclaredFields())
+                        //https://stackoverflow.com/questions/16966629/what-is-the-difference-between-getfields-and-getdeclaredfields-in-java-reflectio
+                        //  {
+                        //  }
+
+                        foreach (MethodInfo method in methods)
+
+                            {
+                                if (method.DeclaringType.Name == type.Name)
+                            {
+                         //       DeclaredFields
+                         //       System.Reflection.FieldInfo df= method.GetDeclaredField(string "name");
+                                sb.AppendLine("=1===============================================================");
+                                sb.AppendLine(String.Format("Method Name: {0}", method.DeclaringType.Name));
+                           
+                            sb.AppendLine("================================================================");
+                            sb.AppendLine(String.Format("Method Name: {0}", method.Name));
+                            sb.AppendLine("================================================================");
+
+                            sb.AppendLine(String.Format("Contains Generic Parameters: {0}", method.ContainsGenericParameters.ToString()));
+                            sb.AppendLine(String.Format("Is Abstract?: {0}", method.IsAbstract.ToString()));
+
+                            sb.AppendLine(String.Format("Is a Constructor?: {0}", method.IsConstructor.ToString()));
+                            sb.AppendLine(String.Format("Is it Generic?: {0}", method.IsGenericMethod.ToString()));
+
+                            sb.AppendLine(String.Format("Is it Private?: {0}", method.IsPrivate.ToString()));
+                            sb.AppendLine(String.Format("Is it Public?: {0}", method.IsPublic.ToString()));
+                            sb.AppendLine(String.Format("Is it Static?: {0}", method.IsStatic.ToString()));
+                            sb.AppendLine(String.Format("Is is Virtual?: {0}", method.IsVirtual.ToString()));
+
+                            //if the method is a void, the Return type will be null
+                            //otherwise, it will return a Type
+                            if (method.ReturnType != null && !String.IsNullOrEmpty(method.ReturnType.Name))
+                            {
+                                sb.AppendLine(String.Format("Return Type: {0}", method.ReturnType.Name.ToString()));
+                            }
+
+                            }
+                            //there are more properties of the MethodInfo you could output...
+                        }
+
+                        string output = sb.ToString();
+
+
                     }
                     /*
                     sb.AppendLine("===============================================================");
