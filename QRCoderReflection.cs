@@ -56,6 +56,20 @@ namespace RicQRCoderArt
             return items;
         }
 
+        public List<string> GetFieldByBaseName(string baseName, string name)
+        {
+            List<string> items = new List<string>();
+
+            foreach (Type type in etAsm)                //foreach (MemberInfo minf in tAsm)
+            {
+                if ((type.BaseType.Name) == baseName && (!type.IsAbstract) && (type.Name == name))                    //работаем только с метаданными родитель = "Payload"  
+                {
+                    FieldInfo[] fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                    items.Add(type.Name);
+                }
+            }
+            return items;
+        }
     }
 }
 

@@ -62,6 +62,7 @@ namespace RicQRCoderArt
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.cbPayload = new System.Windows.Forms.ComboBox();
+            this.panelPayload = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxQRCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dotSize)).BeginInit();
@@ -430,6 +431,7 @@ namespace RicQRCoderArt
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage2.Controls.Add(this.panelPayload);
             this.tabPage2.Controls.Add(this.cbPayload);
             this.tabPage2.Controls.Add(this.buttonGenerate);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
@@ -446,6 +448,14 @@ namespace RicQRCoderArt
             this.cbPayload.Name = "cbPayload";
             this.cbPayload.Size = new System.Drawing.Size(181, 21);
             this.cbPayload.TabIndex = 1;
+            this.cbPayload.SelectedIndexChanged += new System.EventHandler(this.cbPayload_SelectedIndexChanged);
+            // 
+            // panelPayload
+            // 
+            this.panelPayload.Location = new System.Drawing.Point(6, 36);
+            this.panelPayload.Name = "panelPayload";
+            this.panelPayload.Size = new System.Drawing.Size(181, 390);
+            this.panelPayload.TabIndex = 2;
             // 
             // Form1
             // 
@@ -524,6 +534,7 @@ namespace RicQRCoderArt
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ComboBox cbPayload;
+        private System.Windows.Forms.Panel panelPayload;
     }
 }
 

@@ -236,5 +236,11 @@ namespace RicQRCoderArt
         {
             pictureBoxQRCode.BackgroundImageLayout = (ImageLayout)Enum.Parse(typeof(ImageLayout), viewMode.Text);// Enum.GetName(typeof(ImageLayout), "2"); //Enum.Parse(typeof(ImageLayout), sender.ToString());
         }
+
+        //изменение payload
+        private void cbPayload_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
