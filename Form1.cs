@@ -227,9 +227,12 @@ namespace RicQRCoderArt
 
         private void setting_Changed(object sender, EventArgs e)
         {
-
-
             RenderQrCode();
+        }
+
+        private void playload_Changed(object sender, EventArgs e)
+        {
+//            RenderQrCode();
         }
 
         private void viewMode_SelectedIndexChanged(object sender, EventArgs e)
@@ -240,7 +243,24 @@ namespace RicQRCoderArt
         //изменение payload
         private void cbPayload_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            removeControlPlayloadPanel();//очистить панель
         }
+
+        //очистка панели playload
+        private void removeControlPlayloadPanel()
+        {
+            if (panelPayload.HasChildren)
+            {
+                foreach (Control child in panelPayload.Controls)
+                {
+                    //child.Click -= new System.EventHandler(child.playload_Changed);
+                    panelPayload.Controls.Remove(child);
+                    child.Dispose();
+                }
+            }
+        }
+
+
+
     }
 }
