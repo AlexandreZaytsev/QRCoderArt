@@ -19,6 +19,9 @@ namespace RicQRCoderArt
         {
             InitializeComponent();
             InitializeComponentFromQRCOderDll();
+
+
+
             this.viewMode.DataSource = Enum.GetValues(typeof(ImageLayout));
             this.viewMode.SelectedIndex = 4;
         }

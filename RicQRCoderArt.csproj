@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArtQRCode.cs" />
+    <Compile Include="QRCoderReflection.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
