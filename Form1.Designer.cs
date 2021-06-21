@@ -156,6 +156,7 @@
             0,
             0,
             0});
+            this.iconSize.ValueChanged += new System.EventHandler(this.setting_Changed);
             // 
             // buttonSave
             // 
