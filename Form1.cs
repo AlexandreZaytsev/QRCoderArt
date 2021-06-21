@@ -243,7 +243,8 @@ namespace RicQRCoderArt
         //изменение payload
         private void cbPayload_SelectedIndexChanged(object sender, EventArgs e)
         {
-            removeControlPlayloadPanel();//очистить панель
+            removeControlPlayloadPanel();   //очистить панель
+            createControlPlayloadPanel();   //создать панель
         }
 
         //очистка панели playload
@@ -260,7 +261,14 @@ namespace RicQRCoderArt
             }
         }
 
-
+        //создание панели playload
+        private void createControlPlayloadPanel()
+        {
+            using (QRCoderReflection qqRef = new QRCoderReflection("QRCoder"))
+            {
+               // this.cbPayload.DataSource = qqRef.GetFieldByBaseName("Payload", cbPayload.Text);
+            }
+        }
 
     }
 }
