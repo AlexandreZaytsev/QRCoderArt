@@ -1,4 +1,8 @@
-﻿namespace RicQRCoderArt
+﻿using System;
+using System.Reflection;
+using QRCoder;
+
+namespace RicQRCoderArt
 {
     partial class Form1
     {
@@ -56,6 +60,10 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.viewMode = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.cbPayload = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxQRCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dotSize)).BeginInit();
@@ -63,12 +71,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.pixelSize)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonGenerate
             // 
-            this.buttonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonGenerate.Location = new System.Drawing.Point(398, 448);
+            this.buttonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonGenerate.Location = new System.Drawing.Point(3, 435);
             this.buttonGenerate.Name = "buttonGenerate";
             this.buttonGenerate.Size = new System.Drawing.Size(139, 23);
             this.buttonGenerate.TabIndex = 0;
@@ -84,7 +95,7 @@
             this.textBoxQRCode.Multiline = true;
             this.textBoxQRCode.Name = "textBoxQRCode";
             this.textBoxQRCode.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxQRCode.Size = new System.Drawing.Size(380, 126);
+            this.textBoxQRCode.Size = new System.Drawing.Size(314, 126);
             this.textBoxQRCode.TabIndex = 1;
             this.textBoxQRCode.TextChanged += new System.EventHandler(this.setting_Changed);
             // 
@@ -98,7 +109,7 @@
             this.pictureBoxQRCode.Location = new System.Drawing.Point(12, 144);
             this.pictureBoxQRCode.Name = "pictureBoxQRCode";
             this.pictureBoxQRCode.Padding = new System.Windows.Forms.Padding(3);
-            this.pictureBoxQRCode.Size = new System.Drawing.Size(380, 358);
+            this.pictureBoxQRCode.Size = new System.Drawing.Size(314, 358);
             this.pictureBoxQRCode.TabIndex = 2;
             this.pictureBoxQRCode.TabStop = false;
             // 
@@ -111,7 +122,7 @@
             "M",
             "Q",
             "H"});
-            this.comboBoxECC.Location = new System.Drawing.Point(69, 22);
+            this.comboBoxECC.Location = new System.Drawing.Point(113, 22);
             this.comboBoxECC.Name = "comboBoxECC";
             this.comboBoxECC.Size = new System.Drawing.Size(63, 21);
             this.comboBoxECC.TabIndex = 3;
@@ -142,14 +153,14 @@
             // 
             this.iconSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.iconSize.Location = new System.Drawing.Point(70, 23);
+            this.iconSize.Location = new System.Drawing.Point(116, 23);
             this.iconSize.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.iconSize.Name = "iconSize";
-            this.iconSize.Size = new System.Drawing.Size(63, 20);
+            this.iconSize.Size = new System.Drawing.Size(60, 20);
             this.iconSize.TabIndex = 9;
             this.iconSize.Value = new decimal(new int[] {
             10,
@@ -161,7 +172,7 @@
             // buttonSave
             // 
             this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSave.Location = new System.Drawing.Point(398, 477);
+            this.buttonSave.Location = new System.Drawing.Point(4, 436);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(139, 25);
             this.buttonSave.TabIndex = 10;
@@ -174,7 +185,7 @@
             this.panelPreviewPrimaryColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPreviewPrimaryColor.BackColor = System.Drawing.Color.Black;
             this.panelPreviewPrimaryColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelPreviewPrimaryColor.Location = new System.Drawing.Point(72, 160);
+            this.panelPreviewPrimaryColor.Location = new System.Drawing.Point(113, 160);
             this.panelPreviewPrimaryColor.Name = "panelPreviewPrimaryColor";
             this.panelPreviewPrimaryColor.Size = new System.Drawing.Size(63, 19);
             this.panelPreviewPrimaryColor.TabIndex = 13;
@@ -184,7 +195,7 @@
             // 
             this.labelPreviewBackgroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelPreviewBackgroundColor.AutoSize = true;
-            this.labelPreviewBackgroundColor.Location = new System.Drawing.Point(6, 191);
+            this.labelPreviewBackgroundColor.Location = new System.Drawing.Point(47, 191);
             this.labelPreviewBackgroundColor.Name = "labelPreviewBackgroundColor";
             this.labelPreviewBackgroundColor.Size = new System.Drawing.Size(54, 13);
             this.labelPreviewBackgroundColor.TabIndex = 14;
@@ -195,7 +206,7 @@
             this.panelPreviewBackgroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPreviewBackgroundColor.BackColor = System.Drawing.Color.White;
             this.panelPreviewBackgroundColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelPreviewBackgroundColor.Location = new System.Drawing.Point(72, 185);
+            this.panelPreviewBackgroundColor.Location = new System.Drawing.Point(113, 185);
             this.panelPreviewBackgroundColor.Name = "panelPreviewBackgroundColor";
             this.panelPreviewBackgroundColor.Size = new System.Drawing.Size(63, 19);
             this.panelPreviewBackgroundColor.TabIndex = 15;
@@ -208,7 +219,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.artPath.Location = new System.Drawing.Point(9, 45);
             this.artPath.Name = "artPath";
-            this.artPath.Size = new System.Drawing.Size(103, 20);
+            this.artPath.Size = new System.Drawing.Size(147, 20);
             this.artPath.TabIndex = 17;
             this.artPath.TextChanged += new System.EventHandler(this.setting_Changed);
             // 
@@ -218,7 +229,7 @@
             this.selectArtBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.selectArtBtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.selectArtBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.selectArtBtn.Location = new System.Drawing.Point(111, 45);
+            this.selectArtBtn.Location = new System.Drawing.Point(155, 45);
             this.selectArtBtn.Name = "selectArtBtn";
             this.selectArtBtn.Size = new System.Drawing.Size(21, 20);
             this.selectArtBtn.TabIndex = 18;
@@ -239,14 +250,14 @@
             // 
             this.dotSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.dotSize.Location = new System.Drawing.Point(70, 19);
+            this.dotSize.Location = new System.Drawing.Point(116, 19);
             this.dotSize.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.dotSize.Name = "dotSize";
-            this.dotSize.Size = new System.Drawing.Size(62, 20);
+            this.dotSize.Size = new System.Drawing.Size(60, 20);
             this.dotSize.TabIndex = 20;
             this.dotSize.Value = new decimal(new int[] {
             7,
@@ -266,9 +277,9 @@
             this.groupBox1.Controls.Add(this.labelPreviewBackgroundColor);
             this.groupBox1.Controls.Add(this.panelPreviewPrimaryColor);
             this.groupBox1.Controls.Add(this.panelPreviewBackgroundColor);
-            this.groupBox1.Location = new System.Drawing.Point(398, 12);
+            this.groupBox1.Location = new System.Drawing.Point(8, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(139, 216);
+            this.groupBox1.Size = new System.Drawing.Size(180, 216);
             this.groupBox1.TabIndex = 21;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "baseSetting";
@@ -277,7 +288,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 136);
+            this.label1.Location = new System.Drawing.Point(50, 136);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(51, 13);
             this.label1.TabIndex = 17;
@@ -288,14 +299,14 @@
             this.pixelSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.pixelSize.BackColor = System.Drawing.SystemColors.Window;
-            this.pixelSize.Location = new System.Drawing.Point(72, 134);
+            this.pixelSize.Location = new System.Drawing.Point(113, 134);
             this.pixelSize.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.pixelSize.Name = "pixelSize";
-            this.pixelSize.Size = new System.Drawing.Size(63, 20);
+            this.pixelSize.Size = new System.Drawing.Size(60, 20);
             this.pixelSize.TabIndex = 16;
             this.pixelSize.Value = new decimal(new int[] {
             20,
@@ -308,7 +319,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 168);
+            this.label3.Location = new System.Drawing.Point(47, 168);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(54, 13);
             this.label3.TabIndex = 13;
@@ -321,9 +332,9 @@
             this.groupBox2.Controls.Add(this.iconPath);
             this.groupBox2.Controls.Add(this.labelIconsize);
             this.groupBox2.Controls.Add(this.iconSize);
-            this.groupBox2.Location = new System.Drawing.Point(398, 234);
+            this.groupBox2.Location = new System.Drawing.Point(5, 228);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(139, 86);
+            this.groupBox2.Size = new System.Drawing.Size(183, 86);
             this.groupBox2.TabIndex = 22;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Logo (front layer)";
@@ -334,7 +345,7 @@
             this.selectIconBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.selectIconBtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.selectIconBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.selectIconBtn.Location = new System.Drawing.Point(114, 46);
+            this.selectIconBtn.Location = new System.Drawing.Point(158, 46);
             this.selectIconBtn.Margin = new System.Windows.Forms.Padding(0);
             this.selectIconBtn.Name = "selectIconBtn";
             this.selectIconBtn.Size = new System.Drawing.Size(21, 20);
@@ -350,7 +361,7 @@
             this.iconPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.iconPath.Location = new System.Drawing.Point(9, 46);
             this.iconPath.Name = "iconPath";
-            this.iconPath.Size = new System.Drawing.Size(103, 20);
+            this.iconPath.Size = new System.Drawing.Size(147, 20);
             this.iconPath.TabIndex = 10;
             this.iconPath.TextChanged += new System.EventHandler(this.setting_Changed);
             // 
@@ -361,22 +372,23 @@
             this.groupBox3.Controls.Add(this.dotSize);
             this.groupBox3.Controls.Add(this.selectArtBtn);
             this.groupBox3.Controls.Add(this.artPath);
-            this.groupBox3.Location = new System.Drawing.Point(398, 326);
+            this.groupBox3.Location = new System.Drawing.Point(5, 320);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(139, 88);
+            this.groupBox3.Size = new System.Drawing.Size(183, 88);
             this.groupBox3.TabIndex = 23;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Logo (rear layer)";
             // 
             // viewMode
             // 
+            this.viewMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.viewMode.FormattingEnabled = true;
             this.viewMode.Items.AddRange(new object[] {
             "Center",
             "Zoom"});
-            this.viewMode.Location = new System.Drawing.Point(470, 420);
+            this.viewMode.Location = new System.Drawing.Point(71, 411);
             this.viewMode.Name = "viewMode";
-            this.viewMode.Size = new System.Drawing.Size(67, 21);
+            this.viewMode.Size = new System.Drawing.Size(110, 21);
             this.viewMode.TabIndex = 24;
             this.viewMode.SelectedIndexChanged += new System.EventHandler(this.viewMode_SelectedIndexChanged);
             // 
@@ -384,26 +396,67 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(405, 423);
+            this.label4.Location = new System.Drawing.Point(2, 414);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(59, 13);
             this.label4.TabIndex = 25;
             this.label4.Text = "view Mode";
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(328, 12);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(202, 490);
+            this.tabControl1.TabIndex = 26;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.buttonSave);
+            this.tabPage1.Controls.Add(this.viewMode);
+            this.tabPage1.Controls.Add(this.label4);
+            this.tabPage1.Controls.Add(this.groupBox2);
+            this.tabPage1.Controls.Add(this.groupBox3);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(194, 464);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "setting";
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage2.Controls.Add(this.cbPayload);
+            this.tabPage2.Controls.Add(this.buttonGenerate);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(194, 464);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "payload";
+            // 
+            // cbPayload
+            // 
+            this.cbPayload.FormattingEnabled = true;
+            this.cbPayload.Location = new System.Drawing.Point(7, 7);
+            this.cbPayload.Name = "cbPayload";
+            this.cbPayload.Size = new System.Drawing.Size(181, 21);
+            this.cbPayload.TabIndex = 1;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(542, 561);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.viewMode);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.buttonSave);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.pictureBoxQRCode);
             this.Controls.Add(this.textBoxQRCode);
-            this.Controls.Add(this.buttonGenerate);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(558, 600);
             this.Name = "Form1";
@@ -419,11 +472,106 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
+        private void InitializeComponentFromQRCOderDll()
+        {
+            //https://blog.rc21net.ru/рефлексия-отражение-reflection-в-c-sharp/
+            //Assembly asm = System.Reflection.Assembly.Load("QRCoder");
+            Assembly asm = System.Reflection.Assembly.ReflectionOnlyLoad("QRCoder");
+            //            Module[] mAsm = asm.GetModules(true);
+            //            Type[] tAsm = asm.GetTypes();
+            Type[] etAsm = asm.GetExportedTypes();
+            //https://johnlnelson.com/tag/assembly-gettypes/
+            //robust code always checks for null FIRST
+            if (etAsm != null && etAsm.Length > 0)
+            {
+                //                System.Text.StringBuilder sb = new System.Text.StringBuilder(); //we'll create a StringBuilder for our formatted output
+                foreach (Type type in etAsm)                //foreach (MemberInfo minf in tAsm)
+                {
+                    if ((type.BaseType.Name) == "Payload" && (!type.IsAbstract))                    //работаем только с метаданными родитель = "Payload"  
+                    {
+                        this.cbPayload.Items.Add(type.Name);
+
+
+
+                        //Display(0, "Member: {0}", type.Name);
+                        //get the methods in the type
+                        //https://johnlnelson.com/2014/06/17/system-reflection-working-with-the-type-class/
+                        //https://forum.unity.com/threads/c-reflection-refuses-to-give-me-private-fields.587506/
+                        //https://docs.microsoft.com/en-us/dotnet/api/system.type.getfields?view=netframework-4.7.2
+                        MethodInfo[] methods = type.GetMethods();
+                        FieldInfo[] fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                        foreach (MethodInfo method in methods)
+                        {
+                            if (method.DeclaringType.Name == type.Name)     //прочтем все функции объекта метаданных с нужными именами             
+                            {
+                                /*
+                                                                sb.AppendLine("=1===============================================================");
+                                                                sb.AppendLine(String.Format("Method Name: {0}", method.DeclaringType.Name));
+
+                                                                sb.AppendLine("================================================================");
+                                                                sb.AppendLine(String.Format("Method Name: {0}", method.Name));
+                                                                sb.AppendLine("================================================================");
+
+                                                                sb.AppendLine(String.Format("Contains Generic Parameters: {0}", method.ContainsGenericParameters.ToString()));
+                                                                sb.AppendLine(String.Format("Is Abstract?: {0}", method.IsAbstract.ToString()));
+
+                                                               sb.AppendLine(String.Format("Is a Constructor?: {0}", method.IsConstructor.ToString()));
+                                                                sb.AppendLine(String.Format("Is it Generic?: {0}", method.IsGenericMethod.ToString()));
+
+                                                                sb.AppendLine(String.Format("Is it Private?: {0}", method.IsPrivate.ToString()));
+                                                                sb.AppendLine(String.Format("Is it Public?: {0}", method.IsPublic.ToString()));
+                                                                sb.AppendLine(String.Format("Is it Static?: {0}", method.IsStatic.ToString()));
+                                                                sb.AppendLine(String.Format("Is is Virtual?: {0}", method.IsVirtual.ToString()));
+
+                                                                //if the method is a void, the Return type will be null
+                                                                //otherwise, it will return a Type
+                                                                if (method.ReturnType != null && !String.IsNullOrEmpty(method.ReturnType.Name))
+                                                                {
+                                                                    sb.AppendLine(String.Format("Return Type: {0}", method.ReturnType.Name.ToString()));
+                                                                }
+                                */
+                            }
+                            //there are more properties of the MethodInfo you could output...
+                        }
+                        //                        string output = sb.ToString();
+                    }
+                    /*
+                    sb.AppendLine("===============================================================");
+                    sb.AppendLine(String.Format("Type Name: {0}", type.Name));
+                    sb.AppendLine("===============================================================");
+
+                    sb.AppendLine(String.Format("Type FullName: {0}", type.FullName));
+                    sb.AppendLine(String.Format("Namespace: {0}", type.Namespace));
+
+                    sb.AppendLine(String.Format("Is it a Class?: {0}", type.IsClass.ToString()));
+                    sb.AppendLine(String.Format("Is it an Interface?: {0}", type.IsInterface.ToString()));
+                    sb.AppendLine(String.Format("Is it Generic?: {0}", type.IsGenericType.ToString()));
+                    sb.AppendLine(String.Format("Is it Public?: {0}", type.IsPublic.ToString()));
+                    sb.AppendLine(String.Format("Is it Sealed?: {0}", type.IsSealed.ToString()));
+
+                    sb.AppendLine(String.Format("Qualified Name: {0}", type.AssemblyQualifiedName));
+
+                    if (type.BaseType != null && !String.IsNullOrEmpty(type.BaseType.Name))
+                    {
+                        sb.AppendLine(String.Format("Base Type: {0}", type.BaseType.Name));
+                    }
+
+                    //there are many, many more properties that an be shown...
+*/
+                }
+                //                string output = sb.ToString();
+            }
+
+        }
         #endregion
 
         private System.Windows.Forms.Button buttonGenerate;
@@ -453,6 +601,10 @@
         private System.Windows.Forms.NumericUpDown pixelSize;
         private System.Windows.Forms.ComboBox viewMode;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.ComboBox cbPayload;
     }
 }
 

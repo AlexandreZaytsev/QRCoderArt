@@ -17,15 +17,10 @@ namespace RicQRCoderArt
     {
         public Form1()
         {
-
-            
-   
-
             InitializeComponent();
+            InitializeComponentFromQRCOderDll();
             this.viewMode.DataSource = Enum.GetValues(typeof(ImageLayout));
             this.viewMode.SelectedIndex = 4;
-
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
