@@ -5,10 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using QRCoder;
-
+using System.Collections;
 
 namespace RicQRCoderArt 
 {
+    class FieldProperty
+    {
+        public string fName { get; set; }
+        public string fType { get; set; }
+    }
     public class QRCoderReflection : IDisposable
     {
         /*
@@ -19,22 +24,22 @@ namespace RicQRCoderArt
         https://docs.microsoft.com/en-us/dotnet/api/system.type.getfields?view=netframework-4.7.2
         */
         public string nameAsm;
-        public Assembly Asm;
-        public Type[] tAsm;
-        public Type[] etAsm;
-        public Module[] mAsm;
-        public MethodInfo[] mtd;
-        public FieldInfo[] fld;
+        private Assembly Asm;
+        private Type[] tAsm;
+        private Type[] etAsm;
+        private Module[] mAsm;
+        private MethodInfo[] mtd;
+        private FieldInfo[] fld;
 
         public QRCoderReflection(string nameAsm)
         {
             Asm = System.Reflection.Assembly.ReflectionOnlyLoad(nameAsm);
-            tAsm = Asm.GetTypes();
+//            tAsm = Asm.GetTypes();
             etAsm = Asm.GetExportedTypes();
-            mAsm = Asm.GetModules(true);
+//            mAsm = Asm.GetModules(true);
 
-//            mtd = type.GetMethods();
-//            FieldInfo[] fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            //            mtd = type.GetMethods();
+            //            FieldInfo[] fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
         }
 
@@ -50,25 +55,69 @@ namespace RicQRCoderArt
             {
                 if ((type.BaseType.Name) == baseName && (!type.IsAbstract))                    //работаем только с метаданными родитель = "Payload"  
                 {
+
+                    /*
+                    foreach (MemberInfo mi in type.GetMembers())
+                    {
+                        Console.WriteLine($"{mi.DeclaringType} {mi.MemberType} {mi.Name}");
+                    }
+
+                    foreach (MethodInfo method in type.GetMethods())
+                    {
+                        string modificator = "";
+                        if (method.IsStatic)
+                            modificator += "static ";
+                        if (method.IsVirtual)
+                            modificator += "virtual";
+                        Console.Write($"{modificator} {method.ReturnType.Name} {method.Name} (");
+                        //получаем все параметры
+                        ParameterInfo[] parameters = method.GetParameters();// BindingFlags((BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                        for (int i = 0; i < parameters.Length; i++)
+                        {
+                            Console.Write($"{parameters[i].ParameterType.Name} {parameters[i].Name}");
+                            if (i + 1 < parameters.Length) Console.Write(", ");
+                        }
+                        Console.WriteLine(")");
+                    }
+                    */
+
                     items.Add(type.Name);
                 }
             }
             return items;
         }
 
-        public List<string> GetFieldByBaseName(string baseName, string name)
+        public IList GetFieldByBaseName(string baseName, string name)
         {
-            List<string> items = new List<string>();
+            string ctrlType="";
+            List<FieldProperty> MyList = new List<FieldProperty>();
+            //        List<string> items = new List<string>();
 
             foreach (Type type in etAsm)                //foreach (MemberInfo minf in tAsm)
             {
                 if ((type.BaseType.Name) == baseName && (!type.IsAbstract) && (type.Name == name))                    //работаем только с метаданными родитель = "Payload"  
                 {
                     FieldInfo[] fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    items.Add(type.Name);
+                    foreach(var field in fields)
+                    {
+                        switch (field.FieldType.Name)
+                        {
+                            case "String":
+                                ctrlType= "TextBox";
+                                break;
+                            case "Boolean":
+                                ctrlType = "CheckBox";
+                                break;
+                            default:
+                                ctrlType = "TextBox";
+                                break;
+                        }
+
+                        MyList.Add(new FieldProperty { fName = field.Name, fType = ctrlType});
+                    }
                 }
             }
-            return items;
+            return MyList;
         }
     }
 }

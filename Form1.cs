@@ -10,6 +10,7 @@ using QRCoder;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
+using System.Collections;
 
 namespace RicQRCoderArt
 {
@@ -244,7 +245,9 @@ namespace RicQRCoderArt
         private void cbPayload_SelectedIndexChanged(object sender, EventArgs e)
         {
             removeControlPlayloadPanel();   //очистить панель
+            this.buttonGenerate.Visible = false;
             createControlPlayloadPanel();   //создать панель
+            this.buttonGenerate.Visible = true;
         }
 
         //очистка панели playload
@@ -252,11 +255,12 @@ namespace RicQRCoderArt
         {
             if (panelPayload.HasChildren)
             {
-                foreach (Control child in panelPayload.Controls)
+                for (int i = this.panelPayload.Controls.Count - 1; i >= 0; i--) //foreach нельзя коллекция уменьшается и нумерация сбивается
                 {
-                    //child.Click -= new System.EventHandler(child.playload_Changed);
-                    panelPayload.Controls.Remove(child);
-                    child.Dispose();
+                    Control cn = this.panelPayload.Controls[0];
+               //     cn -= new System.EventHandler(cn, playload_Changed);
+                    this.panelPayload.Controls.Remove(cn);
+                    cn.Dispose();
                 }
             }
         }
@@ -266,7 +270,58 @@ namespace RicQRCoderArt
         {
             using (QRCoderReflection qqRef = new QRCoderReflection("QRCoder"))
             {
-               // this.cbPayload.DataSource = qqRef.GetFieldByBaseName("Payload", cbPayload.Text);
+                int labelTop = 2;
+                int labelLeft = 2;
+                int controlLeft = 80;
+                int offSet = 20;
+                IList propToCntrl = qqRef.GetFieldByBaseName("Payload", cbPayload.Text);
+                foreach (FieldProperty prop in propToCntrl)
+                {
+                    if (panelPayload.HasChildren)
+                    {
+                        labelTop = labelTop + offSet;// panelPayload.Controls[panelPayload.Controls.Count-1].Location.Y;
+                    }
+
+                    Label lb = new Label();
+                    lb.Location = new Point(labelLeft, labelTop);
+                    lb.Text = prop.fName;
+                    panelPayload.Controls.Add(lb);
+
+                    switch (prop.fType)
+                    {
+                        case "TextBox":
+                            TextBox tb = new TextBox();
+                            tb.Location = new Point(controlLeft, labelTop);
+                            tb.Text = "tb_" + prop.fName;
+                            tb.TextChanged += new EventHandler(playload_Changed);
+                            panelPayload.Controls.Add(tb);
+                            break;
+                        case "CheckBox":
+                            CheckBox chb = new CheckBox();
+                            chb.Location = new Point(controlLeft, labelTop);
+                            chb.Text = "chb_" + prop.fName;
+                            chb.CheckedChanged += new EventHandler(playload_Changed);
+                            panelPayload.Controls.Add(chb);
+                            break;
+
+
+                            /*
+                                        //получаем ссылку на кнопку, на которую мы нажали
+                                        Button b = (Button)sender;
+                                        //Создаем новую кнопку
+                                        Button temp = new Button();
+                                        temp.Text = "Пример";
+                                        temp.Width = b.Width;
+                                        //Размещаем ее правее (на 10px) кнопки, на которую мы нажали
+                                        temp.Location = new Point(b.Location.X + b.Width + 10, b.Location.Y);
+                                        //Добавляем событие нажатия на новую кнопку 
+                                        //(то же что и при нажатии на исходную)
+                                        temp.Click += new EventHandler(button1_Click);
+                                        //Добавляем элемент на форму
+                                        this.Controls.Add(temp);
+                            */
+                    }
+                }
             }
         }
 
