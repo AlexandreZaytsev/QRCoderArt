@@ -273,7 +273,7 @@ namespace RicQRCoderArt
                 int labelTop = 2;
                 int labelLeft = 2;
                 int controlLeft = 80;
-                int offSet = 20;
+                int offSet = 22;
                 IList propToCntrl = qqRef.GetFieldByBaseName("Payload", cbPayload.Text);
                 foreach (FieldProperty prop in propToCntrl)
                 {
@@ -283,7 +283,9 @@ namespace RicQRCoderArt
                     }
 
                     Label lb = new Label();
+                    lb.Size = new Size(70, 19);
                     lb.Location = new Point(labelLeft, labelTop);
+                    lb.Anchor = AnchorStyles.Left | AnchorStyles.Top;
                     lb.Text = prop.fName;
                     panelPayload.Controls.Add(lb);
 
@@ -291,15 +293,19 @@ namespace RicQRCoderArt
                     {
                         case "TextBox":
                             TextBox tb = new TextBox();
+                            lb.Size = new Size(70, 19);
                             tb.Location = new Point(controlLeft, labelTop);
-                            tb.Text = "tb_" + prop.fName;
+                            lb.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+                            tb.Name = "tb_" + prop.fName;
                             tb.TextChanged += new EventHandler(playload_Changed);
                             panelPayload.Controls.Add(tb);
                             break;
                         case "CheckBox":
                             CheckBox chb = new CheckBox();
+                            lb.Size = new Size(70, 19);
                             chb.Location = new Point(controlLeft, labelTop);
-                            chb.Text = "chb_" + prop.fName;
+                            lb.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+                            chb.Name = "chb_" + prop.fName;
                             chb.CheckedChanged += new EventHandler(playload_Changed);
                             panelPayload.Controls.Add(chb);
                             break;
