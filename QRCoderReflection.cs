@@ -37,10 +37,7 @@ namespace RicQRCoderArt
 //            tAsm = Asm.GetTypes();
             etAsm = Asm.GetExportedTypes();
 //            mAsm = Asm.GetModules(true);
-
-            //            mtd = type.GetMethods();
-            //            FieldInfo[] fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-
+//            mtd = type.GetMethods();
         }
 
         public void Dispose()
@@ -90,9 +87,9 @@ namespace RicQRCoderArt
         public IList GetFieldByBaseName(string baseName, string name)
         {
             string ctrlType="";
-            List<FieldProperty> MyList = new List<FieldProperty>();
-            //        List<string> items = new List<string>();
+           // enum extType;
 
+            List<FieldProperty> MyList = new List<FieldProperty>();
             foreach (Type type in etAsm)                //foreach (MemberInfo minf in tAsm)
             {
                 if ((type.BaseType.Name) == baseName && (!type.IsAbstract) && (type.Name == name))                    //работаем только с метаданными родитель = "Payload"  
@@ -109,6 +106,7 @@ namespace RicQRCoderArt
                                 ctrlType = "CheckBox";
                                 break;
                             default:
+                                var extType = type.GetMember(field.FieldType.Name);
                                 ctrlType = "TextBox";
                                 break;
                         }
