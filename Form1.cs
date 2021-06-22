@@ -270,10 +270,10 @@ namespace RicQRCoderArt
         {
             using (QRCoderReflection qqRef = new QRCoderReflection("QRCoder"))
             {
-                int labelTop = 2;
+                int labelTop = 1;
                 int labelLeft = 2;
                 int controlLeft = 80;
-                int offSet = 22;
+                int offSet = 21;
                 IList propToCntrl = qqRef.GetFieldByBaseName("Payload", cbPayload.Text);
                 foreach (FieldProperty prop in propToCntrl)
                 {
@@ -285,7 +285,9 @@ namespace RicQRCoderArt
                     Label lb = new Label();
                     lb.Size = new Size(70, 19);
                     lb.Location = new Point(labelLeft, labelTop);
-                    lb.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+                    lb.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+//                    lb..Anchor = AnchorStyles..Top;// AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+//                    lb.Dock = DockStyle.Left | DockStyle.Top | DockStyle.Bottom;
                     lb.Text = prop.fName;
                     panelPayload.Controls.Add(lb);
 
@@ -328,6 +330,7 @@ namespace RicQRCoderArt
                             */
                     }
                 }
+                //panelPayload.Height = panelPayload.Controls[panelPayload.Controls.Count - 1].Location.Y + offSet;
             }
         }
 

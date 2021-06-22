@@ -61,8 +61,8 @@ namespace RicQRCoderArt
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.cbPayload = new System.Windows.Forms.ComboBox();
             this.panelPayload = new System.Windows.Forms.Panel();
+            this.cbPayload = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxQRCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dotSize)).BeginInit();
@@ -78,9 +78,9 @@ namespace RicQRCoderArt
             // buttonGenerate
             // 
             this.buttonGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonGenerate.Location = new System.Drawing.Point(3, 435);
+            this.buttonGenerate.Location = new System.Drawing.Point(3, 482);
             this.buttonGenerate.Name = "buttonGenerate";
-            this.buttonGenerate.Size = new System.Drawing.Size(139, 23);
+            this.buttonGenerate.Size = new System.Drawing.Size(184, 23);
             this.buttonGenerate.TabIndex = 0;
             this.buttonGenerate.Text = "Generate";
             this.buttonGenerate.UseVisualStyleBackColor = true;
@@ -108,7 +108,7 @@ namespace RicQRCoderArt
             this.pictureBoxQRCode.Location = new System.Drawing.Point(12, 144);
             this.pictureBoxQRCode.Name = "pictureBoxQRCode";
             this.pictureBoxQRCode.Padding = new System.Windows.Forms.Padding(3);
-            this.pictureBoxQRCode.Size = new System.Drawing.Size(314, 358);
+            this.pictureBoxQRCode.Size = new System.Drawing.Size(314, 405);
             this.pictureBoxQRCode.TabIndex = 2;
             this.pictureBoxQRCode.TabStop = false;
             // 
@@ -170,10 +170,11 @@ namespace RicQRCoderArt
             // 
             // buttonSave
             // 
-            this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSave.Location = new System.Drawing.Point(4, 436);
+            this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSave.Location = new System.Drawing.Point(4, 483);
             this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(139, 25);
+            this.buttonSave.Size = new System.Drawing.Size(180, 25);
             this.buttonSave.TabIndex = 10;
             this.buttonSave.Text = "Save QR code";
             this.buttonSave.UseVisualStyleBackColor = true;
@@ -331,7 +332,7 @@ namespace RicQRCoderArt
             this.groupBox2.Controls.Add(this.iconPath);
             this.groupBox2.Controls.Add(this.labelIconsize);
             this.groupBox2.Controls.Add(this.iconSize);
-            this.groupBox2.Location = new System.Drawing.Point(5, 228);
+            this.groupBox2.Location = new System.Drawing.Point(5, 251);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(183, 86);
             this.groupBox2.TabIndex = 22;
@@ -371,7 +372,7 @@ namespace RicQRCoderArt
             this.groupBox3.Controls.Add(this.dotSize);
             this.groupBox3.Controls.Add(this.selectArtBtn);
             this.groupBox3.Controls.Add(this.artPath);
-            this.groupBox3.Location = new System.Drawing.Point(5, 320);
+            this.groupBox3.Location = new System.Drawing.Point(5, 343);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(183, 88);
             this.groupBox3.TabIndex = 23;
@@ -403,13 +404,14 @@ namespace RicQRCoderArt
             // 
             // tabControl1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(328, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(202, 490);
+            this.tabControl1.Size = new System.Drawing.Size(202, 537);
             this.tabControl1.TabIndex = 26;
             // 
             // tabPage1
@@ -424,7 +426,7 @@ namespace RicQRCoderArt
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(194, 464);
+            this.tabPage1.Size = new System.Drawing.Size(194, 511);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "setting";
             // 
@@ -437,9 +439,16 @@ namespace RicQRCoderArt
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(194, 464);
+            this.tabPage2.Size = new System.Drawing.Size(194, 511);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "payload";
+            // 
+            // panelPayload
+            // 
+            this.panelPayload.Location = new System.Drawing.Point(6, 34);
+            this.panelPayload.Name = "panelPayload";
+            this.panelPayload.Size = new System.Drawing.Size(181, 442);
+            this.panelPayload.TabIndex = 2;
             // 
             // cbPayload
             // 
@@ -449,13 +458,6 @@ namespace RicQRCoderArt
             this.cbPayload.Size = new System.Drawing.Size(181, 21);
             this.cbPayload.TabIndex = 1;
             this.cbPayload.SelectedIndexChanged += new System.EventHandler(this.cbPayload_SelectedIndexChanged);
-            // 
-            // panelPayload
-            // 
-            this.panelPayload.Location = new System.Drawing.Point(6, 36);
-            this.panelPayload.Name = "panelPayload";
-            this.panelPayload.Size = new System.Drawing.Size(181, 390);
-            this.panelPayload.TabIndex = 2;
             // 
             // Form1
             // 
