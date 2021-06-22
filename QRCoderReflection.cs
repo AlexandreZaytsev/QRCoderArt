@@ -53,7 +53,14 @@ namespace RicQRCoderArt
                 if ((type.BaseType.Name) == baseName && (!type.IsAbstract))                    //работаем только с метаданными родитель = "Payload"  
                 {
 
-                    /*
+
+                    foreach (var nt in type.GetNestedTypes())
+                        {
+                        Console.WriteLine($"{nt.DeclaringType} {nt.MemberType} {nt.Name}");
+                  //      nt.GetFields()[1]
+                    }
+
+
                     foreach (MemberInfo mi in type.GetMembers())
                     {
                         Console.WriteLine($"{mi.DeclaringType} {mi.MemberType} {mi.Name}");
@@ -76,7 +83,7 @@ namespace RicQRCoderArt
                         }
                         Console.WriteLine(")");
                     }
-                    */
+                    
 
                     items.Add(type.Name);
                 }
