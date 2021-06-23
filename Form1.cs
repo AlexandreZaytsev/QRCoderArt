@@ -42,10 +42,7 @@ namespace RicQRCoderArt
             RenderQrCode();
         }
 
-        private void buttonGenerate_Click(object sender, EventArgs e)
-        {
-            RenderQrCode();
-        }
+
 
         private void RenderQrCode()
         {
@@ -233,7 +230,36 @@ namespace RicQRCoderArt
 
         private void playload_Changed(object sender, EventArgs e)
         {
-//            RenderQrCode();
+            using (QRCoderReflection qqRef = new QRCoderReflection("QRCoder"))
+            {
+                MethodInfo method = qqRef.GetMethodByBaseName("Payload", cbPayload.Text);
+                object[] arguments = { "","","one", "two" };
+
+                var s = method.Invoke(new QRCode(), arguments);
+
+                /*
+                String s = (String)qqRef.GetType().InvokeMember((
+                methodName,
+                BindingFlags.InvokeMethod | BindingFlags.Public |
+                    BindingFlags.Static,
+                null,
+                null,
+                null);
+
+                method.Invoke(null, arguments);
+*/
+          //      Type t = qqRef.GetType();
+//                MethodInfo method = t.GetMethod("Hello");
+              //  object obj = Activator.CreateInstance(t);
+            //    method.Invoke(obj, null);
+
+/*
+                //            RenderQrCode();
+                MethodInfo method = qqRef.GetMethodByBaseName("Payload", cbPayload.Text); ;//  t.GetMethod("Hello");
+                object obj = Activator.CreateInstance(qqRef.GetType());
+                method.Invoke(obj, null);
+ */
+                }
         }
 
         private void viewMode_SelectedIndexChanged(object sender, EventArgs e)
@@ -310,6 +336,17 @@ namespace RicQRCoderArt
                             chb.Name = "chb_" + prop.fName;
                             chb.CheckedChanged += new EventHandler(playload_Changed);
                             panelPayload.Controls.Add(chb);
+                            break;
+                        case "ComboBox":
+                            ComboBox cmb = new ComboBox();
+                            cmb.Size = new Size(100, 19);
+                           // cmb.MinimumSize= new Size(70, 19);
+                            cmb.Location = new Point(controlLeft, labelTop);
+                            cmb.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+                            cmb.Name = "cmb_" + prop.fName;
+                            cmb.DataSource = prop.fList;// Enum.GetValues(typeof(ImageLayout));
+                            cmb.SelectedIndexChanged += new EventHandler(playload_Changed);
+                            panelPayload.Controls.Add(cmb);
                             break;
 
 
