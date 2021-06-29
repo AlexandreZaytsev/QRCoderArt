@@ -285,10 +285,11 @@ namespace RicQRCoderArt
 
                     TextBox lb = new TextBox(); //Label();
                     lb.ReadOnly = true;
+                    lb.BorderStyle = BorderStyle.FixedSingle;//.None;
                     lb.TextAlign = HorizontalAlignment.Right;
                     lb.Location = new Point(labelLeft, labelTop);
                     lb.Size = new Size(140, 20);
-                    lb.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+          //          lb.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
                     //                    lb..Anchor = AnchorStyles..Top;// AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
                     //                    lb.Dock = DockStyle.Left | DockStyle.Top | DockStyle.Bottom;
                     lb.Text = prop.fName;
@@ -299,27 +300,27 @@ namespace RicQRCoderArt
                         case "TextBox":
                             TextBox tb = new TextBox();
                             tb.Location = new Point(controlLeft, labelTop);
-                            lb.Size = new Size(140, 20);
-                            lb.Anchor =  AnchorStyles.Right;//AnchorStyles.Left |
+                            tb.Size = new Size(140, 20);
+            //                lb.Anchor =  AnchorStyles.Right;//AnchorStyles.Left |
                             tb.Name = "tb_" + prop.fName;
                             tb.TextChanged += new EventHandler(playload_Changed);
                             panelPayload.Controls.Add(tb);
                             break;
                         case "CheckBox":
                             CheckBox chb = new CheckBox();
-                            lb.Size = new Size(70, 19);
+                            chb.Size = new Size(140, 20);
                             chb.Location = new Point(controlLeft, labelTop);
-                            lb.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+                       //     lb.Anchor = AnchorStyles.Left | AnchorStyles.Right;
                             chb.Name = "chb_" + prop.fName;
                             chb.CheckedChanged += new EventHandler(playload_Changed);
                             panelPayload.Controls.Add(chb);
                             break;
                         case "ComboBox":
                             ComboBox cmb = new ComboBox();
-                            cmb.Size = new Size(100, 19);
+                            cmb.Size = new Size(140, 20);
                             // cmb.MinimumSize= new Size(70, 19);
                             cmb.Location = new Point(controlLeft, labelTop);
-                            cmb.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+                        //    cmb.Anchor = AnchorStyles.Left | AnchorStyles.Right;
                             cmb.Name = "cmb_" + prop.fName;
                             cmb.DataSource = prop.fList;// Enum.GetValues(typeof(ImageLayout));
                             cmb.SelectedIndexChanged += new EventHandler(playload_Changed);
@@ -348,7 +349,7 @@ namespace RicQRCoderArt
                 cbConstructor.DataSource = new BindingSource(qqRef.GetConstructor(mi), null);
                 cbConstructor.DisplayMember = "Key";
                 cbConstructor.ValueMember = "Value";
-                tbConstructor.Text = "Select the constructor (" + cbConstructor.Items.Count.ToString() + ")";
+                tbConstructor.Text = "Select the Payload constructor (" + cbConstructor.Items.Count.ToString() + ")";
             }
         }
 
