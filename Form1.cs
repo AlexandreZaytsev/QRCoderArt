@@ -269,8 +269,8 @@ namespace RicQRCoderArt
             using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
             {
                 int labelTop = 1;
-                int labelLeft = 2;
-                int controlLeft = 80;
+                int labelLeft = 5;
+                int controlLeft = 150;
                 int offSet = 21;
 
                 MemberInfo mi = qqRef.GetMemberByName(cbPayload.Text);  //получить member по имени
@@ -283,9 +283,11 @@ namespace RicQRCoderArt
                         labelTop = labelTop + offSet;// panelPayload.Controls[panelPayload.Controls.Count-1].Location.Y;
                     }
 
-                    Label lb = new Label();
-                    lb.Size = new Size(70, 19);
+                    TextBox lb = new TextBox(); //Label();
+                    lb.ReadOnly = true;
+                    lb.TextAlign = HorizontalAlignment.Right;
                     lb.Location = new Point(labelLeft, labelTop);
+                    lb.Size = new Size(140, 20);
                     lb.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
                     //                    lb..Anchor = AnchorStyles..Top;// AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
                     //                    lb.Dock = DockStyle.Left | DockStyle.Top | DockStyle.Bottom;
@@ -296,9 +298,9 @@ namespace RicQRCoderArt
                     {
                         case "TextBox":
                             TextBox tb = new TextBox();
-                            lb.Size = new Size(70, 19);
                             tb.Location = new Point(controlLeft, labelTop);
-                            lb.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+                            lb.Size = new Size(140, 20);
+                            lb.Anchor =  AnchorStyles.Right;//AnchorStyles.Left |
                             tb.Name = "tb_" + prop.fName;
                             tb.TextChanged += new EventHandler(playload_Changed);
                             panelPayload.Controls.Add(tb);
