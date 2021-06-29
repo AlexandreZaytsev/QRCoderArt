@@ -346,7 +346,7 @@ namespace RicQRCoderArt
                 cbConstructor.DataSource = new BindingSource(qqRef.GetConstructor(mi), null);
                 cbConstructor.DisplayMember = "Key";
                 cbConstructor.ValueMember = "Value";
-                tbConstructor.Text = "Select the constructor (" + cbConstructor.Items.Count.ToString() + ") or enter the formatted text manually";
+                tbConstructor.Text = "Select the constructor (" + cbConstructor.Items.Count.ToString() + ")";
             }
         }
 
