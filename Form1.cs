@@ -25,6 +25,10 @@ namespace RicQRCoderArt
 
             this.viewMode.DataSource = Enum.GetValues(typeof(ImageLayout));
             this.viewMode.SelectedIndex = 4;
+            toolTip1.SetToolTip(this.cbPayload, "Select PAYLOAD and Set property");
+            toolTip1.SetToolTip(this.cbConstructor, "Select Constructor PAYLOAD");
+            toolTip1.SetToolTip(this.iconPath, "the picture above the qr code image");
+            toolTip1.SetToolTip(this.artPath, "the picture below the qr code image");
         }
 
         private void Form1_Load(object sender, EventArgs e)
