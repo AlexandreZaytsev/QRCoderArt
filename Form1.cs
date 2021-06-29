@@ -237,9 +237,14 @@ namespace RicQRCoderArt
 
         private void playload_Changed(object sender, EventArgs e)
         {
-//            RenderQrCode();
-        }
+            string key = ((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Key;
+            ConstructorInfo value = ((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Value;
 
+            object magicClassObject2 = value.Invoke(new object[] { "MyWiFi-SSID", "MyWiFi-Pass", PayloadGenerator.WiFi.Authentication.WPA, false });
+            MethodInfo magicMethod2 = value.ReflectedType.GetMethod("ToString");
+            textBoxQRCode.Text = magicMethod2.Invoke(magicClassObject2, null).ToString();
+        }
+   //     ((System.Reflection.RuntimeConstructorInfo) value).ReflectedType.GetMethod("ToString")
         private void viewMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             pictureBoxQRCode.BackgroundImageLayout = (ImageLayout)Enum.Parse(typeof(ImageLayout), viewMode.Text);// Enum.GetName(typeof(ImageLayout), "2"); //Enum.Parse(typeof(ImageLayout), sender.ToString());
