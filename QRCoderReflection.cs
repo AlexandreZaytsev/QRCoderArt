@@ -7,12 +7,13 @@ using System.Reflection;
 using QRCoder;
 using System.Collections;
 
-namespace RicQRCoderArt 
+namespace RicQRCoderArt
 {
     class FieldProperty
     {
         public string fName { get; set; }
         public string fType { get; set; }
+        public List<string> fList;
     }
     public class QRCoderReflection : IDisposable
     {
@@ -23,104 +24,110 @@ namespace RicQRCoderArt
         https://forum.unity.com/threads/c-reflection-refuses-to-give-me-private-fields.587506/
         https://docs.microsoft.com/en-us/dotnet/api/system.type.getfields?view=netframework-4.7.2
         */
-        public string nameAsm;
-        private Assembly Asm;
-        private Type[] tAsm;
-        private Type[] etAsm;
-        private Module[] mAsm;
-        private MethodInfo[] mtd;
-        private FieldInfo[] fld;
+        private Type tRef;
 
-        public QRCoderReflection(string nameAsm)
+        public QRCoderReflection(string name)
         {
-            Asm = System.Reflection.Assembly.ReflectionOnlyLoad(nameAsm);
-//            tAsm = Asm.GetTypes();
-            etAsm = Asm.GetExportedTypes();
-//            mAsm = Asm.GetModules(true);
-//            mtd = type.GetMethods();
+            tRef = Type.GetType(name);
         }
 
         public void Dispose()
         {
-   //         throw new NotImplementedException();
+            //         throw new NotImplementedException();
         }
 
-        public List<string> GetTypeByBaseName(string baseName)
+        //получить словарь конструкторов для выпадающего списка
+        public Dictionary<string, ConstructorInfo> GetConstructor(MemberInfo mi)
         {
-            List<string> items = new List<string>();
-            foreach (Type type in etAsm)                //foreach (MemberInfo minf in tAsm)
-            {
-                if ((type.BaseType.Name) == baseName && (!type.IsAbstract))                    //работаем только с метаданными родитель = "Payload"  
-                {
+            //https://metanit.com/sharp/tutorial/14.2.php
+            return (from ctor in ((Type)mi).GetConstructors()
+                    select new { V = string.Join(", ", ctor.GetParameters().Select(pr => pr.Name)), ctor }).ToDictionary(k => k.V, v => v.ctor);
+        }
 
+        //получить member по имени
+        public MemberInfo GetMemberByName(string baseName)
+        {
 
-                    foreach (var nt in type.GetNestedTypes())
+            MemberInfo mmbers = tRef.GetMember(baseName).First();
+            //         var c = GetConstructor(mmbers);
+
+            /*
+                        //            https://www.nookery.ru/understand-with-reflection/
+                        Type mi = Asm.GetType("QRCoder.PayloadGenerator");
+                        MemberInfo[] members = mi.GetMember(baseName);
+                        MethodInfo method = mi.GetMethod(baseName);
+                        ParameterInfo[] parameters = method.GetParameters();
+                        // Выводим некоторые характеристики каждого из параметров. 
+                        foreach (ParameterInfo parameter in parameters)
                         {
-                        Console.WriteLine($"{nt.DeclaringType} {nt.MemberType} {nt.Name}");
-                  //      nt.GetFields()[1]
-                    }
-
-
-                    foreach (MemberInfo mi in type.GetMembers())
-                    {
-                        Console.WriteLine($"{mi.DeclaringType} {mi.MemberType} {mi.Name}");
-                    }
-
-                    foreach (MethodInfo method in type.GetMethods())
-                    {
-                        string modificator = "";
-                        if (method.IsStatic)
-                            modificator += "static ";
-                        if (method.IsVirtual)
-                            modificator += "virtual";
-                        Console.Write($"{modificator} {method.ReturnType.Name} {method.Name} (");
-                        //получаем все параметры
-                        ParameterInfo[] parameters = method.GetParameters();// BindingFlags((BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                        for (int i = 0; i < parameters.Length; i++)
-                        {
-                            Console.Write($"{parameters[i].ParameterType.Name} {parameters[i].Name}");
-                            if (i + 1 < parameters.Length) Console.Write(", ");
+                            Console.WriteLine("Имя параметра: {0}", parameter.Name);
+                            Console.WriteLine("Позиция в методе: {0}", parameter.Position);
+                            Console.WriteLine("Тип параметра: {0}", parameter.ParameterType);
                         }
-                        Console.WriteLine(")");
-                    }
-                    
 
-                    items.Add(type.Name);
-                }
-            }
-            return items;
+                        */
+            //           MethodInfo mt=null;//= etAsm..ge
+            return mmbers;
+        }
+        //получить имена классов payload
+        public List<string> GetNameMembersClass()
+        {
+            return (from t in tRef.GetMembers(BindingFlags.Public) // определяем каждый объект из teams как t
+                    where !((System.Type)t).IsAbstract //фильтрация по критерию
+                                                       //  orderby t.Name descending // упорядочиваем по возрастанию
+                    select t.Name).ToList();
         }
 
-        public IList GetFieldByBaseName(string baseName, string name)
+        //получить fields member
+        public IList GetFieldMember(MemberInfo mi)
         {
-            string ctrlType="";
-           // enum extType;
+            FieldInfo[] fields = ((System.Type)mi).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            string ctrlType = "";
+            // enum extType;
 
             List<FieldProperty> MyList = new List<FieldProperty>();
-            foreach (Type type in etAsm)                //foreach (MemberInfo minf in tAsm)
+            foreach (FieldInfo field in fields)
             {
-                if ((type.BaseType.Name) == baseName && (!type.IsAbstract) && (type.Name == name))                    //работаем только с метаданными родитель = "Payload"  
+                FieldProperty mProp = new FieldProperty { fName = "", fType = "", fList = new List<string>() };
+                mProp.fName = field.Name;
+                switch (field.FieldType.Name)
                 {
-                    FieldInfo[] fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    foreach(var field in fields)
-                    {
-                        switch (field.FieldType.Name)
+                    case "String":
+                    case "Decimal":
+                    case "Nullable`1":
+                        mProp.fType = "TextBox";
+                        break;
+                    case "Boolean":
+                        mProp.fType = "CheckBox";
+                        break;
+                    default:
+                        mProp.fType = "TextBox";
+                        /*
+                        //var extType = type.GetMember(field.FieldType.Name).;
+                        var nstTypes = type.GetNestedTypes();
+                        foreach (var nstType in nstTypes)
                         {
-                            case "String":
-                                ctrlType= "TextBox";
-                                break;
-                            case "Boolean":
-                                ctrlType = "CheckBox";
-                                break;
-                            default:
-                                var extType = type.GetMember(field.FieldType.Name);
-                                ctrlType = "TextBox";
-                                break;
-                        }
+                            if (nstType.Name == field.FieldType.Name)
+                            {
+                                var items = nstType.GetFields(BindingFlags.Static | BindingFlags.Public);
+                                //                                       Dictionary<string,List < Object >> fDict = new Dictionary<string, List<Object>>();
 
-                        MyList.Add(new FieldProperty { fName = field.Name, fType = ctrlType});
-                    }
+                                foreach (var item in items)
+                                {
+                                    mProp.fList.Add(item.Name);
+                                }
+                                //list1 = new List<t>(list)
+                            }
+                            //   Console.WriteLine($"{nt.DeclaringType} {nt.MemberType} {nt.Name}");
+                            //      nt.GetFields()[1]
+                        }
+                        mProp.fType = "ComboBox";
+                        */
+                        break;
+
                 }
+
+                MyList.Add(mProp);
             }
             return MyList;
         }

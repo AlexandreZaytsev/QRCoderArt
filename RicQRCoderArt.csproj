@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>ric_.ico</ApplicationIcon>
+    <ApplicationIcon>qr.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -98,6 +98,10 @@
     <None Include="Resources\ric_.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\qr.png" />
+    <None Include="Resources\qr.ico" />
+    <Content Include="qr.ico" />
+    <None Include="qr.png" />
     <Content Include="ric_.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -245,9 +245,7 @@ namespace RicQRCoderArt
         private void cbPayload_SelectedIndexChanged(object sender, EventArgs e)
         {
             removeControlPlayloadPanel();   //очистить панель
-            this.buttonGenerate.Visible = false;
             createControlPlayloadPanel();   //создать панель
-            this.buttonGenerate.Visible = true;
         }
 
         //очистка панели playload
@@ -268,13 +266,16 @@ namespace RicQRCoderArt
         //создание панели playload
         private void createControlPlayloadPanel()
         {
-            using (QRCoderReflection qqRef = new QRCoderReflection("QRCoder"))
+            using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
             {
                 int labelTop = 1;
                 int labelLeft = 2;
                 int controlLeft = 80;
                 int offSet = 21;
-                IList propToCntrl = qqRef.GetFieldByBaseName("Payload", cbPayload.Text);
+
+                MemberInfo mi = qqRef.GetMemberByName(cbPayload.Text);  //получить member по имени
+                IList propToCntrl = qqRef.GetFieldMember(mi);           //получить fields member 
+
                 foreach (FieldProperty prop in propToCntrl)
                 {
                     if (panelPayload.HasChildren)
@@ -286,8 +287,8 @@ namespace RicQRCoderArt
                     lb.Size = new Size(70, 19);
                     lb.Location = new Point(labelLeft, labelTop);
                     lb.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-//                    lb..Anchor = AnchorStyles..Top;// AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-//                    lb.Dock = DockStyle.Left | DockStyle.Top | DockStyle.Bottom;
+                    //                    lb..Anchor = AnchorStyles..Top;// AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+                    //                    lb.Dock = DockStyle.Left | DockStyle.Top | DockStyle.Bottom;
                     lb.Text = prop.fName;
                     panelPayload.Controls.Add(lb);
 
@@ -311,6 +312,17 @@ namespace RicQRCoderArt
                             chb.CheckedChanged += new EventHandler(playload_Changed);
                             panelPayload.Controls.Add(chb);
                             break;
+                        case "ComboBox":
+                            ComboBox cmb = new ComboBox();
+                            cmb.Size = new Size(100, 19);
+                            // cmb.MinimumSize= new Size(70, 19);
+                            cmb.Location = new Point(controlLeft, labelTop);
+                            cmb.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+                            cmb.Name = "cmb_" + prop.fName;
+                            cmb.DataSource = prop.fList;// Enum.GetValues(typeof(ImageLayout));
+                            cmb.SelectedIndexChanged += new EventHandler(playload_Changed);
+                            panelPayload.Controls.Add(cmb);
+                            break;
 
 
                             /*
@@ -330,9 +342,17 @@ namespace RicQRCoderArt
                             */
                     }
                 }
-                //panelPayload.Height = panelPayload.Controls[panelPayload.Controls.Count - 1].Location.Y + offSet;
+
+                cbConstructor.DataSource = new BindingSource(qqRef.GetConstructor(mi), null);
+                cbConstructor.DisplayMember = "Key";
+                cbConstructor.ValueMember = "Value";
+                tbConstructor.Text = "Select the constructor (" + cbConstructor.Items.Count.ToString() + ") or enter the formatted text manually";
             }
         }
 
+        private void buttonConstructor_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
