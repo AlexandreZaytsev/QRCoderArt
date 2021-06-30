@@ -33,6 +33,7 @@ namespace RicQRCoderArt
 
         private void Form1_Load(object sender, EventArgs e)
         {
+ 
             comboBoxECC.SelectedIndex = 0; //Pre-select ECC level "L"
             textBoxQRCode.Text = "BEGIN:VCARD\r\n"+
                                  "VERSION:3.0\r\n" +
@@ -44,7 +45,7 @@ namespace RicQRCoderArt
                                  "TEL;TYPE=voice,cell:\r\n" +
                                  "END:VCARD";
             RenderQrCode();
-        }
+             }
 
         private void buttonGenerate_Click(object sender, EventArgs e)
         {
@@ -53,36 +54,39 @@ namespace RicQRCoderArt
 
         private void RenderQrCode()
         {
-            string level = comboBoxECC.SelectedItem.ToString();
-            QRCodeGenerator.ECCLevel eccLevel = (QRCodeGenerator.ECCLevel)(level == "L" ? 0 : level == "M" ? 1 : level == "Q" ? 2 : 3);
-            using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
-            using (QRCodeData qrCodeData = qrGenerator.CreateQrCode(textBoxQRCode.Text, eccLevel))
+            if (comboBoxECC.SelectedItem != null)
+            {
+                string level = comboBoxECC.SelectedItem.ToString();
+                QRCodeGenerator.ECCLevel eccLevel = (QRCodeGenerator.ECCLevel)(level == "L" ? 0 : level == "M" ? 1 : level == "Q" ? 2 : 3);
+                using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
+                using (QRCodeData qrCodeData = qrGenerator.CreateQrCode(textBoxQRCode.Text, eccLevel))
 
-                if (artPath.Text.Length == 0)
-                {
-                    using (QRCode qrCode = new QRCode(qrCodeData))
+                    if (artPath.Text.Length == 0)
                     {
-                        pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic((int)pixelSize.Value, GetPrimaryColor(), GetBackgroundColor(),
-                            GetIconBitmap(), (int)iconSize.Value);
+                        using (QRCode qrCode = new QRCode(qrCodeData))
+                        {
+                            pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic((int)pixelSize.Value, GetPrimaryColor(), GetBackgroundColor(),
+                                GetIconBitmap(), (int)iconSize.Value);
 
-                        this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
-                        //Set the SizeMode to center the image.
-                        this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
-                        pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
+                            this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
+                            //Set the SizeMode to center the image.
+                            this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
+                            pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
+                        }
                     }
-                }
-                else
-                {
-                    using (ArtQRCode qrCode = new ArtQRCode(qrCodeData))
+                    else
                     {
-                        pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic((int)dotSize.Value, GetPrimaryColor(), GetBackgroundColor(), GetArtBitmap());// (20, GetPrimaryColor(), GetBackgroundColor(), GetIconBitmap(), (int)iconSize.Value);
+                        using (ArtQRCode qrCode = new ArtQRCode(qrCodeData))
+                        {
+                            pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic((int)dotSize.Value, GetPrimaryColor(), GetBackgroundColor(), GetArtBitmap());// (20, GetPrimaryColor(), GetBackgroundColor(), GetIconBitmap(), (int)iconSize.Value);
 
-                        this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
-                        //Set the SizeMode to center the image.
-                        this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
-                        pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
+                            this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
+                            //Set the SizeMode to center the image.
+                            this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
+                            pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
+                        }
                     }
-                }
+            }
         }
 
         private Bitmap GetIconBitmap()
