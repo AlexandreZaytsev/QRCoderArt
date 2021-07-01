@@ -115,9 +115,13 @@ namespace RicQRCoderArt
                     default:
                         if (param.ParameterType.IsEnum) 
                         {
- //                           Dictionary<string, ConstructorInfo> pEnum = (from parN in param.ParameterType.GetEnumNames()
- //                                                                        from parV in param.ParameterType.GetEnumValues()
- //                                                                      select new { parN, parV }).ToDictionary(k => k.parN, v => v.parV);
+                            Dictionary<string, object> pEnum = new Dictionary<string, object>();
+
+                            foreach (var val in param.ParameterType.GetEnumValues())
+                                pEnum.Add(val.ToString(), val);
+                            //                           Dictionary<string, ConstructorInfo> pEnum = (from parN in param.ParameterType.GetEnumNames()
+                            //                                                                        from parV in param.ParameterType.GetEnumValues()
+                            //                                                                      select new { parN, parV }).ToDictionary(k => k.parN, v => v.parV);
                         }
                         if (param.ParameterType.IsClass) 
                         {
