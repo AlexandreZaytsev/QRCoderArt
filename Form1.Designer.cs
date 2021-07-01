@@ -56,9 +56,6 @@ namespace RicQRCoderArt
             this.viewMode = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.panelPayload = new System.Windows.Forms.Panel();
-            this.label13 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.cbPayload = new System.Windows.Forms.ComboBox();
             this.cbConstructor = new System.Windows.Forms.ComboBox();
             this.tbConstructor = new System.Windows.Forms.Label();
@@ -76,7 +73,6 @@ namespace RicQRCoderArt
             ((System.ComponentModel.ISupportInitialize)(this.iconSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dotSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pixelSize)).BeginInit();
-            this.panelPayload.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -90,7 +86,6 @@ namespace RicQRCoderArt
             this.textBoxQRCode.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxQRCode.Size = new System.Drawing.Size(394, 77);
             this.textBoxQRCode.TabIndex = 1;
-            this.textBoxQRCode.TextChanged += new System.EventHandler(this.setting_Changed);
             // 
             // pictureBoxQRCode
             // 
@@ -102,7 +97,7 @@ namespace RicQRCoderArt
             this.pictureBoxQRCode.ErrorImage = global::RicQRCoderArt.Properties.Resources.qr1;
             this.pictureBoxQRCode.Location = new System.Drawing.Point(11, 157);
             this.pictureBoxQRCode.Name = "pictureBoxQRCode";
-            this.pictureBoxQRCode.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.pictureBoxQRCode.Padding = new System.Windows.Forms.Padding(3);
             this.pictureBoxQRCode.Size = new System.Drawing.Size(394, 402);
             this.pictureBoxQRCode.TabIndex = 2;
             this.pictureBoxQRCode.TabStop = false;
@@ -179,7 +174,7 @@ namespace RicQRCoderArt
             this.panelPreviewPrimaryColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPreviewPrimaryColor.BackColor = System.Drawing.Color.Black;
             this.panelPreviewPrimaryColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelPreviewPrimaryColor.Location = new System.Drawing.Point(188, 28);
+            this.panelPreviewPrimaryColor.Location = new System.Drawing.Point(186, 28);
             this.panelPreviewPrimaryColor.Name = "panelPreviewPrimaryColor";
             this.panelPreviewPrimaryColor.Size = new System.Drawing.Size(24, 19);
             this.panelPreviewPrimaryColor.TabIndex = 13;
@@ -189,7 +184,7 @@ namespace RicQRCoderArt
             // 
             this.labelPreviewBackgroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelPreviewBackgroundColor.AutoSize = true;
-            this.labelPreviewBackgroundColor.Location = new System.Drawing.Point(215, 31);
+            this.labelPreviewBackgroundColor.Location = new System.Drawing.Point(213, 31);
             this.labelPreviewBackgroundColor.Name = "labelPreviewBackgroundColor";
             this.labelPreviewBackgroundColor.Size = new System.Drawing.Size(26, 13);
             this.labelPreviewBackgroundColor.TabIndex = 14;
@@ -200,7 +195,7 @@ namespace RicQRCoderArt
             this.panelPreviewBackgroundColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPreviewBackgroundColor.BackColor = System.Drawing.Color.White;
             this.panelPreviewBackgroundColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelPreviewBackgroundColor.Location = new System.Drawing.Point(247, 28);
+            this.panelPreviewBackgroundColor.Location = new System.Drawing.Point(245, 28);
             this.panelPreviewBackgroundColor.Name = "panelPreviewBackgroundColor";
             this.panelPreviewBackgroundColor.Size = new System.Drawing.Size(21, 19);
             this.panelPreviewBackgroundColor.TabIndex = 15;
@@ -213,7 +208,7 @@ namespace RicQRCoderArt
             | System.Windows.Forms.AnchorStyles.Right)));
             this.artPath.Location = new System.Drawing.Point(188, 77);
             this.artPath.Name = "artPath";
-            this.artPath.Size = new System.Drawing.Size(80, 20);
+            this.artPath.Size = new System.Drawing.Size(78, 20);
             this.artPath.TabIndex = 17;
             this.artPath.TextChanged += new System.EventHandler(this.setting_Changed);
             // 
@@ -223,7 +218,7 @@ namespace RicQRCoderArt
             this.selectArtBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.selectArtBtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.selectArtBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.selectArtBtn.Location = new System.Drawing.Point(271, 77);
+            this.selectArtBtn.Location = new System.Drawing.Point(269, 77);
             this.selectArtBtn.Name = "selectArtBtn";
             this.selectArtBtn.Size = new System.Drawing.Size(21, 20);
             this.selectArtBtn.TabIndex = 18;
@@ -264,7 +259,7 @@ namespace RicQRCoderArt
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(58, 31);
+            this.label1.Location = new System.Drawing.Point(56, 31);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(25, 13);
             this.label1.TabIndex = 17;
@@ -295,7 +290,7 @@ namespace RicQRCoderArt
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(154, 31);
+            this.label3.Location = new System.Drawing.Point(152, 31);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(28, 13);
             this.label3.TabIndex = 13;
@@ -307,7 +302,7 @@ namespace RicQRCoderArt
             this.selectIconBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.selectIconBtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.selectIconBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.selectIconBtn.Location = new System.Drawing.Point(271, 52);
+            this.selectIconBtn.Location = new System.Drawing.Point(269, 52);
             this.selectIconBtn.Margin = new System.Windows.Forms.Padding(0);
             this.selectIconBtn.Name = "selectIconBtn";
             this.selectIconBtn.Size = new System.Drawing.Size(21, 20);
@@ -323,7 +318,7 @@ namespace RicQRCoderArt
             this.iconPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.iconPath.Location = new System.Drawing.Point(188, 52);
             this.iconPath.Name = "iconPath";
-            this.iconPath.Size = new System.Drawing.Size(80, 20);
+            this.iconPath.Size = new System.Drawing.Size(78, 20);
             this.iconPath.TabIndex = 10;
             this.iconPath.TextChanged += new System.EventHandler(this.setting_Changed);
             // 
@@ -335,7 +330,7 @@ namespace RicQRCoderArt
             this.viewMode.Items.AddRange(new object[] {
             "Center",
             "Zoom"});
-            this.viewMode.Location = new System.Drawing.Point(212, 2);
+            this.viewMode.Location = new System.Drawing.Point(210, 2);
             this.viewMode.Name = "viewMode";
             this.viewMode.Size = new System.Drawing.Size(80, 21);
             this.viewMode.TabIndex = 24;
@@ -345,7 +340,7 @@ namespace RicQRCoderArt
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(154, 6);
+            this.label4.Location = new System.Drawing.Point(152, 6);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(58, 13);
             this.label4.TabIndex = 25;
@@ -353,43 +348,14 @@ namespace RicQRCoderArt
             // 
             // panelPayload
             // 
-            this.panelPayload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelPayload.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPayload.AutoScroll = true;
-            this.panelPayload.Controls.Add(this.label13);
-            this.panelPayload.Controls.Add(this.textBox2);
-            this.panelPayload.Controls.Add(this.textBox1);
+            this.panelPayload.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelPayload.Location = new System.Drawing.Point(407, 157);
             this.panelPayload.Name = "panelPayload";
             this.panelPayload.Size = new System.Drawing.Size(296, 402);
             this.panelPayload.TabIndex = 2;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label13.Location = new System.Drawing.Point(0, 389);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(41, 13);
-            this.label13.TabIndex = 3;
-            this.label13.Text = "label13";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.textBox2.Location = new System.Drawing.Point(5, 10);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textBox2.Size = new System.Drawing.Size(140, 20);
-            this.textBox2.TabIndex = 2;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.textBox1.Location = new System.Drawing.Point(150, 10);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(140, 20);
-            this.textBox1.TabIndex = 1;
             // 
             // cbPayload
             // 
@@ -460,6 +426,7 @@ namespace RicQRCoderArt
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.label11);
             this.panel1.Controls.Add(this.label10);
             this.panel1.Controls.Add(this.label9);
@@ -493,7 +460,7 @@ namespace RicQRCoderArt
             // 
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(10, 6);
+            this.label11.Location = new System.Drawing.Point(8, 6);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(28, 13);
             this.label11.TabIndex = 32;
@@ -503,7 +470,7 @@ namespace RicQRCoderArt
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(10, 79);
+            this.label10.Location = new System.Drawing.Point(8, 79);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(20, 13);
             this.label10.TabIndex = 31;
@@ -513,7 +480,7 @@ namespace RicQRCoderArt
             // 
             this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(10, 54);
+            this.label9.Location = new System.Drawing.Point(8, 54);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(31, 13);
             this.label9.TabIndex = 30;
@@ -523,7 +490,7 @@ namespace RicQRCoderArt
             // 
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(10, 31);
+            this.label8.Location = new System.Drawing.Point(8, 31);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(29, 13);
             this.label8.TabIndex = 18;
@@ -562,8 +529,6 @@ namespace RicQRCoderArt
             ((System.ComponentModel.ISupportInitialize)(this.iconSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dotSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pixelSize)).EndInit();
-            this.panelPayload.ResumeLayout(false);
-            this.panelPayload.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -571,17 +536,6 @@ namespace RicQRCoderArt
 
         }
 
-        private void InitializeComponentFromQRCOderDll()
-        {
-
-            using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
-            {
-                this.cbPayload.DataSource = qqRef.GetNameMembersClass();        //поличить список имен классов members QRCoder.PayloadGenerator
-            }
-
-
-
-        }
         #endregion
         private System.Windows.Forms.TextBox textBoxQRCode;
         private System.Windows.Forms.PictureBox pictureBoxQRCode;
@@ -619,9 +573,6 @@ namespace RicQRCoderArt
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ToolTip toolTip1;
     }
 }

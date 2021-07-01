@@ -36,12 +36,24 @@ namespace RicQRCoderArt
             //         throw new NotImplementedException();
         }
 
+
         //получить словарь конструкторов для выпадающего списка
         public Dictionary<string, ConstructorInfo> GetConstructor(MemberInfo mi)
         {
             //https://metanit.com/sharp/tutorial/14.2.php
             return (from ctor in ((Type)mi).GetConstructors()
                     select new { V = string.Join(", ", ctor.GetParameters().Select(pr => pr.Name)), ctor }).ToDictionary(k => k.V, v => v.ctor);
+        }
+
+        //инициализировать конструктор и выполнить метод по умолчанию
+        public string GetPayloadString(ConstructorInfo ctor)
+        {
+            //https://www.nookery.ru/understand-with-reflection/
+            //https://www.thebestcsharpprogrammerintheworld.com/2017/01/29/using-linq-with-reflection-in-c/
+
+            object ctorObj = ctor.Invoke(new object[] { "MyWiFi-SSID", "MyWiFi-Pass", PayloadGenerator.WiFi.Authentication.WPA, false });
+            MethodInfo baseMethod = ctor.ReflectedType.GetMethod("ToString");
+            return baseMethod.Invoke(ctorObj, null).ToString();
         }
 
         //получить member по имени
@@ -72,10 +84,49 @@ namespace RicQRCoderArt
         //получить имена классов payload
         public List<string> GetNameMembersClass()
         {
-            return (from t in tRef.GetMembers(BindingFlags.Public) // определяем каждый объект из teams как t
-                    where !((System.Type)t).IsAbstract //фильтрация по критерию
-                                                       //  orderby t.Name descending // упорядочиваем по возрастанию
-                    select t.Name).ToList();
+            //найдем абстрактный класс (payload)
+            string baseName = (from t in tRef.GetMembers(BindingFlags.Public) 
+                              where ((System.Type)t).IsAbstract 
+                             select t.Name).First();
+            //вернем все классы на его основе
+            return (from t in tRef.GetMembers(BindingFlags.Public) 
+                   where (!((System.Type)t).IsAbstract) && 
+                         ((System.Type)t).BaseType.Name == baseName 
+                  select t.Name).ToList();
+        }
+
+        //получить parameters конструктора
+        public IList GetParamsConstuctor(ConstructorInfo ctor)
+        {
+            List<FieldProperty> MyList = new List<FieldProperty>();
+            foreach (ParameterInfo param in ctor.GetParameters())
+            {
+                FieldProperty mParam = new FieldProperty { fName = "", fType = "", fList = new List<string>() };
+                switch (param.ParameterType.Name)
+                {
+                    case "String":
+                    case "Decimal":
+                    case "Nullable`1":
+                        mParam.fType = "TextBox";
+                        break;
+                    case "Boolean":
+                        mParam.fType = "CheckBox";
+                        break;
+                    default:
+                        if (param.ParameterType.IsEnum) 
+                        { 
+                        }
+                        if (param.ParameterType.IsClass) 
+                        {
+                        }
+                        break;
+
+
+                }
+
+                MyList.Add(mParam);
+            }
+            return MyList;          
         }
 
         //получить fields member
@@ -101,10 +152,10 @@ namespace RicQRCoderArt
                         mProp.fType = "CheckBox";
                         break;
                     default:
-                        mProp.fType = "TextBox";
-                        /*
+//                        mProp.fType = "TextBox";
+                        
                         //var extType = type.GetMember(field.FieldType.Name).;
-                        var nstTypes = type.GetNestedTypes();
+                        var nstTypes = ((Type)mi).GetNestedTypes();
                         foreach (var nstType in nstTypes)
                         {
                             if (nstType.Name == field.FieldType.Name)
@@ -122,7 +173,7 @@ namespace RicQRCoderArt
                             //      nt.GetFields()[1]
                         }
                         mProp.fType = "ComboBox";
-                        */
+                        
                         break;
 
                 }
