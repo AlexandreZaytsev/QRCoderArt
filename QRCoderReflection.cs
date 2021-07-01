@@ -119,9 +119,8 @@ namespace RicQRCoderArt
 
                             foreach (var val in param.ParameterType.GetEnumValues())
                                 pEnum.Add(val.ToString(), val);
-                            //                           Dictionary<string, ConstructorInfo> pEnum = (from parN in param.ParameterType.GetEnumNames()
-                            //                                                                        from parV in param.ParameterType.GetEnumValues()
-                            //                                                                      select new { parN, parV }).ToDictionary(k => k.parN, v => v.parV);
+  //                          Dictionary<string, object> pEnum1 = (from t in param.ParameterType.GetEnumValues()
+  //                                                               select new { t.ToString(), t}).ToDictionary(k => k.tToString(), v => v.t);
                         }
                         if (param.ParameterType.IsClass) 
                         {
