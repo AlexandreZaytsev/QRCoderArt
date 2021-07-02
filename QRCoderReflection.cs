@@ -39,9 +39,18 @@ namespace RicQRCoderArt
         }
 
         //инициализировать конструктор и выполнить метод по умолчанию
-        public string GetPayloadString(ConstructorInfo ctor, ArrayList ctorP)
+        public string GetPayloadString(ConstructorInfo ctor, ArrayList cntrlFromForm)
         {
-            object ctorObj = ctor.Invoke(ctorP.Cast<object>().ToArray());
+
+            IList propFromCtor = GetParamsConstuctor(ctor);                              //прочитать оригинальные параметры конструктора
+            foreach (ParameterInfo param in ctor.GetParameters()) 
+            {
+            }
+                object[] propFromForm = cntrlFromForm.Cast<object>().ToArray();
+            //сравнить с пришедшими из формы и подправить их
+
+
+            object ctorObj = ctor.Invoke(propFromForm);
             MethodInfo baseMethod = ctor.ReflectedType.GetMethod("ToString");
             return baseMethod.Invoke(ctorObj, null).ToString();
         }

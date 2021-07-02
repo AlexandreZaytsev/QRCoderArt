@@ -164,7 +164,7 @@ is ((System.Reflection.RuntimeParameterInfo)((TypeInfo)mi).GetConstructors()[0].
             ArrayList ParamFromControl = new ArrayList();
             if (panelPayload.HasChildren)
             {
-                foreach (Control cntrl in panelPayload.Controls) //foreach нельзя коллекция уменьшается и нумерация сбивается
+                foreach (Control cntrl in panelPayload.Controls) 
                 {
                     if (cntrl.Created && cntrl.Enabled) 
                     {
