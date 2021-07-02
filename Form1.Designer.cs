@@ -86,6 +86,7 @@ namespace RicQRCoderArt
             this.textBoxQRCode.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxQRCode.Size = new System.Drawing.Size(394, 77);
             this.textBoxQRCode.TabIndex = 1;
+            this.textBoxQRCode.TextChanged += new System.EventHandler(this.setting_Changed);
             // 
             // pictureBoxQRCode
             // 
@@ -161,6 +162,7 @@ namespace RicQRCoderArt
             // buttonSave
             // 
             this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonSave.Location = new System.Drawing.Point(318, 6);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(87, 25);
@@ -378,7 +380,7 @@ namespace RicQRCoderArt
             this.cbConstructor.Name = "cbConstructor";
             this.cbConstructor.Size = new System.Drawing.Size(394, 21);
             this.cbConstructor.TabIndex = 27;
-            this.cbConstructor.SelectedIndexChanged += new System.EventHandler(this.playload_Changed);
+            this.cbConstructor.SelectedIndexChanged += new System.EventHandler(this.cbConstructor_SelectedIndexChanged);
             // 
             // tbConstructor
             // 

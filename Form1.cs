@@ -41,25 +41,13 @@ is ((System.Reflection.RuntimeParameterInfo)((TypeInfo)mi).GetConstructors()[0].
 
         private void Form1_Load(object sender, EventArgs e)
         {
- 
-            textBoxQRCode.Text = "BEGIN:VCARD\r\n"+
-                                 "VERSION:3.0\r\n" +
-                                 "N:FirstName;LastName;NikName\r\n" +
-                                 "TITLE:Руководитель отдела\r\n" +
-                                 "ORG:АО \'РПК\'\r\n" +
-                                 "EMAIL;TYPE=INTERNET:info@cad.ru\r\n" +
-                                 "TEL;TYPE=voice,work:7(495)7440004,175\r\n" +
-                                 "TEL;TYPE=voice,cell:\r\n" +
-                                 "END:VCARD";
             comboBoxECC.SelectedIndex = 0; //Pre-select ECC level "L"
-            RenderQrCode();     //генерация QR
-//            playload_Changed(null,null);
-             }
+        }
 
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
                      REFLECTION
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
-        //выбор контента payload
+        //выбор контента payload 
         private void cbPayload_SelectedIndexChanged(object sender, EventArgs e)
         {
             using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
@@ -77,25 +65,17 @@ is ((System.Reflection.RuntimeParameterInfo)((TypeInfo)mi).GetConstructors()[0].
         }
 
         //изменение конструктора
-        private void playload_Changed(object sender, EventArgs e)
+        private void cbConstructor_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbConstructor.SelectedItem != null) 
             { 
-                removeControlPlayloadPanel();   //очистить панель
+                removeControlPlayloadPanel();           //очистить панель
+                IList propToCntrl = null;
                 using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
                 {
-                    IList propToCntrl = qqRef.GetParamsConstuctor(((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Value);
+                    propToCntrl = qqRef.GetParamsConstuctor(((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Value);
                 }
-/*
-            using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
-            {
-                //           string key = ((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Key;
-                //           ConstructorInfo value = ((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Value;
-                string ret = qqRef.GetPayloadString(((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Value);
-                textBoxQRCode.Text = ret;// ret.Replace("\n", "\r\n");
-            }
-*/
-            createControlPlayloadPanel(((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Value);   //создать панель по параметрам конструктора
+                createControlPlayloadPanel(propToCntrl);   //создать панель по параметрам конструктора
             }
         }
 
@@ -115,19 +95,14 @@ is ((System.Reflection.RuntimeParameterInfo)((TypeInfo)mi).GetConstructors()[0].
         }
 
         //создание панели playload
-        private void createControlPlayloadPanel(ConstructorInfo ctor)
+        private void createControlPlayloadPanel(IList controlsList)
         {
-            using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
-            {
-                MemberInfo mi = qqRef.GetMemberByName(cbPayload.Text);                          //получить member по имени
-
-                IList propToCntrl = qqRef.GetFieldMember(mi);                                   //получить fields member 
                 int labelTop = 1;
                 int labelLeft = 5;
                 int controlLeft = 150;
                 int offSet = 21;
 
-                foreach (FieldProperty prop in propToCntrl)
+                foreach (FieldProperty prop in controlsList)
                 {
                     if (panelPayload.HasChildren)
                     {
@@ -135,73 +110,84 @@ is ((System.Reflection.RuntimeParameterInfo)((TypeInfo)mi).GetConstructors()[0].
                     }
 
                     TextBox lb = new TextBox(); //Label();
-                    lb.ReadOnly = true;
+        //            lb.ReadOnly = true;
+                    lb.Enabled = false;
                     lb.BorderStyle = BorderStyle.FixedSingle;//.None;
                     lb.TextAlign = HorizontalAlignment.Right;
                     lb.Location = new Point(labelLeft, labelTop);
                     lb.Size = new Size(140, 20);
-                    //          lb.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-                    //                    lb..Anchor = AnchorStyles..Top;// AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-                    //                    lb.Dock = DockStyle.Left | DockStyle.Top | DockStyle.Bottom;
                     lb.Text = prop.fName;
                     panelPayload.Controls.Add(lb);
 
-                    switch (prop.fType)
+                    switch (prop.fForm)
                     {
                         case "TextBox":
                             TextBox tb = new TextBox();
                             tb.Location = new Point(controlLeft, labelTop);
                             tb.Size = new Size(140, 20);
-                            //                lb.Anchor =  AnchorStyles.Right;//AnchorStyles.Left |
-                            tb.Name = "tb_" + prop.fName;
-                            //                tb.TextChanged += new EventHandler(playload_Changed);
+                            tb.Name = "" + prop.fName;
+                            tb.TextChanged += new EventHandler(GeyPayLoadStringFromForm);
                             panelPayload.Controls.Add(tb);
                             break;
                         case "CheckBox":
                             CheckBox chb = new CheckBox();
                             chb.Size = new Size(140, 20);
                             chb.Location = new Point(controlLeft, labelTop);
-                            //     lb.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-                            chb.Name = "chb_" + prop.fName;
-                            //                chb.CheckedChanged += new EventHandler(playload_Changed);
+                            chb.Name = "" + prop.fName;
+                            chb.CheckedChanged += new EventHandler(GeyPayLoadStringFromForm);
                             panelPayload.Controls.Add(chb);
                             break;
                         case "ComboBox":
                             ComboBox cmb = new ComboBox();
                             cmb.Size = new Size(140, 20);
-                            // cmb.MinimumSize= new Size(70, 19);
                             cmb.Location = new Point(controlLeft, labelTop);
-                            //    cmb.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-                            cmb.Name = "cmb_" + prop.fName;
-                            cmb.DataSource = prop.fList;// Enum.GetValues(typeof(ImageLayout));
-                                                        //                cmb.SelectedIndexChanged += new EventHandler(playload_Changed);
+                            cmb.Name = "" + prop.fName;
+                            cmb.DataSource = new BindingSource(prop.fList, null);   //получить конструкторы member
+                            cmb.DisplayMember = "Key";                                            //Имя    
+                            cmb.ValueMember = "Value";                                            //значение  
+                            cmb.SelectedItem = 0;
+                        cmb.DropDownStyle = ComboBoxStyle.DropDownList; 
+//                            cmb.Text 
+                            cmb.SelectedIndexChanged += new EventHandler(GeyPayLoadStringFromForm);
                             panelPayload.Controls.Add(cmb);
                             break;
-
-
-                            /*
-                                        //получаем ссылку на кнопку, на которую мы нажали
-                                        Button b = (Button)sender;
-                                        //Создаем новую кнопку
-                                        Button temp = new Button();
-                                        temp.Text = "Пример";
-                                        temp.Width = b.Width;
-                                        //Размещаем ее правее (на 10px) кнопки, на которую мы нажали
-                                        temp.Location = new Point(b.Location.X + b.Width + 10, b.Location.Y);
-                                        //Добавляем событие нажатия на новую кнопку 
-                                        //(то же что и при нажатии на исходную)
-                                        temp.Click += new EventHandler(button1_Click);
-                                        //Добавляем элемент на форму
-                                        this.Controls.Add(temp);
-                            */
                     }
-                }
             }
         }
 
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
                      EVENTS
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
+        //общее событие генерации строки Payload
+        private void GeyPayLoadStringFromForm(object sender, EventArgs e)
+        {
+            ArrayList ParamFromControl = new ArrayList();
+            if (panelPayload.HasChildren)
+            {
+                foreach (Control cntrl in panelPayload.Controls) //foreach нельзя коллекция уменьшается и нумерация сбивается
+                {
+                    if (cntrl.Created && cntrl.Enabled) 
+                    {
+                        switch (cntrl.GetType().Name)
+                            {
+                            case "TextBox":
+                                ParamFromControl.Add(((TextBox)cntrl).Text);
+                                break;
+                            case "CheckBox":
+                                ParamFromControl.Add(((CheckBox)cntrl).Checked);
+                                break;
+                            case "ComboBox":
+                                ParamFromControl.Add(((KeyValuePair<string, object>)((ComboBox)cntrl).SelectedItem).Value);
+                                break;
+                        }
+                    }
+                }
+            }
+            using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
+            {
+                textBoxQRCode.Text = qqRef.GetPayloadString(((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Value, ParamFromControl);
+            }
+        }
         //общее событие при изменении настроек
         private void setting_Changed(object sender, EventArgs e)
         {
@@ -397,6 +383,7 @@ is ((System.Reflection.RuntimeParameterInfo)((TypeInfo)mi).GetConstructors()[0].
         {
             pictureBoxQRCode.BackgroundImageLayout = (ImageLayout)Enum.Parse(typeof(ImageLayout), viewMode.Text);// Enum.GetName(typeof(ImageLayout), "2"); //Enum.Parse(typeof(ImageLayout), sender.ToString());
         }
+
 
     }
 }
