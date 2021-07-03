@@ -33,6 +33,7 @@ namespace QRCoderArt
 
             this.viewMode.DataSource = Enum.GetValues(typeof(ImageLayout));
             this.viewMode.SelectedIndex = 4;
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -124,6 +125,7 @@ namespace QRCoderArt
                             tb.Size = new Size(140, 20);
                             tb.Name = "" + prop.fName;
                             tb.TextChanged += new EventHandler(GeyPayLoadStringFromForm);
+                            toolTip1.SetToolTip(tb, prop.fType);    
                             switch (prop.fType)
                             {
                             case "Double":
@@ -170,10 +172,11 @@ namespace QRCoderArt
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
                      EVENTS
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
-        //проверка на цифры
+        //проверка на цифры с системным разделителем
         private void filterOnlyReal(object sender, KeyPressEventArgs e)
         {
-            if (!(Char.IsDigit(e.KeyChar)) && !((e.KeyChar == '.') && (((TextBox)sender).Text.IndexOf(".") == -1) && (((TextBox)sender).Text.Length != 0)))
+            string sep= ((float)1 / 2).ToString().Substring(1, 1);
+            if (!(Char.IsDigit(e.KeyChar)) && !((e.KeyChar == Convert.ToChar(sep)) && (((TextBox)sender).Text.IndexOf(sep) == -1) && (((TextBox)sender).Text.Length != 0)))
             {
                 if (e.KeyChar != (char)Keys.Back)
                 {
