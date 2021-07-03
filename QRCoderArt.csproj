@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6871140B-4494-48F8-968B-5382EC861230}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>RicQRCoderArt</RootNamespace>
-    <AssemblyName>RicQRCoderArt</AssemblyName>
+    <RootNamespace>QRCoderArt</RootNamespace>
+    <AssemblyName>QRCoderArt</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

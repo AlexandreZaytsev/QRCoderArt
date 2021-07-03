@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-namespace RicQRCoderArt
+namespace QRCoderArt
 {
     static class Program
     {

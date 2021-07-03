@@ -7,9 +7,9 @@ using System.Reflection;
 using QRCoder;
 using System.Collections;
 
-namespace RicQRCoderArt
+namespace QRCoderArt
 {
-    class FieldProperty
+    class FieldProperty                                 //для создания Control WinFoer
     {
         public string fName;// { get; set; }            //имя параметра
         public string fType;// { get; set; }            //тип параметра
@@ -30,6 +30,20 @@ namespace RicQRCoderArt
             //         throw new NotImplementedException();
         }
 
+        //получить member по имени
+        public MemberInfo GetMemberByName(string baseName)
+        {
+            return tRef.GetMember(baseName).First();
+        }
+
+        //получить имена классов по имени payload
+        public List<string> GetMembersClassName(string cName)
+       {
+            return (from t in tRef.GetMembers(BindingFlags.Public)
+                    where (!((System.Type)t).IsAbstract) &&
+                          ((System.Type)t).BaseType.Name == cName
+                    select t.Name).ToList();
+        }
 
         //получить словарь конструкторов для выпадающего списка
         public Dictionary<string, ConstructorInfo> GetConstructor(MemberInfo mi)
@@ -55,117 +69,60 @@ namespace RicQRCoderArt
             return baseMethod.Invoke(ctorObj, null).ToString();
         }
 
-        //получить member по имени
-        public MemberInfo GetMemberByName(string baseName)
+        //получить enum
+        private IDictionary<string, object> GetItemEnum(ParameterInfo param)
         {
-            MemberInfo mmbers = tRef.GetMember(baseName).First();
-            return mmbers;
+            return param.ParameterType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v); ;
         }
-        //получить имена классов payload
-        public List<string> GetNameMembersClass()
+        //получить свойство поля для формы
+        private FieldProperty GetItemInfoForForm(ParameterInfo param) 
         {
-            //найдем абстрактный класс (payload)
-            string baseName = (from t in tRef.GetMembers(BindingFlags.Public) 
-                              where ((System.Type)t).IsAbstract 
-                             select t.Name).First();
-            //вернем все классы на его основе
-            return (from t in tRef.GetMembers(BindingFlags.Public) 
-                   where (!((System.Type)t).IsAbstract) && 
-                         ((System.Type)t).BaseType.Name == baseName 
-                  select t.Name).ToList();
+            FieldProperty mParam = new FieldProperty { fName = param.Name, fType = param.ParameterType.Name, fForm = "TextBox", fList = null };
+            switch (param.ParameterType.Name)
+            {
+                case "String":
+                case "Decimal":
+                     mParam.fForm = "TextBox";
+                    break;
+                case "Nullable`1":
+                    mParam.fType = param.ParameterType.GenericTypeArguments.First().Name;
+                    switch (mParam.fType)
+                        {
+                        case "DateTime":
+                            mParam.fForm = "DateTime";
+                            break;
+                        default:
+                            mParam.fForm = "TextBox";
+                            break;
+                    }
+                    break;
+                case "Boolean":
+                    mParam.fForm = "CheckBox";
+                    break;
+                default:
+                    if (param.ParameterType.IsEnum)
+                    {
+                        mParam.fForm = "ComboBox";
+//                        mParam.fList = (Dictionary<string, object>)GetItemEnum(param);
+                        mParam.fList = param.ParameterType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
+                    }
+                    else if (param.ParameterType.IsClass)
+                    {
+                    }
+                    else 
+                    {
+                    }
+                    break;
+            }
+            return mParam;
         }
 
         //получить parameters конструктора
         public IList GetParamsConstuctor(ConstructorInfo ctor)
         {
-            List<FieldProperty> MyList = new List<FieldProperty>();
-            foreach (ParameterInfo param in ctor.GetParameters())
-            {
-                FieldProperty mParam = new FieldProperty { fName = param.Name, fType = param.ParameterType.Name, fForm= "TextBox", fList = new Dictionary<string, object>() };
-                switch (param.ParameterType.Name)
-                {
-                    case "String":
-                    case "Decimal":
-                    case "Nullable`1":
-                        mParam.fForm = "TextBox";
-                        break;
-                    case "Boolean":
-                        mParam.fForm = "CheckBox";
-                        break;
-                    default:
-                        if (param.ParameterType.IsEnum) 
-                        {
-                            mParam.fForm = "ComboBox";
-                            foreach (var val in param.ParameterType.GetEnumValues())
-                                mParam.fList.Add(val.ToString(), val);
-                        }
-                        if (param.ParameterType.IsClass) 
-                        {
-                        }
-                        break;
-                }
-
-                MyList.Add(mParam);
-            }
-            return MyList;          
+            return (from t in ctor.GetParameters() select GetItemInfoForForm(t)).ToList();
         }
 
-        //получить fields member
-        public IList GetFieldMember(MemberInfo mi)
-        {
-            FieldInfo[] fields = ((System.Type)mi).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            string ctrlType = "";
-            // enum extType;
-
-            List<FieldProperty> MyList = new List<FieldProperty>();
-            /*
-
-                        foreach (FieldInfo field in fields)
-                        {
-                            FieldProperty mProp = new FieldProperty { fName = "", fType = "", fList = new List<string, object>() };
-                            mProp.fName = field.Name;
-                            switch (field.FieldType.Name)
-                            {
-                                case "String":
-                                case "Decimal":
-                                case "Nullable`1":
-                                    mProp.fType = "TextBox";
-                                    break;
-                                case "Boolean":
-                                    mProp.fType = "CheckBox";
-                                    break;
-                                default:
-            //                        mProp.fType = "TextBox";
-
-                                    //var extType = type.GetMember(field.FieldType.Name).;
-                                    var nstTypes = ((Type)mi).GetNestedTypes();
-                                    foreach (var nstType in nstTypes)
-                                    {
-                                        if (nstType.Name == field.FieldType.Name)
-                                        {
-                                            var items = nstType.GetFields(BindingFlags.Static | BindingFlags.Public);
-                                            //                                       Dictionary<string,List < Object >> fDict = new Dictionary<string, List<Object>>();
-
-                                            foreach (var item in items)
-                                            {
-                                                mProp.fList.Add(item.Name);
-                                            }
-                                            //list1 = new List<t>(list)
-                                        }
-                                        //   Console.WriteLine($"{nt.DeclaringType} {nt.MemberType} {nt.Name}");
-                                        //      nt.GetFields()[1]
-                                    }
-                                    mProp.fType = "ComboBox";
-
-                                    break;
-
-                            }
-
-                            MyList.Add(mProp);
-                        }
-            */
-            return MyList;
-        }
     }
 }
 

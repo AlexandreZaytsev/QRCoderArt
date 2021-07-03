@@ -12,7 +12,7 @@ using System.IO;
 using System.Reflection;
 using System.Collections;
 
-namespace RicQRCoderArt
+namespace QRCoderArt
 {
     public partial class Form1 : Form
     {
@@ -21,22 +21,18 @@ namespace RicQRCoderArt
             InitializeComponent();
             using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
             {
-                this.cbPayload.DataSource = qqRef.GetNameMembersClass();        //поличить список имен классов members QRCoder.PayloadGenerator
+                //найдем абстрактный класс (payload)
+                /*
+                            string baseName = (from t in tRef.GetMembers(BindingFlags.Public)
+                                               where ((System.Type)t).IsAbstract
+                                               select t.Name).First();
+                */
+                string baseName = "Payload";
+                this.cbPayload.DataSource = qqRef.GetMembersClassName(baseName);        //поличить список имен классов members QRCoder.PayloadGenerator
             }
-
-/*
-            ((TypeInfo)mi).GetConstructors()[0].GetParameters()
-is ((System.Reflection.RuntimeParameterInfo)((TypeInfo)mi).GetConstructors()[0].GetParameters()[1]).ParameterType isEnum
-((System.Reflection.RuntimeParameterInfo)((TypeInfo) mi).GetConstructors()[0].GetParameters()[1]).ParameterType.GetEnumNames()
- ((System.Reflection.RuntimeParameterInfo)((TypeInfo)mi).GetConstructors()[0].GetParameters()[1]).ParameterType.GetEnumValues()
-*/
 
             this.viewMode.DataSource = Enum.GetValues(typeof(ImageLayout));
             this.viewMode.SelectedIndex = 4;
-            toolTip1.SetToolTip(this.cbPayload, "Select PAYLOAD and Set property");
-            toolTip1.SetToolTip(this.cbConstructor, "Select Constructor PAYLOAD");
-            toolTip1.SetToolTip(this.iconPath, "the picture above the qr code image");
-            toolTip1.SetToolTip(this.artPath, "the picture below the qr code image");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -60,7 +56,7 @@ is ((System.Reflection.RuntimeParameterInfo)((TypeInfo)mi).GetConstructors()[0].
                 cbConstructor.DisplayMember = "Key";                                            //Имя    
                 cbConstructor.ValueMember = "Value";                                            //значение                                                
                 cbConstructor.SelectedItem = 0;
-                tbConstructor.Text = "Select the Payload constructor (" + cbConstructor.Items.Count.ToString() + ")";
+                tbConstructor.Text = "Payload (" + cbConstructor.Items.Count.ToString() + ")";
             }
         }
 
@@ -97,9 +93,9 @@ is ((System.Reflection.RuntimeParameterInfo)((TypeInfo)mi).GetConstructors()[0].
         //создание панели playload
         private void createControlPlayloadPanel(IList controlsList)
         {
-                int labelTop = 1;
-                int labelLeft = 5;
-                int controlLeft = 150;
+                int labelTop = 2;
+                int labelLeft = 0;
+                int controlLeft = 140;
                 int offSet = 21;
 
                 foreach (FieldProperty prop in controlsList)
@@ -115,7 +111,7 @@ is ((System.Reflection.RuntimeParameterInfo)((TypeInfo)mi).GetConstructors()[0].
                     lb.BorderStyle = BorderStyle.FixedSingle;//.None;
                     lb.TextAlign = HorizontalAlignment.Right;
                     lb.Location = new Point(labelLeft, labelTop);
-                    lb.Size = new Size(140, 20);
+                    lb.Size = new Size(135, 20);
                     lb.Text = prop.fName;
                     panelPayload.Controls.Add(lb);
 
@@ -137,6 +133,15 @@ is ((System.Reflection.RuntimeParameterInfo)((TypeInfo)mi).GetConstructors()[0].
                             chb.CheckedChanged += new EventHandler(GeyPayLoadStringFromForm);
                             panelPayload.Controls.Add(chb);
                             break;
+                        case "DateTime":
+                            DateTimePicker dtp = new DateTimePicker();
+                            dtp.Size = new Size(140, 20);
+                            dtp.Location = new Point(controlLeft, labelTop);
+                            dtp.Name = "" + prop.fName;
+                            dtp.Format = DateTimePickerFormat.Short;
+                            dtp.ValueChanged += new EventHandler(GeyPayLoadStringFromForm);
+                            panelPayload.Controls.Add(dtp);
+                            break;
                         case "ComboBox":
                             ComboBox cmb = new ComboBox();
                             cmb.Size = new Size(140, 20);
@@ -147,7 +152,6 @@ is ((System.Reflection.RuntimeParameterInfo)((TypeInfo)mi).GetConstructors()[0].
                             cmb.ValueMember = "Value";                                            //значение  
                             cmb.SelectedItem = 0;
                         cmb.DropDownStyle = ComboBoxStyle.DropDownList; 
-//                            cmb.Text 
                             cmb.SelectedIndexChanged += new EventHandler(GeyPayLoadStringFromForm);
                             panelPayload.Controls.Add(cmb);
                             break;
@@ -178,6 +182,9 @@ is ((System.Reflection.RuntimeParameterInfo)((TypeInfo)mi).GetConstructors()[0].
                                 break;
                             case "ComboBox":
                                 ParamFromControl.Add(((KeyValuePair<string, object>)((ComboBox)cntrl).SelectedItem).Value);
+                                break;
+                            case "DateTimePicker":
+                                ParamFromControl.Add(((DateTimePicker)cntrl).Value);
                                 break;
                         }
                     }
