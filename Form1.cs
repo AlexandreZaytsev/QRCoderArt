@@ -117,8 +117,7 @@ namespace QRCoderArt
                     lb.Text = prop.fName;
                     lb.AccessibleDescription = prop.fType;
                     panelPayload.Controls.Add(lb);
-//                    lb.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                switch (prop.fForm)
+                    switch (prop.fForm)
                     {
                         case "TextBox":
                             TextBox tb = new TextBox();
@@ -131,8 +130,11 @@ namespace QRCoderArt
 //                            toolTip1.SetToolTip(tb, prop.fType);
                             switch (prop.fType)
                             {
-                                case "Double":
-                                tb.BackColor = Color.GhostWhite;//.OldLace;// LightBlue;
+                            case "Single":
+                            case "Int32":
+                            case "Decimal":
+                            case "Double":
+                                    tb.BackColor = Color.GhostWhite;//.OldLace;// LightBlue;
                                     tb.KeyPress += new KeyPressEventHandler(filterOnlyReal);
                                     break;
                             }
@@ -143,6 +145,7 @@ namespace QRCoderArt
                             chb.Size = new Size(140, 20);
                             chb.Location = new Point(controlLeft, labelTop);
                             chb.Name = "" + prop.fName;
+                            chb.AccessibleDescription = prop.fType;
                             chb.CheckedChanged += new EventHandler(GeyPayLoadStringFromForm);
                             panelPayload.Controls.Add(chb);
                             break;
@@ -151,6 +154,7 @@ namespace QRCoderArt
                             dtp.Size = new Size(140, 20);
                             dtp.Location = new Point(controlLeft, labelTop);
                             dtp.Name = "" + prop.fName;
+                            dtp.AccessibleDescription = prop.fType;
                             dtp.Format = DateTimePickerFormat.Short;
                             dtp.ValueChanged += new EventHandler(GeyPayLoadStringFromForm);
                             panelPayload.Controls.Add(dtp);
@@ -160,11 +164,12 @@ namespace QRCoderArt
                             cmb.Size = new Size(140, 20);
                             cmb.Location = new Point(controlLeft, labelTop);
                             cmb.Name = "" + prop.fName;
+                            cmb.AccessibleDescription = prop.fType;
                             cmb.DataSource = new BindingSource(prop.fList, null);   //получить конструкторы member
                             cmb.DisplayMember = "Key";                                            //Имя    
                             cmb.ValueMember = "Value";                                            //значение  
                             cmb.SelectedItem = 0;
-                        cmb.DropDownStyle = ComboBoxStyle.DropDownList; 
+                            cmb.DropDownStyle = ComboBoxStyle.DropDownList; 
                             cmb.SelectedIndexChanged += new EventHandler(GeyPayLoadStringFromForm);
                             panelPayload.Controls.Add(cmb);
                             break;
