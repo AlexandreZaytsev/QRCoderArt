@@ -56,13 +56,41 @@ namespace QRCoderArt
         public string GetPayloadString(ConstructorInfo ctor, ArrayList cntrlFromForm)
         {
 
-            IList propFromCtor = GetParamsConstuctor(ctor);                              //прочитать оригинальные параметры конструктора
-            foreach (ParameterInfo param in ctor.GetParameters()) 
-            {
-            }
-                object[] propFromForm = cntrlFromForm.Cast<object>().ToArray();
             //сравнить с пришедшими из формы и подправить их
+            IList propFromCtor = GetParamsConstuctor(ctor);                              //прочитать оригинальные параметры конструктора
+                                                                                         //          foreach (ParameterInfo param in ctor.GetParameters())
+            for (int i = 0; i <= ctor.GetParameters().Count() - 1; i++)
+            {
+                switch (ctor.GetParameters()[i].ParameterType.Name)
+                {
+                    case "Nullable`1":
+                        switch (ctor.GetParameters()[i].ParameterType.GenericTypeArguments.First().Name)
+                        {
+                            case "DateTime":
+                               if (cntrlFromForm[i].GetType().Name!="DateTime")
+                                cntrlFromForm[i] = DateTime.ParseExact(cntrlFromForm[i].ToString(), "M.dd.yy HH:mm", null); 
+                                break;
+                            case "Double":
+                                if (cntrlFromForm[i].ToString() != "")
+                                    cntrlFromForm[i] = (Double)cntrlFromForm[i];
+                                else
+                                    cntrlFromForm[i] = Convert.ToDouble(0);
+                                break;
+                            case "Decimal":
+                                if (cntrlFromForm[i].ToString() != "")
+                                    cntrlFromForm[i] = (Decimal)cntrlFromForm[i];
+                                else
+                                    cntrlFromForm[i] = Convert.ToDecimal(0);
+                                break;
+                            default:
+   //                             mParam.fForm = "TextBox";
+                                break;
+                        }
 
+                        break;
+                }
+            }
+            object[] propFromForm = cntrlFromForm.Cast<object>().ToArray();
 
             object ctorObj = ctor.Invoke(propFromForm);
             MethodInfo baseMethod = ctor.ReflectedType.GetMethod("ToString");
@@ -84,10 +112,13 @@ namespace QRCoderArt
                 case "Decimal":
                      mParam.fForm = "TextBox";
                     break;
+                case "DateTime":
+                    mParam.fForm = "DateTime";
+                    break;
                 case "Nullable`1":
                     mParam.fType = param.ParameterType.GenericTypeArguments.First().Name;
                     switch (mParam.fType)
-                        {
+                    {
                         case "DateTime":
                             mParam.fForm = "DateTime";
                             break;
