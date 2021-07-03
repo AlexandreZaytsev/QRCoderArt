@@ -115,17 +115,21 @@ namespace QRCoderArt
                     lb.Location = new Point(labelLeft, labelTop);
                     lb.Size = new Size(135, 20);
                     lb.Text = prop.fName;
+                    lb.AccessibleDescription = prop.fType;
                     panelPayload.Controls.Add(lb);
-
-                    switch (prop.fForm)
+//                    lb.MouseHover += new System.EventHandler(ToolTipMouseHover);
+                switch (prop.fForm)
                     {
                         case "TextBox":
                             TextBox tb = new TextBox();
                             tb.Location = new Point(controlLeft, labelTop);
                             tb.Size = new Size(140, 20);
                             tb.Name = "" + prop.fName;
+                            tb.AccessibleDescription = prop.fType;
+                            tb.MouseHover += new System.EventHandler(ToolTipMouseHover);
                             tb.TextChanged += new EventHandler(GeyPayLoadStringFromForm);
-                            toolTip1.SetToolTip(tb, prop.fType);    
+//                            toolTip1.SetToolTip(tb, prop.fType);
+                            tb.MouseHover += new System.EventHandler(ToolTipMouseHover);
                             switch (prop.fType)
                             {
                             case "Double":
@@ -172,6 +176,11 @@ namespace QRCoderArt
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
                      EVENTS
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
+        private void ToolTipMouseHover(object sender, EventArgs e)
+        {
+            toolTip1.SetToolTip((System.Windows.Forms.Control)sender,
+                               ((System.Windows.Forms.Control)sender).AccessibleDescription);
+        }
         //проверка на цифры с системным разделителем
         private void filterOnlyReal(object sender, KeyPressEventArgs e)
         {
@@ -412,7 +421,5 @@ namespace QRCoderArt
         {
             pictureBoxQRCode.BackgroundImageLayout = (ImageLayout)Enum.Parse(typeof(ImageLayout), viewMode.Text);// Enum.GetName(typeof(ImageLayout), "2"); //Enum.Parse(typeof(ImageLayout), sender.ToString());
         }
-
-
     }
 }
