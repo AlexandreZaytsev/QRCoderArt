@@ -103,6 +103,7 @@ namespace QRCoderArt
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBoxQRCode.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBoxQRCode.ErrorImage = global::QRCoderArt.Properties.Resources.qr1;
+            this.pictureBoxQRCode.InitialImage = global::QRCoderArt.Properties.Resources.qr1;
             this.pictureBoxQRCode.Location = new System.Drawing.Point(4, 4);
             this.pictureBoxQRCode.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBoxQRCode.Name = "pictureBoxQRCode";

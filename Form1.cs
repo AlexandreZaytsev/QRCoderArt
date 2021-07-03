@@ -38,6 +38,7 @@ namespace QRCoderArt
         private void Form1_Load(object sender, EventArgs e)
         {
             comboBoxECC.SelectedIndex = 0; //Pre-select ECC level "L"
+            textBoxQRCode.Text = "enter your text or select payload + constructor + fill in the parameters";
         }
 
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
