@@ -63,6 +63,30 @@ namespace QRCoderArt
             {
                 switch (ctor.GetParameters()[i].ParameterType.Name)
                 {
+                    case "Double":
+                        if (cntrlFromForm[i].ToString() != "")
+                            cntrlFromForm[i] = Convert.ToDouble(cntrlFromForm[i].ToString());
+                        else
+                            cntrlFromForm[i] = Convert.ToDouble(0);
+                        break;
+                    case "Single":
+                        if (cntrlFromForm[i].ToString() != "")
+                            cntrlFromForm[i] = Convert.ToSingle(cntrlFromForm[i].ToString());
+                        else
+                            cntrlFromForm[i] = Convert.ToSingle(0);
+                        break;
+                    case "Int32":
+                        if (cntrlFromForm[i].ToString() != "")
+                            cntrlFromForm[i] = Convert.ToInt32(cntrlFromForm[i].ToString());
+                        else
+                            cntrlFromForm[i] = Convert.ToInt32(0);
+                        break;
+                    case "Decimal":
+                        if (cntrlFromForm[i].ToString() != "")
+                            cntrlFromForm[i] = Convert.ToDecimal(cntrlFromForm[i].ToString());
+                        else
+                            cntrlFromForm[i] = Convert.ToDecimal(0);
+                        break;
                     case "Nullable`1":
                         switch (ctor.GetParameters()[i].ParameterType.GenericTypeArguments.First().Name)
                         {
@@ -72,15 +96,9 @@ namespace QRCoderArt
                                 break;
                             case "Double":
                                 if (cntrlFromForm[i].ToString() != "")
-                                    cntrlFromForm[i] = (Double)cntrlFromForm[i];
+                                    cntrlFromForm[i] = Convert.ToDouble(cntrlFromForm[i].ToString());
                                 else
                                     cntrlFromForm[i] = Convert.ToDouble(0);
-                                break;
-                            case "Decimal":
-                                if (cntrlFromForm[i].ToString() != "")
-                                    cntrlFromForm[i] = (Decimal)cntrlFromForm[i];
-                                else
-                                    cntrlFromForm[i] = Convert.ToDecimal(0);
                                 break;
                             default:
    //                             mParam.fForm = "TextBox";
