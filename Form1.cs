@@ -124,6 +124,13 @@ namespace QRCoderArt
                             tb.Size = new Size(140, 20);
                             tb.Name = "" + prop.fName;
                             tb.TextChanged += new EventHandler(GeyPayLoadStringFromForm);
+                            switch (prop.fType)
+                            {
+                            case "Double":
+                                tb.BackColor = Color.LightBlue;
+                                tb.KeyPress += new KeyPressEventHandler(filterOnlyReal);
+                                break;
+                            }
                             panelPayload.Controls.Add(tb);
                             break;
                         case "CheckBox":
@@ -163,6 +170,17 @@ namespace QRCoderArt
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
                      EVENTS
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
+        //проверка на цифры
+        private void filterOnlyReal(object sender, KeyPressEventArgs e)
+        {
+            if (!(Char.IsDigit(e.KeyChar)) && !((e.KeyChar == '.') && (((TextBox)sender).Text.IndexOf(".") == -1) && (((TextBox)sender).Text.Length != 0)))
+            {
+                if (e.KeyChar != (char)Keys.Back)
+                {
+                    e.Handled = true;
+                }
+            }
+        }
         //общее событие генерации строки Payload
         private void GeyPayLoadStringFromForm(object sender, EventArgs e)
         {

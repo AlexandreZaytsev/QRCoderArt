@@ -263,6 +263,7 @@ namespace QRCoderArt
             // 
             this.dotSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.dotSize.BackColor = System.Drawing.SystemColors.Window;
             this.dotSize.Location = new System.Drawing.Point(117, 100);
             this.dotSize.Margin = new System.Windows.Forms.Padding(4);
             this.dotSize.Minimum = new decimal(new int[] {
