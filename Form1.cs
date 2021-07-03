@@ -175,7 +175,7 @@ namespace QRCoderArt
         //проверка на цифры с системным разделителем
         private void filterOnlyReal(object sender, KeyPressEventArgs e)
         {
-            string sep= ((float)1 / 2).ToString().Substring(1, 1);
+            string sep= ((float)1 / 2).ToString().Substring(1, 1);  // system sparator
             if (!(Char.IsDigit(e.KeyChar)) && !((e.KeyChar == Convert.ToChar(sep)) && (((TextBox)sender).Text.IndexOf(sep) == -1) && (((TextBox)sender).Text.Length != 0)))
             {
                 if (e.KeyChar != (char)Keys.Back)
