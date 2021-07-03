@@ -129,13 +129,12 @@ namespace QRCoderArt
                             tb.MouseHover += new System.EventHandler(ToolTipMouseHover);
                             tb.TextChanged += new EventHandler(GeyPayLoadStringFromForm);
 //                            toolTip1.SetToolTip(tb, prop.fType);
-                            tb.MouseHover += new System.EventHandler(ToolTipMouseHover);
                             switch (prop.fType)
                             {
-                            case "Double":
-                                tb.BackColor = Color.LightBlue;
-                                tb.KeyPress += new KeyPressEventHandler(filterOnlyReal);
-                                break;
+                                case "Double":
+                                tb.BackColor = Color.GhostWhite;//.OldLace;// LightBlue;
+                                    tb.KeyPress += new KeyPressEventHandler(filterOnlyReal);
+                                    break;
                             }
                             panelPayload.Controls.Add(tb);
                             break;
@@ -176,6 +175,7 @@ namespace QRCoderArt
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
                      EVENTS
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
+        //показать tooltip из AccessibleDescription
         private void ToolTipMouseHover(object sender, EventArgs e)
         {
             toolTip1.SetToolTip((System.Windows.Forms.Control)sender,
