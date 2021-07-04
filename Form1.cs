@@ -142,7 +142,11 @@ namespace QRCoderArt
                                 case "Double":
                                    tb.BackColor = Color.GhostWhite;//.OldLace;// LightBlue;
                                    tb.KeyPress += new KeyPressEventHandler(filterOnlyReal);
+                                   tb.Text = prop.fDef == null ? "" : Convert.ToString(prop.fDef);
                                    break;
+                                default:
+                                    tb.Text = prop.fDef == null ? "" : Convert.ToString(prop.fDef);
+                                    break;
                             }
                             panelPayload.Controls.Add(tb);
                             if (prop.fNull)
@@ -166,6 +170,7 @@ namespace QRCoderArt
                             chb.AccessibleName = "Get";
                             chb.AccessibleDescription = prop.fType;
                             chb.CheckedChanged += new EventHandler(GeyPayLoadStringFromForm);
+                            chb.Checked = prop.fDef == null ? false : Convert.ToBoolean(prop.fDef);
                             panelPayload.Controls.Add(chb);
                             break;
                         case "DateTime":
@@ -178,6 +183,7 @@ namespace QRCoderArt
                             dtp.Format = DateTimePickerFormat.Short;
                             dtp.ValueChanged += new EventHandler(GeyPayLoadStringFromForm);
                             dtp.EnabledChanged += new EventHandler(GeyPayLoadStringFromForm);
+                            dtp.Value = prop.fDef == null ? DateTime.Today : Convert.ToDateTime(prop.fDef);
                             panelPayload.Controls.Add(dtp);
                             if (prop.fNull)
                             {
