@@ -22,14 +22,14 @@ namespace QRCoderArt
             InitializeComponent();
             using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
             {
-                //найдем абстрактный класс (payload)
+                //find abstract class (payload)
                 /*
                             string baseName = (from t in tRef.GetMembers(BindingFlags.Public)
                                                where ((System.Type)t).IsAbstract
                                                select t.Name).First();
                 */
                 string baseName = "Payload";
-                this.cbPayload.DataSource = qqRef.GetMembersClassName(baseName);        //поличить список имен классов members QRCoder.PayloadGenerator
+                this.cbPayload.DataSource = qqRef.GetMembersClassName(baseName);        //get list names ckasses members QRCoder.PayloadGenerator
             }
 
             this.viewMode.DataSource = Enum.GetValues(typeof(ImageLayout));
@@ -63,29 +63,29 @@ namespace QRCoderArt
             }
         }
 
-        //изменение конструктора
+        //change constructor cjmbobox select
         private void cbConstructor_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbConstructor.SelectedItem != null) 
             {
                 completePayloadPanel = false;
-                removeControlPlayloadPanel();           //очистить панель
+                removeControlPlayloadPanel();               //clear payload panel
                 IList propToCntrl = null;
                 using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
                 {
                     propToCntrl = qqRef.GetParamsConstuctor(((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Value);
                 }
-                createControlPlayloadPanel(propToCntrl);   //создать панель по параметрам конструктора
+                createControlPlayloadPanel(propToCntrl);    //create payload panel from constructor parameters
                 completePayloadPanel = true;
             }
         }
 
-        //очистка панели playload
+        //clear payload panel
         private void removeControlPlayloadPanel()
         {
             if (panelPayload.HasChildren)
             {
-                for (int i = this.panelPayload.Controls.Count - 1; i >= 0; i--) //foreach нельзя коллекция уменьшается и нумерация сбивается
+                for (int i = this.panelPayload.Controls.Count - 1; i >= 0; i--) //not foreach use...
                 {
                     Control cn = this.panelPayload.Controls[0];
                     //     cn -= new System.EventHandler(cn, playload_Changed);
@@ -95,8 +95,8 @@ namespace QRCoderArt
             }
         }
 
-            //создание панели playload
-            private void createControlPlayloadPanel(IList controlsList)
+        //create payload panel from constructor parameters
+        private void createControlPlayloadPanel(IList controlsList)
         {
                 int labelTop = 2;
                 int labelLeft = 0;
@@ -109,7 +109,7 @@ namespace QRCoderArt
                 {
                     if (panelPayload.HasChildren)
                     {
-                        labelTop = labelTop + offSet;// panelPayload.Controls[panelPayload.Controls.Count-1].Location.Y;
+                        labelTop += offSet;
                     }
                     controlWidth=prop.fNull?125:140;
 
@@ -214,13 +214,13 @@ namespace QRCoderArt
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
                      EVENTS
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
-        //показать tooltip из AccessibleDescription
+        //show tooltip from AccessibleDescription
         private void ToolTipMouseHover(object sender, EventArgs e)
         {
             toolTip1.SetToolTip((System.Windows.Forms.Control)sender,
                                ((System.Windows.Forms.Control)sender).AccessibleDescription);
         }
-        //проверка на цифры с системным разделителем
+        //check numeric wiht system separator 
         private void filterOnlyReal(object sender, KeyPressEventArgs e)
         {
             string sep= ((float)1 / 2).ToString().Substring(1, 1);  // system sparator
@@ -232,7 +232,7 @@ namespace QRCoderArt
                 }
             }
         }
-        //общее событие генерации строки Payload
+        //get string Payload from panel control
         private void GeyPayLoadStringFromForm(object sender, EventArgs e)
         {
             if (completePayloadPanel)
@@ -288,12 +288,12 @@ namespace QRCoderArt
                 }
             }
         }
-        //общее событие при изменении настроек
+        //change parameters panel Payload
         private void setting_Changed(object sender, EventArgs e)
         {
-            RenderQrCode();     //генерация QR
+            RenderQrCode();     //create QR image
         }
-        ////генерация QR
+        //create QR image
         private void RenderQrCode()
         {
             if (comboBoxECC.SelectedItem != null)
@@ -478,7 +478,7 @@ namespace QRCoderArt
             }
         }
 
-        //расположение картинки в окне просмотра
+        //position image from frame 
         private void viewMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             pictureBoxQRCode.BackgroundImageLayout = (ImageLayout)Enum.Parse(typeof(ImageLayout), viewMode.Text);// Enum.GetName(typeof(ImageLayout), "2"); //Enum.Parse(typeof(ImageLayout), sender.ToString());
