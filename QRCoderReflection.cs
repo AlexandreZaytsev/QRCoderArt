@@ -71,12 +71,15 @@ namespace QRCoderArt
         //получить свойство поля для формы
         private FieldProperty GetItemInfoForForm(ParameterInfo param) 
         {
-            FieldProperty mParam = new FieldProperty { fName = param.Name, fType = param.ParameterType.Name, fForm = "TextBox", fList = null , fNull=false, fDef=null};
+            FieldProperty mParam = new FieldProperty { fName = param.Name, fType = param.ParameterType.Name, fForm = "TextBox", fList = null , fNull=false, fDef= param.DefaultValue };
             switch (param.ParameterType.Name)
             {
                 case "String":
+                case "Double":
+                case "Single":
+                case "Int32":
                 case "Decimal":
-                     mParam.fForm = "TextBox";
+                    mParam.fForm = "TextBox";
                     break;
                 case "DateTime":
                     mParam.fForm = "DateTime";
