@@ -130,6 +130,7 @@ namespace QRCoderArt
                             tb.AccessibleDescription = prop.fType;                          //type in tooltype
                             tb.MouseHover += new System.EventHandler(ToolTipMouseHover);
                             tb.TextChanged += new EventHandler(GeyPayLoadStringFromForm);
+                        //    tb.EnabledChanged += new EventHandler(GeyPayLoadStringFromForm);
                             switch (prop.fType)
                             {
                                 case "Single":
@@ -173,6 +174,7 @@ namespace QRCoderArt
                             dtp.AccessibleDescription = prop.fType;
                             dtp.Format = DateTimePickerFormat.Short;
                             dtp.ValueChanged += new EventHandler(GeyPayLoadStringFromForm);
+              //              dtp.EnabledChanged += new EventHandler(GeyPayLoadStringFromForm);
                             panelPayload.Controls.Add(dtp);
                             if (prop.fNull)
                             {
@@ -231,27 +233,46 @@ namespace QRCoderArt
         private void GeyPayLoadStringFromForm(object sender, EventArgs e)
         {
             ArrayList ParamFromControl = new ArrayList();
+            object ret=null;
             if (panelPayload.HasChildren)
             {
                 foreach (Control cntrl in panelPayload.Controls) 
                 {
                     if (cntrl.Created && cntrl.AccessibleName =="Get") 
                     {
-                        switch (cntrl.GetType().Name)
+                        ret = null;
+                        if (cntrl.Enabled)
+                        {
+                            switch (cntrl.AccessibleDescription)
                             {
-                            case "TextBox":
-                                ParamFromControl.Add(((TextBox)cntrl).Text);
+                                case "String":
+                                    ret = ((TextBox)cntrl).Text;
+                                    break;
+                                case "Double":
+                                    ret = Convert.ToDouble(((TextBox)cntrl).Text);
+                                    break;
+                                case "Single":
+                                    ret = Convert.ToSingle(((TextBox)cntrl).Text);
+                                    break;
+                                case "Int32":
+                                    ret = Convert.ToInt32(((TextBox)cntrl).Text);
+                                    break;
+                                case "Decimal":
+                                    ret = Convert.ToDecimal(((TextBox)cntrl).Text);
+                                    break;
+                                case "Boolean":
+                                    ret = ((CheckBox)cntrl).Checked;
                                 break;
-                            case "CheckBox":
-                                ParamFromControl.Add(((CheckBox)cntrl).Checked);
+                                case "DateTime":
+                                    ret = ((DateTimePicker)cntrl).Value;
+                                    break;
+                                default:
+                                    if (cntrl.GetType().Name == "ComboBox")
+                                      ret = ((KeyValuePair<string, object>)((ComboBox)cntrl).SelectedItem).Value;
                                 break;
-                            case "ComboBox":
-                                ParamFromControl.Add(((KeyValuePair<string, object>)((ComboBox)cntrl).SelectedItem).Value);
-                                break;
-                            case "DateTimePicker":
-                                ParamFromControl.Add(((DateTimePicker)cntrl).Value);
-                                break;
+                            }
                         }
+                        ParamFromControl.Add(ret);
                     }
                 }
             }
@@ -366,7 +387,7 @@ namespace QRCoderArt
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.Filter = "Bitmap Image|*.bmp|PNG Image|*.png|JPeg Image|*.jpg|Gif Image|*.gif";
             saveFileDialog1.Title = "Save an Image File";
-            saveFileDialog1.ShowDialog();
+            _ = saveFileDialog1.ShowDialog();
 
             // If the file name is not an empty string open it for saving.
             if (saveFileDialog1.FileName != "")

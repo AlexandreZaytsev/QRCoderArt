@@ -56,61 +56,7 @@ namespace QRCoderArt
         //инициализировать конструктор и выполнить метод по умолчанию
         public string GetPayloadString(ConstructorInfo ctor, ArrayList cntrlFromForm)
         {
-
-            //сравнить с пришедшими из формы и подправить их
-            IList propFromCtor = GetParamsConstuctor(ctor);                              //прочитать оригинальные параметры конструктора
-                                                                                         //          foreach (ParameterInfo param in ctor.GetParameters())
-            for (int i = 0; i <= ctor.GetParameters().Count() - 1; i++)
-            {
-                switch (ctor.GetParameters()[i].ParameterType.Name)
-                {
-                    case "Double":
-                        if (cntrlFromForm[i].ToString() != "")
-                            cntrlFromForm[i] = Convert.ToDouble(cntrlFromForm[i].ToString());
-                        else
-                            cntrlFromForm[i] = Convert.ToDouble(0);
-                        break;
-                    case "Single":
-                        if (cntrlFromForm[i].ToString() != "")
-                            cntrlFromForm[i] = Convert.ToSingle(cntrlFromForm[i].ToString());
-                        else
-                            cntrlFromForm[i] = Convert.ToSingle(0);
-                        break;
-                    case "Int32":
-                        if (cntrlFromForm[i].ToString() != "")
-                            cntrlFromForm[i] = Convert.ToInt32(cntrlFromForm[i].ToString());
-                        else
-                            cntrlFromForm[i] = Convert.ToInt32(0);
-                        break;
-                    case "Decimal":
-                        if (cntrlFromForm[i].ToString() != "")
-                            cntrlFromForm[i] = Convert.ToDecimal(cntrlFromForm[i].ToString());
-                        else
-                            cntrlFromForm[i] = Convert.ToDecimal(0);
-                        break;
-                    case "Nullable`1":
-                        switch (ctor.GetParameters()[i].ParameterType.GenericTypeArguments.First().Name)
-                        {
-                            case "DateTime":
-                               if (cntrlFromForm[i].GetType().Name!="DateTime")
-                                cntrlFromForm[i] = DateTime.ParseExact(cntrlFromForm[i].ToString(), "M.dd.yy HH:mm", null); 
-                                break;
-                            case "Double":
-                                if (cntrlFromForm[i].ToString() != "")
-                                    cntrlFromForm[i] = Convert.ToDouble(cntrlFromForm[i].ToString());
-                                else
-                                    cntrlFromForm[i] = Convert.ToDouble(0);
-                                break;
-                            default:
-   //                             mParam.fForm = "TextBox";
-                                break;
-                        }
-
-                        break;
-                }
-            }
             object[] propFromForm = cntrlFromForm.Cast<object>().ToArray();
-
             object ctorObj = ctor.Invoke(propFromForm);
             MethodInfo baseMethod = ctor.ReflectedType.GetMethod("ToString");
             return baseMethod.Invoke(ctorObj, null).ToString();

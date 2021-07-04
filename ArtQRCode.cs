@@ -88,7 +88,7 @@ namespace QRCoder
                             graphics.DrawImage(reticleImage, new Rectangle(0, size - reticleSize, reticleSize, reticleSize));
                         }
 
-                        graphics.Save();
+                        _ = graphics.Save();
                     }
                 }
             }
@@ -109,7 +109,7 @@ namespace QRCoder
             using (var graphics = Graphics.FromImage(bitmap))
             {
                 graphics.FillEllipse(brush, new Rectangle(0, 0, pixelSize, pixelSize));
-                graphics.Save();
+                _ = graphics.Save();
             }
 
             var pixelWidth = Math.Min(pixelsPerModule, pixelSize);
@@ -122,7 +122,7 @@ namespace QRCoder
                 graphics.DrawImage(bitmap, new Rectangle(margin, margin, pixelWidth, pixelWidth),
                     new RectangleF(((float)pixelSize - pixelWidth) / 2, ((float)pixelSize - pixelWidth) / 2, pixelWidth, pixelWidth),
                     GraphicsUnit.Pixel);
-                graphics.Save();
+                _ = graphics.Save();
             }
 
             return cropped;
