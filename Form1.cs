@@ -46,7 +46,7 @@ namespace QRCoderArt
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
                      REFLECTION
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
-        //выбор контента payload 
+        //выбор контента payload  
         private void cbPayload_SelectedIndexChanged(object sender, EventArgs e)
         {
             using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
