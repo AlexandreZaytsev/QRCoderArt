@@ -41,6 +41,7 @@ namespace QRCoderArt
         {
             comboBoxECC.SelectedIndex = 0; //Pre-select ECC level "L"
             textBoxQRCode.Text = "enter your text or select payload + constructor + fill in the parameters";
+      //      GeyPayLoadStringFromForm(null, null);
         }
 
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
@@ -77,6 +78,7 @@ namespace QRCoderArt
                 }
                 createControlPlayloadPanel(propToCntrl);    //create payload panel from constructor parameters
                 completePayloadPanel = true;
+                GeyPayLoadStringFromForm(null, null);
             }
         }
 
@@ -251,7 +253,7 @@ namespace QRCoderArt
                     foreach (Control cntrl in panelPayload.Controls)
                     {
 //                        if (cntrl.Created && cntrl.AccessibleName == "Get")
-                        if (completePayloadPanel && cntrl.AccessibleName == "Get")
+                        if (cntrl.Created && completePayloadPanel && cntrl.AccessibleName == "Get")
                         {
                             ret = null;
                             if (cntrl.Enabled)
