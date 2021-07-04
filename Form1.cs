@@ -249,16 +249,16 @@ namespace QRCoderArt
                                     ret = ((TextBox)cntrl).Text;
                                     break;
                                 case "Double":
-                                    ret = Convert.ToDouble(((TextBox)cntrl).Text);
+                                    ret = Convert.ToDouble(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
                                     break;
                                 case "Single":
-                                    ret = Convert.ToSingle(((TextBox)cntrl).Text);
+                                    ret = Convert.ToSingle(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
                                     break;
                                 case "Int32":
-                                    ret = Convert.ToInt32(((TextBox)cntrl).Text);
+                                    ret = Convert.ToInt32(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
                                     break;
                                 case "Decimal":
-                                    ret = Convert.ToDecimal(((TextBox)cntrl).Text);
+                                    ret = Convert.ToDecimal(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
                                     break;
                                 case "Boolean":
                                     ret = ((CheckBox)cntrl).Checked;
