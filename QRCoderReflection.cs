@@ -16,6 +16,7 @@ namespace QRCoderArt
         public string fForm;// { get; set; }            //вид контрола для отображение на форме
         public Dictionary<string, object> fList;        //enum
         public Boolean fNull;                           //нулевое значение
+        public object fDef;                             //default value    
     }
     public class QRCoderReflection : IDisposable
     {
@@ -70,7 +71,7 @@ namespace QRCoderArt
         //получить свойство поля для формы
         private FieldProperty GetItemInfoForForm(ParameterInfo param) 
         {
-            FieldProperty mParam = new FieldProperty { fName = param.Name, fType = param.ParameterType.Name, fForm = "TextBox", fList = null , fNull=false};
+            FieldProperty mParam = new FieldProperty { fName = param.Name, fType = param.ParameterType.Name, fForm = "TextBox", fList = null , fNull=false, fDef=null};
             switch (param.ParameterType.Name)
             {
                 case "String":
