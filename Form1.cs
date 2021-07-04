@@ -150,9 +150,9 @@ namespace QRCoderArt
                                 chtb.Name = "" + prop.fName;
                                 chtb.AccessibleDescription = "Nullable";                          //type in tooltype
                                 chtb.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                                chtb.CheckedChanged += (sender, e) => tb.Enabled = (chtb.CheckState == CheckState.Checked);
+                                chtb.CheckedChanged += (sender, e) => tb.Enabled = (chtb.CheckState == CheckState.Checked); //GeyPayLoadStringFromForm(null, null);
                                 panelPayload.Controls.Add(chtb);
-                                tb.Enabled = chtb.Checked;
+                                tb.Enabled = false;// chtb.Checked;
                             }
                             break;
                         case "CheckBox":
@@ -184,9 +184,9 @@ namespace QRCoderArt
                                 chdtp.Name = "" + prop.fName;
                                 chdtp.AccessibleDescription = "Nullable";                          //type in tooltype
                                 chdtp.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                                chdtp.CheckedChanged += (sender, e) => dtp.Enabled = (chdtp.CheckState == CheckState.Checked);
+                                chdtp.CheckedChanged += (sender, e) => dtp.Enabled = (chdtp.CheckState == CheckState.Checked); //GeyPayLoadStringFromForm(null, null);
                                 panelPayload.Controls.Add(chdtp);
-                                dtp.Enabled = chdtp.Checked;
+                                dtp.Enabled = false;// chdtp.Checked;
                             }
                             break;
                         case "ComboBox":
