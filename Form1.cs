@@ -46,18 +46,18 @@ namespace QRCoderArt
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
                      REFLECTION
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
-        //выбор контента payload  
+        //select payload content  
         private void cbPayload_SelectedIndexChanged(object sender, EventArgs e)
         {
             using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
             {
 
-                MemberInfo mi = qqRef.GetMemberByName(cbPayload.Text);                          //получить member по имени
+                MemberInfo mi = qqRef.GetMemberByName(cbPayload.Text);                          //get member from name
                 cbConstructor.DataSource = null;
                 cbConstructor.Items.Clear();
-                cbConstructor.DataSource = new BindingSource(qqRef.GetConstructor(mi), null);   //получить конструкторы member
-                cbConstructor.DisplayMember = "Key";                                            //Имя    
-                cbConstructor.ValueMember = "Value";                                            //значение                                                
+                cbConstructor.DataSource = new BindingSource(qqRef.GetConstructor(mi), null);   //get constructors from member
+                cbConstructor.DisplayMember = "Key";                                            //name    
+                cbConstructor.ValueMember = "Value";                                            //value                                                
                 cbConstructor.SelectedItem = 0;
                 tbConstructor.Text = "Payload (" + cbConstructor.Items.Count.ToString() + ")";
             }
