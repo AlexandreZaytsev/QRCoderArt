@@ -16,8 +16,9 @@ namespace QRCoderArt
 {
     public partial class Form1 : Form
     {
+        private bool completePayloadPanel = false;
         public Form1()
-        {
+        {    
             InitializeComponent();
             using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
             {
@@ -66,7 +67,8 @@ namespace QRCoderArt
         private void cbConstructor_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbConstructor.SelectedItem != null) 
-            { 
+            {
+                completePayloadPanel = false;
                 removeControlPlayloadPanel();           //очистить панель
                 IList propToCntrl = null;
                 using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
@@ -74,6 +76,7 @@ namespace QRCoderArt
                     propToCntrl = qqRef.GetParamsConstuctor(((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Value);
                 }
                 createControlPlayloadPanel(propToCntrl);   //создать панель по параметрам конструктора
+                completePayloadPanel = true;
             }
         }
 
@@ -150,7 +153,7 @@ namespace QRCoderArt
                                 chtb.Name = "" + prop.fName;
                                 chtb.AccessibleDescription = "Nullable";                          //type in tooltype
                                 chtb.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                                chtb.CheckedChanged += (sender, e) => tb.Enabled = (chtb.CheckState == CheckState.Checked); //GeyPayLoadStringFromForm(null, null);
+                                chtb.CheckedChanged += (sender, e) => tb.Enabled = (chtb.CheckState == CheckState.Checked); // GeyPayLoadStringFromForm(null, null);
                                 panelPayload.Controls.Add(chtb);
                                 tb.Enabled = false;// chtb.Checked;
                             }
@@ -174,7 +177,7 @@ namespace QRCoderArt
                             dtp.AccessibleDescription = prop.fType;
                             dtp.Format = DateTimePickerFormat.Short;
                             dtp.ValueChanged += new EventHandler(GeyPayLoadStringFromForm);
-              //              dtp.EnabledChanged += new EventHandler(GeyPayLoadStringFromForm);
+                            dtp.EnabledChanged += new EventHandler(GeyPayLoadStringFromForm);
                             panelPayload.Controls.Add(dtp);
                             if (prop.fNull)
                             {
@@ -184,7 +187,7 @@ namespace QRCoderArt
                                 chdtp.Name = "" + prop.fName;
                                 chdtp.AccessibleDescription = "Nullable";                          //type in tooltype
                                 chdtp.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                                chdtp.CheckedChanged += (sender, e) => dtp.Enabled = (chdtp.CheckState == CheckState.Checked); //GeyPayLoadStringFromForm(null, null);
+                                chdtp.CheckedChanged += (sender, e) => dtp.Enabled = (chdtp.CheckState == CheckState.Checked);// GeyPayLoadStringFromForm(null, null);
                                 panelPayload.Controls.Add(chdtp);
                                 dtp.Enabled = false;// chdtp.Checked;
                             }
@@ -232,53 +235,57 @@ namespace QRCoderArt
         //общее событие генерации строки Payload
         private void GeyPayLoadStringFromForm(object sender, EventArgs e)
         {
-            ArrayList ParamFromControl = new ArrayList();
-            object ret=null;
-            if (panelPayload.HasChildren)
+            if (completePayloadPanel)
             {
-                foreach (Control cntrl in panelPayload.Controls) 
+                ArrayList ParamFromControl = new ArrayList();
+                object ret = null;
+                if (panelPayload.HasChildren)
                 {
-                    if (cntrl.Created && cntrl.AccessibleName =="Get") 
+                    foreach (Control cntrl in panelPayload.Controls)
                     {
-                        ret = null;
-                        if (cntrl.Enabled)
+//                        if (cntrl.Created && cntrl.AccessibleName == "Get")
+                        if (completePayloadPanel && cntrl.AccessibleName == "Get")
                         {
-                            switch (cntrl.AccessibleDescription)
+                            ret = null;
+                            if (cntrl.Enabled)
                             {
-                                case "String":
-                                    ret = ((TextBox)cntrl).Text;
-                                    break;
-                                case "Double":
-                                    ret = Convert.ToDouble(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
-                                    break;
-                                case "Single":
-                                    ret = Convert.ToSingle(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
-                                    break;
-                                case "Int32":
-                                    ret = Convert.ToInt32(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
-                                    break;
-                                case "Decimal":
-                                    ret = Convert.ToDecimal(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
-                                    break;
-                                case "Boolean":
-                                    ret = ((CheckBox)cntrl).Checked;
-                                break;
-                                case "DateTime":
-                                    ret = ((DateTimePicker)cntrl).Value;
-                                    break;
-                                default:
-                                    if (cntrl.GetType().Name == "ComboBox")
-                                      ret = ((KeyValuePair<string, object>)((ComboBox)cntrl).SelectedItem).Value;
-                                break;
+                                switch (cntrl.AccessibleDescription)
+                                {
+                                    case "String":
+                                        ret = ((TextBox)cntrl).Text;
+                                        break;
+                                    case "Double":
+                                        ret = Convert.ToDouble(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
+                                        break;
+                                    case "Single":
+                                        ret = Convert.ToSingle(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
+                                        break;
+                                    case "Int32":
+                                        ret = Convert.ToInt32(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
+                                        break;
+                                    case "Decimal":
+                                        ret = Convert.ToDecimal(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
+                                        break;
+                                    case "Boolean":
+                                        ret = ((CheckBox)cntrl).Checked;
+                                        break;
+                                    case "DateTime":
+                                        ret = ((DateTimePicker)cntrl).Value;
+                                        break;
+                                    default:
+                                        if (cntrl.GetType().Name == "ComboBox")
+                                            ret = ((KeyValuePair<string, object>)((ComboBox)cntrl).SelectedItem).Value;
+                                        break;
+                                }
                             }
+                            ParamFromControl.Add(ret);
                         }
-                        ParamFromControl.Add(ret);
                     }
                 }
-            }
-            using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
-            {
-                textBoxQRCode.Text = qqRef.GetPayloadString(((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Value, ParamFromControl);
+                using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
+                {
+                    textBoxQRCode.Text = qqRef.GetPayloadString(((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Value, ParamFromControl);
+                }
             }
         }
         //общее событие при изменении настроек
