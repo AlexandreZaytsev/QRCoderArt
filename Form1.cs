@@ -78,6 +78,7 @@ namespace QRCoderArt
                 }
                 createControlPlayloadPanel(propToCntrl);    //create payload panel from constructor parameters
                 completePayloadPanel = true;
+//!!!
                 GeyPayLoadStringFromForm(null, null);
             }
         }

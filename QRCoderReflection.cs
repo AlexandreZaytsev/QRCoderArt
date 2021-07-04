@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using QRCoder;
 using System.Collections;
+using System.Windows.Forms;
 
 namespace QRCoderArt
 {
@@ -57,10 +58,28 @@ namespace QRCoderArt
         //инициализировать конструктор и выполнить метод по умолчанию
         public string GetPayloadString(ConstructorInfo ctor, ArrayList cntrlFromForm)
         {
-            object[] propFromForm = cntrlFromForm.Cast<object>().ToArray();
-            object ctorObj = ctor.Invoke(propFromForm);
-            MethodInfo baseMethod = ctor.ReflectedType.GetMethod("ToString");
-            return baseMethod.Invoke(ctorObj, null).ToString();
+            //https://metanit.com/sharp/tutorial/14.2.php
+            string ret = "";
+            if (cntrlFromForm.Count != 0) 
+            {
+                object[] propFromForm = cntrlFromForm.Cast<object>().ToArray();
+
+                try
+                {
+                    object ctorObj = ctor.Invoke(propFromForm);
+                    MethodInfo baseMethod = ctor.ReflectedType.GetMethod("ToString");
+                    ret = baseMethod.Invoke(ctorObj, null).ToString();
+                }
+                catch
+                {
+                    MessageBox.Show("init Constructot\r\nTry filling in the parameters...\r\n\r\nI haven't figured it out yet... in progress", "error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+                finally
+                {
+    //                Console.WriteLine("Блок finally");
+                }
+            }
+            return ret;
         }
 
         //получить enum
