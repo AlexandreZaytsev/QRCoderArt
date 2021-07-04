@@ -145,8 +145,8 @@ namespace QRCoderArt
                                    tb.Text = prop.fDef == null ? "" : Convert.ToString(prop.fDef);
                                    break;
                                 default:
-                                    tb.Text = prop.fDef == null ? "" : Convert.ToString(prop.fDef);
-                                    break;
+                                   tb.Text = prop.fDef == null ? "" : Convert.ToString(prop.fDef);
+                                   break;
                             }
                             panelPayload.Controls.Add(tb);
                             if (prop.fNull)
@@ -170,7 +170,7 @@ namespace QRCoderArt
                             chb.AccessibleName = "Get";
                             chb.AccessibleDescription = prop.fType;
                             chb.CheckedChanged += new EventHandler(GeyPayLoadStringFromForm);
-                            chb.Checked = prop.fDef == null ? false : Convert.ToBoolean(prop.fDef);
+           //                 chb.Checked = Convert.ToBoolean(prop.fDef);// prop.fDef == null ? false : Convert.ToBoolean(prop.fDef);
                             panelPayload.Controls.Add(chb);
                             break;
                         case "DateTime":
@@ -183,7 +183,7 @@ namespace QRCoderArt
                             dtp.Format = DateTimePickerFormat.Short;
                             dtp.ValueChanged += new EventHandler(GeyPayLoadStringFromForm);
                             dtp.EnabledChanged += new EventHandler(GeyPayLoadStringFromForm);
-                            dtp.Value = prop.fDef == null ? DateTime.Today : Convert.ToDateTime(prop.fDef);
+                 //           dtp.Value = prop.fDef == null ? DateTime.Today : Convert.ToDateTime(prop.fDef);
                             panelPayload.Controls.Add(dtp);
                             if (prop.fNull)
                             {
@@ -209,6 +209,7 @@ namespace QRCoderArt
                             cmb.DisplayMember = "Key";                                            //Имя    
                             cmb.ValueMember = "Value";                                            //значение  
                             cmb.SelectedItem = 0;
+                          //  cmb.SelectedItem  = prop.fDef;// == null ? DateTime.Today : Convert.ToDateTime(prop.fDef);
                             cmb.DropDownStyle = ComboBoxStyle.DropDownList; 
                             cmb.SelectedIndexChanged += new EventHandler(GeyPayLoadStringFromForm);
                             panelPayload.Controls.Add(cmb);
