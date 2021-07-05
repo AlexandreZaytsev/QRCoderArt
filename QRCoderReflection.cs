@@ -145,6 +145,9 @@ namespace QRCoderArt
             {
                 //         IList i= (from t in ((TypeInfo)ctor.ReflectedType).GetParameters() select GetItemInfoForForm(t)).ToList()
                 //((System.Reflection.TypeInfo)((TypeInfo)ctor.ReflectedType).GetNestedTypes()[0]).DeclaredFields
+                //                ((TypeInfo)ctor.ReflectedType).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                //((System.Reflection.RtFieldInfo)((TypeInfo)ctor.ReflectedType).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)[0]).FieldType
+                //https://question-it.com/questions/848396/preobrazovanie-fieldinfo-v-propertyinfo-ili-naoborot
             }
             return (from t in ctor.GetParameters() select GetItemInfoForForm(t)).ToList();
         }
