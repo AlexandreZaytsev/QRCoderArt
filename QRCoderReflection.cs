@@ -141,6 +141,11 @@ namespace QRCoderArt
         //получить parameters конструктора
         public IList GetParamsConstuctor(ConstructorInfo ctor)
         {
+            if (ctor.GetParameters().Length == 0) 
+            {
+                //         IList i= (from t in ((TypeInfo)ctor.ReflectedType).GetParameters() select GetItemInfoForForm(t)).ToList()
+                //((System.Reflection.TypeInfo)((TypeInfo)ctor.ReflectedType).GetNestedTypes()[0]).DeclaredFields
+            }
             return (from t in ctor.GetParameters() select GetItemInfoForForm(t)).ToList();
         }
 
