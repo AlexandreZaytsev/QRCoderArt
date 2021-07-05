@@ -295,6 +295,7 @@ namespace QRCoderArt
                 using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
                 {
                     textBoxQRCode.Text = qqRef.GetPayloadString(((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Value, ParamFromControl);
+
                 }
             }
         }
@@ -306,12 +307,14 @@ namespace QRCoderArt
         //create QR image
         private void RenderQrCode()
         {
-            if (textBoxQRCode.Text == "")
+            if (textBoxQRCode.Text.IndexOf("Error:")>=0)
             {
+                textBoxQRCode.BackColor = System.Drawing.Color.WhiteSmoke;
                 pictureBoxQRCode.BackgroundImage = global::QRCoderArt.Properties.Resources.qr1;
             }
             else
             {
+                textBoxQRCode.BackColor = SystemColors.Window;
                 if (comboBoxECC.SelectedItem != null)
                 {
                     string level = comboBoxECC.SelectedItem.ToString();

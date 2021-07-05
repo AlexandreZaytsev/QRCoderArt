@@ -70,13 +70,14 @@ namespace QRCoderArt
                     MethodInfo baseMethod = ctor.ReflectedType.GetMethod("ToString");
                     ret = baseMethod.Invoke(ctorObj, null).ToString();
                 }
-                catch
+                catch (Exception e)
                 {
-                    MessageBox.Show("init Constructot\r\nTry filling in the parameters...\r\n\r\nI haven't figured it out yet... in progress", "error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    ret = "Error:\r\n" + e.Message + "\r\n\r\n" +
+                    "init Constructot\r\nTry filling in the parameters...\r\n\r\n" +
+                    "I haven't figured it out yet... in progress";
                 }
                 finally
                 {
-    //                Console.WriteLine("Блок finally");
                 }
             }
             return ret;

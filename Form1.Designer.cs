@@ -85,6 +85,7 @@ namespace QRCoderArt
             // 
             // textBoxQRCode
             // 
+            this.textBoxQRCode.BackColor = System.Drawing.SystemColors.Window;
             this.textBoxQRCode.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxQRCode.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBoxQRCode.Location = new System.Drawing.Point(0, 0);
