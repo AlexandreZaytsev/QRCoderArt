@@ -33,8 +33,8 @@ public class WiFi : Payload
 
 public class Mail : Payload
 - [x] public Mail(string mailReceiver, MailEncoding encoding = MailEncoding.MAILTO)
-- [x]public Mail(string mailReceiver, string subject, MailEncoding encoding = MailEncoding.MAILTO)
-- [x]public Mail(string mailReceiver, string subject, string message, MailEncoding encoding = MailEncoding.MAILTO)
+- [x] public Mail(string mailReceiver, string subject, MailEncoding encoding = MailEncoding.MAILTO)
+- [x] public Mail(string mailReceiver, string subject, string message, MailEncoding encoding = MailEncoding.MAILTO)
 
 public class SMS : Payload
 - [x] public SMS(string number, SMSEncoding encoding = SMSEncoding.SMS)
