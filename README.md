@@ -29,16 +29,16 @@ ps.
 current state 05.07.2021 (+ ok; - trying to implement)
 
 public class WiFi : Payload
-- [x] public WiFi(string ssid, string password, Authentication authenticationMode, bool isHiddenSSID = false)
+[x] public WiFi(string ssid, string password, Authentication authenticationMode, bool isHiddenSSID = false)
 
 public class Mail : Payload
-- [x] public Mail(string mailReceiver, MailEncoding encoding = MailEncoding.MAILTO)
-- [x] public Mail(string mailReceiver, string subject, MailEncoding encoding = MailEncoding.MAILTO)
-- [x] public Mail(string mailReceiver, string subject, string message, MailEncoding encoding = MailEncoding.MAILTO)
+[x] public Mail(string mailReceiver, MailEncoding encoding = MailEncoding.MAILTO)
+[x] public Mail(string mailReceiver, string subject, MailEncoding encoding = MailEncoding.MAILTO)
+[x] public Mail(string mailReceiver, string subject, string message, MailEncoding encoding = MailEncoding.MAILTO)
 
 public class SMS : Payload
-- [x] public SMS(string number, SMSEncoding encoding = SMSEncoding.SMS)
-- [x] public SMS(string number, string subject, SMSEncoding encoding = SMSEncoding.SMS)
+[x] public SMS(string number, SMSEncoding encoding = SMSEncoding.SMS)
+[x] public SMS(string number, string subject, SMSEncoding encoding = SMSEncoding.SMS)
 
 public class MMS : Payload
 - [x] public MMS(string number, MMSEncoding encoding = MMSEncoding.MMS)
