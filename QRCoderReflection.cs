@@ -18,6 +18,7 @@ namespace QRCoderArt
         public Dictionary<string, object> fList;        //enum
         public Boolean fNull;                           //нулевое значение
         public object fDef;                             //default value    
+        public MemberInfo mProperty { get; set; }       //for ParameterInfo or FieldInfo
     }
     public class QRCoderReflection : IDisposable
     {
@@ -148,6 +149,7 @@ namespace QRCoderArt
                 //                ((TypeInfo)ctor.ReflectedType).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                 //((System.Reflection.RtFieldInfo)((TypeInfo)ctor.ReflectedType).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)[0]).FieldType
                 //https://question-it.com/questions/848396/preobrazovanie-fieldinfo-v-propertyinfo-ili-naoborot
+                //https://fooobar.com/questions/273903/how-to-get-both-fields-and-properties-in-single-call-via-reflection
             }
             return (from t in ctor.GetParameters() select GetItemInfoForForm(t)).ToList();
         }
