@@ -58,28 +58,54 @@ namespace QRCoderArt
         }
 
         //initialize the constructor and execute the default method
-        public string GetPayloadString(ConstructorInfo ctor, ArrayList cntrlFromForm)
+        public string GetPayloadString(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm)
         {
             //https://metanit.com/sharp/tutorial/14.2.php
             string ret = "";
-            if (cntrlFromForm.Count != 0) 
-            {
-                object[] propFromForm = cntrlFromForm.Cast<object>().ToArray();
 
+            if (ctor.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
+            {
+                object ctorObj = ctor.Invoke(new object[] { });
+                foreach (KeyValuePair<string, object> entry in cntrlFromForm)
+                {
+                    ctorObj.GetType().GetProperty(entry.Key).SetValue(ctorObj, entry.Value);
+                }
                 try
                 {
-                    object ctorObj = ctor.Invoke(propFromForm);
-                    MethodInfo baseMethod = ctor.ReflectedType.GetMethod("ToString");
-                    ret = baseMethod.Invoke(ctorObj, null).ToString();
+                    ret = ctor.ReflectedType.GetMethod("ToString").Invoke(ctorObj, new object[] { }).ToString();
                 }
                 catch (Exception e)
                 {
-                    ret =   "Error:\r\n" + e.Message + "\r\n\r\n" +
+                    ret = "Invoke Error:\r\n" + e.Message + "\r\n\r\n" +
                             "init Constructot\r\nTry filling in the parameters...\r\n\r\n" +
                             "I haven't figured it out yet... in progress";
                 }
                 finally
                 {
+                }
+            }
+            else
+            {
+                if (cntrlFromForm.Count != 0) 
+                {
+                    //                    object[] propFromForm = cntrlFromForm.Cast<object>().ToArray();
+                    object[] propFromForm = cntrlFromForm.Select(z => z.Value).ToArray();
+
+                    try
+                    {
+                        object ctorObj = ctor.Invoke(propFromForm);
+                        MethodInfo baseMethod = ctor.ReflectedType.GetMethod("ToString");
+                        ret = baseMethod.Invoke(ctorObj, null).ToString();
+                    }
+                    catch (Exception e)
+                    {
+                        ret =   "Invoke Error:\r\n" + e.Message + "\r\n\r\n" +
+                                "init Constructot\r\nTry filling in the parameters...\r\n\r\n" +
+                                "I haven't figured it out yet... in progress";
+                    }
+                    finally
+                    {
+                    }
                 }
             }
             return ret;

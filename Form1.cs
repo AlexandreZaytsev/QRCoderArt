@@ -247,7 +247,7 @@ namespace QRCoderArt
         {
             if (completePayloadPanel)
             {
-                ArrayList ParamFromControl = new ArrayList();
+                Dictionary<string, object> ParamFromControl = new Dictionary<string, object>();
                 object ret = null;
                 if (panelPayload.HasChildren)
                 {
@@ -288,7 +288,7 @@ namespace QRCoderArt
                                         break;
                                 }
                             }
-                            ParamFromControl.Add(ret);
+                            ParamFromControl.Add(cntrl.Name, ret);
                         }
                     }
                 }
