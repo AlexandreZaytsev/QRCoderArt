@@ -73,13 +73,13 @@ current state 05.07.2021 ([+] ok; [ ] trying to implement)
 - public class CalendarEvent : Payload**
     - [x] public CalendarEvent(string subject, string description, string location, DateTime start, DateTime end, bool allDayEvent, EventEncoding encoding = EventEncoding.Universal)
 - public class OneTimePassword : Payload**
-***no constructor***
+***secret, period not def value***
 - public class ShadowSocksConfig : Payload
-    - [?] public ShadowSocksConfig(string hostname, int port, string password, Method method, string tag = null) :
+    - [ ] public ShadowSocksConfig(string hostname, int port, string password, Method method, string tag = null) :
 ***port not def value***
-    - [?] public ShadowSocksConfig(string hostname, int port, string password, Method method, string plugin, string pluginOption, string tag = null) :
+    - [ ] public ShadowSocksConfig(string hostname, int port, string password, Method method, string plugin, string pluginOption, string tag = null) :
 ***port not def value***
-    - [?] public ShadowSocksConfig(string hostname, int port, string password, Method method, Dictionary<string, string> parameters, string tag = null)
+    - [ ] public ShadowSocksConfig(string hostname, int port, string password, Method method, Dictionary<string, string> parameters, string tag = null)
 ***port not def value; subclass***
 - public class MoneroTransaction : Payload
     - [ ] public MoneroTransaction(string address, float? txAmount = null, string txPaymentId = null, string recipientName = null, string txDescription = null)
