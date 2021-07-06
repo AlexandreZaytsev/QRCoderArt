@@ -142,49 +142,18 @@ namespace QRCoderArt
         //получить parameters конструктора
         public IList GetParamsConstuctor(ConstructorInfo ctor)
         {
-            if (ctor.GetParameters().Length == 0) 
+            if (ctor.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
             {
-                //         IList i= (from t in ((TypeInfo)ctor.ReflectedType).GetParameters() select GetItemInfoForForm(t)).ToList()
-                //((System.Reflection.TypeInfo)((TypeInfo)ctor.ReflectedType).GetNestedTypes()[0]).DeclaredFields
-                //                ((TypeInfo)ctor.ReflectedType).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                //((System.Reflection.RtFieldInfo)((TypeInfo)ctor.ReflectedType).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)[0]).FieldType
-                //https://question-it.com/questions/848396/preobrazovanie-fieldinfo-v-propertyinfo-ili-naoborot
-                //https://fooobar.com/questions/273903/how-to-get-both-fields-and-properties-in-single-call-via-reflection
-                //((System.RuntimeType)paramType).Name
-
-                Boolean pName = false;
-               // List<Variance> variances = new List<Variance>();
-                FieldInfo[] fi = ctor.ReflectedType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                foreach (FieldInfo f in fi)
-                {
-                    //    Variance v = new Variance();
-                    PropertyInfo prop = default(PropertyInfo);
-                    /*
-                                        if (pName)
-                                        {
-                                            prop = typeof(T).GetProperties().Where(p => f.Name.Contains(p.Name)).FirstOrDefault();
-                                        }
-                                        v.Prop = pName ? (prop != default(PropertyInfo) ? prop.Name : "") : f.Name;
-                                        v.valA = f.GetValue(val1);
-                                        v.valB = f.GetValue(val2);
-                                        if (v.valA != null)
-                                        {
-                                            if (!v.valA.Equals(v.valB))
-                                                variances.Add(v);
-                                        }
-                                        else if (v.valB != null)
-                                        {
-                                            variances.Add(v);
-                                        }
-
-                                        */
-                }
-
-                    return (from t in ctor.ReflectedType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) select GetItemInfoForForm(t.Name, t.FieldType, null, t)).ToList();
+                // return (from t in ctor.ReflectedType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) select GetItemInfoForForm(t.Name, t.FieldType, null, t)).ToList();
+                return (from t in ctor.ReflectedType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
+                       where !t.IsDefined(typeof(ObsoleteAttribute), true)
+                      select GetItemInfoForForm(t.Name, t.PropertyType, null, t)).ToList(); 
             }
-            else 
+            else                                            //constrictor with parameters = there is a constructor
             { 
-                return (from t in ctor.GetParameters() select GetItemInfoForForm(t.Name, t.ParameterType, t.DefaultValue, t)).ToList();
+                return (from t in ctor.GetParameters()
+                        where !t.IsDefined(typeof(ObsoleteAttribute), true)
+                        select GetItemInfoForForm(t.Name, t.ParameterType, t.DefaultValue, t)).ToList();
             }
         }
 
@@ -207,4 +176,7 @@ namespace QRCoderArt
 
         https://www.thebestcsharpprogrammerintheworld.com/2017/01/29/using-linq-with-reflection-in-c/
 
-*/
+        https://question-it.com/questions/848396/preobrazovanie-fieldinfo-v-propertyinfo-ili-naoborot
+        https://fooobar.com/questions/273903/how-to-get-both-fields-and-properties-in-single-call-via-reflection
+
+ */
