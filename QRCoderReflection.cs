@@ -180,7 +180,7 @@ namespace QRCoderArt
             { 
                 return (from t in ctor.GetParameters()
                         where !t.IsDefined(typeof(ObsoleteAttribute), true)
-                        select GetItemInfoForForm(t.Name, t.ParameterType, t.DefaultValue, t)).ToList();
+                       select GetItemInfoForForm(t.Name, t.ParameterType, t.DefaultValue, t)).ToList();
             }
         }
 
