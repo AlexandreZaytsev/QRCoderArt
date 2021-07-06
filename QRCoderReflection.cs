@@ -54,7 +54,7 @@ namespace QRCoderArt
         {
             return (from ctor in ((Type)mi).GetConstructors() 
                     select new { name = ctor.GetParameters().Count() == 0 ? "the constructor is not used here" : string.Join(", ", ctor.GetParameters().Select(pr => pr.Name)), 
-                                 ctor }).ToDictionary(i=>i.name,i=>i.ctor);
+                                 ctor }).ToDictionary(k=>k.name, v=>v.ctor);
         }
 
         //инициализировать конструктор и выполнить метод по умолчанию
