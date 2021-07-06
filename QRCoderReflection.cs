@@ -94,8 +94,7 @@ namespace QRCoderArt
                     try
                     {
                         object ctorObj = ctor.Invoke(propFromForm);
-                        MethodInfo baseMethod = ctor.ReflectedType.GetMethod("ToString");
-                        ret = baseMethod.Invoke(ctorObj, null).ToString();
+                        ret = ctor.ReflectedType.GetMethod("ToString").Invoke(ctorObj, null).ToString();
                     }
                     catch (Exception e)
                     {
