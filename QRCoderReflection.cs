@@ -52,8 +52,9 @@ namespace QRCoderArt
         //получить словарь конструкторов для выпадающего списка
         public Dictionary<string, ConstructorInfo> GetConstructor(MemberInfo mi)
         {
-            return (from ctor in ((Type)mi).GetConstructors()
-                    select new { V = ctor.GetParameters().Count()==0? "the constructor is not used here" : string.Join(", ", ctor.GetParameters().Select(pr => pr.Name)), ctor }).ToDictionary(k => k.V, v => v.ctor);
+            return (from ctor in ((Type)mi).GetConstructors() 
+                    select new { name = ctor.GetParameters().Count() == 0 ? "the constructor is not used here" : string.Join(", ", ctor.GetParameters().Select(pr => pr.Name)), 
+                                 ctor }).ToDictionary(i=>i.name,i=>i.ctor);
         }
 
         //инициализировать конструктор и выполнить метод по умолчанию
