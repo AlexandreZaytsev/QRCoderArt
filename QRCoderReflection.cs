@@ -10,13 +10,13 @@ using System.Windows.Forms;
 
 namespace QRCoderArt
 {
-    class FieldProperty                                 //для создания Control WinFoer
+    class FieldProperty                                 //to create Control WinForm
     {
-        public string fName;// { get; set; }            //имя параметра
-        public string fType;// { get; set; }            //тип параметра
-        public string fForm;// { get; set; }            //вид контрола для отображение на форме
+        public string fName;// { get; set; }            //parameter name
+        public string fType;// { get; set; }            //parameter type
+        public string fForm;// { get; set; }            //control view to display on the form
         public Dictionary<string, object> fList;        //enum
-        public Boolean fNull;                           //нулевое значение
+        public Boolean fNull;                           //presence of zero value
         public object fDef;                             //default value    
     }
 
@@ -34,13 +34,13 @@ namespace QRCoderArt
             //         throw new NotImplementedException();
         }
 
-        //получить member по имени
+        //get member by name
         public MemberInfo GetMemberByName(string baseName)
         {
             return tRef.GetMember(baseName).First();
         }
 
-        //получить имена классов по имени payload
+        //get class names named (payload)
         public List<string> GetMembersClassName(string cName)
        {
             return (from t in tRef.GetMembers(BindingFlags.Public)
@@ -49,7 +49,7 @@ namespace QRCoderArt
                     select t.Name).ToList();
         }
 
-        //получить словарь конструкторов для выпадающего списка
+        //get the constructor dictionary for the drop-down list
         public Dictionary<string, ConstructorInfo> GetConstructor(MemberInfo mi)
         {
             return (from ctor in ((Type)mi).GetConstructors() 
@@ -57,7 +57,7 @@ namespace QRCoderArt
                                  ctor }).ToDictionary(k=>k.name, v=>v.ctor);
         }
 
-        //инициализировать конструктор и выполнить метод по умолчанию
+        //initialize the constructor and execute the default method
         public string GetPayloadString(ConstructorInfo ctor, ArrayList cntrlFromForm)
         {
             //https://metanit.com/sharp/tutorial/14.2.php
@@ -85,12 +85,13 @@ namespace QRCoderArt
             return ret;
         }
 
-        //получить enum
+        //get enum
         private IDictionary<string, object> GetItemEnum(ParameterInfo param)
         {
             return param.ParameterType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v); ;
         }
-        //получить свойство поля для формы
+
+        //get field property to create control form
         private FieldProperty GetItemInfoForForm(string paramName, Type paramType, object defValue, object src) 
         {
             FieldProperty mParam = new FieldProperty { fName = paramName, fType = paramType.Name, fForm = "TextBox", fList = null , fNull=false, fDef= defValue};
@@ -126,7 +127,6 @@ namespace QRCoderArt
                     if (paramType.IsEnum)
                     {
                         mParam.fForm = "ComboBox";
-//                        mParam.fList = (Dictionary<string, object>)GetItemEnum(param);
                         mParam.fList = paramType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
                     }
                     else if (paramType.IsClass)
@@ -139,12 +139,13 @@ namespace QRCoderArt
             }
             return mParam;
         }
-           
-        //получить parameters конструктора
+
+        //get constructor parameters
         public IList GetParamsConstuctor(ConstructorInfo ctor)
         {
             if (ctor.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
             {
+                //for pure (witout k__BackingField) names here we use GetProperties()     
                 // return (from t in ctor.ReflectedType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) select GetItemInfoForForm(t.Name, t.FieldType, null, t)).ToList();
                 return (from t in ctor.ReflectedType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
                        where !t.IsDefined(typeof(ObsoleteAttribute), true)
@@ -162,7 +163,7 @@ namespace QRCoderArt
 }
 
 
-/*
+/*just links to study the question reflection
         https://blog.rc21net.ru/рефлексия-отражение-reflection-в-c-sharp/
 
         https://johnlnelson.com/tag/assembly-gettypes/
