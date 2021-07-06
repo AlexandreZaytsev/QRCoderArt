@@ -18,8 +18,8 @@ namespace QRCoderArt
         public Dictionary<string, object> fList;        //enum
         public Boolean fNull;                           //нулевое значение
         public object fDef;                             //default value    
-        public MemberInfo mProperty { get; set; }       //for ParameterInfo or FieldInfo
     }
+
     public class QRCoderReflection : IDisposable
     {
         private Type tRef;
@@ -90,10 +90,10 @@ namespace QRCoderArt
             return param.ParameterType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v); ;
         }
         //получить свойство поля для формы
-        private FieldProperty GetItemInfoForForm(ParameterInfo param) 
+        private FieldProperty GetItemInfoForForm(string paramName, Type paramType, object defValue, object src) 
         {
-            FieldProperty mParam = new FieldProperty { fName = param.Name, fType = param.ParameterType.Name, fForm = "TextBox", fList = null , fNull=false, fDef= param.DefaultValue };
-            switch (param.ParameterType.Name)
+            FieldProperty mParam = new FieldProperty { fName = paramName, fType = paramType.Name, fForm = "TextBox", fList = null , fNull=false, fDef= defValue};
+            switch (paramType.Name)
             {
                 case "String":
                 case "Double":
@@ -106,7 +106,7 @@ namespace QRCoderArt
                     mParam.fForm = "DateTime";
                     break;
                 case "Nullable`1":
-                    mParam.fType = param.ParameterType.GenericTypeArguments.First().Name;
+                    mParam.fType = paramType.GenericTypeArguments.First().Name;
                     mParam.fNull = true;
                     switch (mParam.fType)
                     {
@@ -122,13 +122,13 @@ namespace QRCoderArt
                     mParam.fForm = "CheckBox";
                     break;
                 default:
-                    if (param.ParameterType.IsEnum)
+                    if (paramType.IsEnum)
                     {
                         mParam.fForm = "ComboBox";
 //                        mParam.fList = (Dictionary<string, object>)GetItemEnum(param);
-                        mParam.fList = param.ParameterType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
+                        mParam.fList = paramType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
                     }
-                    else if (param.ParameterType.IsClass)
+                    else if (paramType.IsClass)
                     {
                     }
                     else 
@@ -138,7 +138,7 @@ namespace QRCoderArt
             }
             return mParam;
         }
-
+           
         //получить parameters конструктора
         public IList GetParamsConstuctor(ConstructorInfo ctor)
         {
@@ -150,8 +150,42 @@ namespace QRCoderArt
                 //((System.Reflection.RtFieldInfo)((TypeInfo)ctor.ReflectedType).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)[0]).FieldType
                 //https://question-it.com/questions/848396/preobrazovanie-fieldinfo-v-propertyinfo-ili-naoborot
                 //https://fooobar.com/questions/273903/how-to-get-both-fields-and-properties-in-single-call-via-reflection
+                //((System.RuntimeType)paramType).Name
+
+                Boolean pName = false;
+               // List<Variance> variances = new List<Variance>();
+                FieldInfo[] fi = ctor.ReflectedType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                foreach (FieldInfo f in fi)
+                {
+                    //    Variance v = new Variance();
+                    PropertyInfo prop = default(PropertyInfo);
+                    /*
+                                        if (pName)
+                                        {
+                                            prop = typeof(T).GetProperties().Where(p => f.Name.Contains(p.Name)).FirstOrDefault();
+                                        }
+                                        v.Prop = pName ? (prop != default(PropertyInfo) ? prop.Name : "") : f.Name;
+                                        v.valA = f.GetValue(val1);
+                                        v.valB = f.GetValue(val2);
+                                        if (v.valA != null)
+                                        {
+                                            if (!v.valA.Equals(v.valB))
+                                                variances.Add(v);
+                                        }
+                                        else if (v.valB != null)
+                                        {
+                                            variances.Add(v);
+                                        }
+
+                                        */
+                }
+
+                    return (from t in ctor.ReflectedType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) select GetItemInfoForForm(t.Name, t.FieldType, null, t)).ToList();
             }
-            return (from t in ctor.GetParameters() select GetItemInfoForForm(t)).ToList();
+            else 
+            { 
+                return (from t in ctor.GetParameters() select GetItemInfoForForm(t.Name, t.ParameterType, t.DefaultValue, t)).ToList();
+            }
         }
 
     }
