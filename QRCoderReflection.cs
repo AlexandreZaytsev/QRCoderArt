@@ -53,7 +53,7 @@ namespace QRCoderArt
         public Dictionary<string, ConstructorInfo> GetConstructor(MemberInfo mi)
         {
             return (from ctor in ((Type)mi).GetConstructors()
-                    select new { V = string.Join(", ", ctor.GetParameters().Select(pr => pr.Name)), ctor }).ToDictionary(k => k.V, v => v.ctor);
+                    select new { V = ctor.GetParameters().Count()==0? "the constructor is not used here" : string.Join(", ", ctor.GetParameters().Select(pr => pr.Name)), ctor }).ToDictionary(k => k.V, v => v.ctor);
         }
 
         //инициализировать конструктор и выполнить метод по умолчанию
@@ -73,9 +73,9 @@ namespace QRCoderArt
                 }
                 catch (Exception e)
                 {
-                    ret = "Error:\r\n" + e.Message + "\r\n\r\n" +
-                    "init Constructot\r\nTry filling in the parameters...\r\n\r\n" +
-                    "I haven't figured it out yet... in progress";
+                    ret =   "Error:\r\n" + e.Message + "\r\n\r\n" +
+                            "init Constructot\r\nTry filling in the parameters...\r\n\r\n" +
+                            "I haven't figured it out yet... in progress";
                 }
                 finally
                 {
