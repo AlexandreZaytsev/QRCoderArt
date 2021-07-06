@@ -73,6 +73,7 @@ current state 05.07.2021 ([+] ok; [ ] trying to implement)
 - public class CalendarEvent : Payload**
     - [x] public CalendarEvent(string subject, string description, string location, DateTime start, DateTime end, bool allDayEvent, EventEncoding encoding = EventEncoding.Universal)
 - public class OneTimePassword : Payload**
+    - [x] the constructor is not used here
 ***secret, period not def value***
 - public class ShadowSocksConfig : Payload
     - [ ] public ShadowSocksConfig(string hostname, int port, string password, Method method, string tag = null) :
