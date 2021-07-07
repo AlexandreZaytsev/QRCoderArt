@@ -506,7 +506,7 @@ namespace QRCoderArt
         private void Form1_HelpButtonClicked(object sender, CancelEventArgs e)
         {
             aboutForm a = new aboutForm();
-            a.Show();
+            a.ShowDialog();
         }
     }
 }
