@@ -22,8 +22,8 @@ ps
 пока не смог воспроизвести конструкторы с вложенными классами - не хватает знаний <br>
 pps
 если сможете помочь - будет - супер
-  
-![QRCoderArtInfo](https://user-images.githubusercontent.com/16114000/124740713-b6e14c80-df23-11eb-9d52-98497f2dc5da.png)
+ 
+![QRCoderArtInfo](https://user-images.githubusercontent.com/16114000/124744118-168d2700-df27-11eb-9cea-66fa37da21a5.png)
 
 ***
 ps.
