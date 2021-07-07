@@ -29,13 +29,13 @@ pps
 ps.
 current state 07.07.2021 ([+] ok; [ ] trying to implement)
 
-- WiFi
+- [x] WiFi
     - [x] WiFi(string ssid, string password, Authentication authenticationMode, bool isHiddenSSID = false)
-- Mail 
+- [x] Mail 
     - [x] Mail(string mailReceiver, MailEncoding encoding = MailEncoding.MAILTO)
     - [x] Mail(string mailReceiver, string subject, MailEncoding encoding = MailEncoding.MAILTO)
     - [x] Mail(string mailReceiver, string subject, string message, MailEncoding encoding = MailEncoding.MAILTO)
-- SMS
+- [x] SMS
     - [x] SMS(string number, SMSEncoding encoding = SMSEncoding.SMS)
     - [x] SMS(string number, string subject, SMSEncoding encoding = SMSEncoding.SMS)
 - MMS
