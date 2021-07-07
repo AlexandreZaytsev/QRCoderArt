@@ -75,10 +75,10 @@ namespace QRCoderArt.Properties {
         ///
         ///QR code picture generator QRCoder 1.4.1 QRCoder.dll + QRCoderDemo
         ///(Raffael Herrmann)
-        ///(https://github.com/codebude/QRCoder)
+        ///https://github.com/codebude/QRCoder
         ///
         ///ArtQRCode.cs file background image
-        ///(Nig [остаток строки не уместился]&quot;;.
+        ///(Nigel [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string AboutString {
             get {

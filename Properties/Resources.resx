@@ -132,12 +132,12 @@ Payload interface - dynamic (Reflection) QRCoder.dll
 
 QR code picture generator QRCoder 1.4.1 QRCoder.dll + QRCoderDemo
 (Raffael Herrmann)
-(https://github.com/codebude/QRCoder)
+https://github.com/codebude/QRCoder
 
 ArtQRCode.cs file background image
 (NigelThorne)
-(https://github.com/codebude/QRCoder/pull/295)
-(https://github.com/codebude/QRCoder/tree/91839cfe9c445832a61a993893eccfab9e264ee8/QRCoder)</value>
+https://github.com/codebude/QRCoder/pull/295
+https://github.com/codebude/QRCoder/tree/91839cfe9c445832a61a993893eccfab9e264ee8/QRCoder</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="qr" type="System.Resources.ResXFileRef, System.Windows.Forms">
