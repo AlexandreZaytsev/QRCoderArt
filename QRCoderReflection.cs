@@ -157,6 +157,8 @@ namespace QRCoderArt
                     }
                     else if (paramType.IsClass)
                     {
+                        //tRef.GetNestedTypes()[4].GetNestedTypes()[2].GetNestedTypes()[0]
+//                        tRef.GetNestedTypes()[4].GetNestedTypes()
                     }
                     else 
                     {
