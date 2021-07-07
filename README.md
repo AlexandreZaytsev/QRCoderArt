@@ -23,7 +23,7 @@ ps
 pps
 если сможете помочь - будет - супер
   
-![info](https://user-images.githubusercontent.com/16114000/124353245-17b01280-dc0e-11eb-8c93-0678d0f841b6.png)
+![QRCoderArtInfo](https://user-images.githubusercontent.com/16114000/124740713-b6e14c80-df23-11eb-9d52-98497f2dc5da.png)
 
 ***
 ps.
