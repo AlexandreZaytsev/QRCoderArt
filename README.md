@@ -1,3 +1,8 @@
+<style type="text/css">
+  body{
+  font-size: 10pt;
+}
+</style>
 # QRCoderArt
 Demo project WinForm приложение - создание файла с картинкой QR кода на базе QRCoder (1.4.1). С возможностью создания лейбла (верхний слой) или фоновой картинки (подложка) на основе ArtQRCode.cs. Интерфейс полезной нагрузки (Payload) - динамический (Reflection) QRCoder.dll 
 
