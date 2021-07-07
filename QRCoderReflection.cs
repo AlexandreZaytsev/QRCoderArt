@@ -157,9 +157,22 @@ namespace QRCoderArt
                     }
                     else if (paramType.IsClass)
                     {
+                        /*
+                       // List<string> cn = GetMembersClassName(paramName);
+                        MemberInfo mi = ((ParameterInfo)src).ParameterType;//.Member;//.GetMemberByName(paramName);
+                       // ((System.Reflection.RuntimeParameterInfo)src).ParameterType.GetConstructors()[0]
+                             Dictionary<string, ConstructorInfo> mict= (from ctor in ((Type)mi).GetConstructors()
+                                                                        select new
+                                                                        {
+                                                                            name = ctor.GetParameters().Count() == 0 ? "the constructor is not used here" : string.Join(", ", ctor.GetParameters().Select(pr => pr.Name)),
+                                                                            ctor
+                                                                        }).ToDictionary(k => k.name, v => v.ctor);
+                        //ctor.GetParameters()
+                    //     IList mictp = GetParamsConstuctor(((KeyValuePair<string, ConstructorInfo>)mict).Value);
                         //tRef.GetNestedTypes()[4].GetNestedTypes()[2].GetNestedTypes()[0]
-//                        tRef.GetNestedTypes()[4].GetNestedTypes()  //
-                    }
+                        //                        tRef.GetNestedTypes()[4].GetNestedTypes()  //
+                  */
+                        }
                     else 
                     {
                     }
