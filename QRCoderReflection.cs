@@ -76,9 +76,10 @@ namespace QRCoderArt
                 }
                 catch (Exception e)
                 {
-                    ret = "Invoke Error:\r\n" + e.Message + "\r\n\r\n" +
-                            "init Constructot\r\nTry filling in the parameters...\r\n\r\n" +
-                            "I haven't figured it out yet... in progress";
+                    ret = "\r\nInvoke Error:\r\n" + e.Message + "\r\n\r\n" +
+                        "Error creating string for QR code generation:\r\n" +
+                        " - no default parameters specified(QRCoder.dll)(not documented).\r\n\r\n" +
+                        "Please: -initialize the required fields";
                 }
                 finally
                 {
@@ -98,7 +99,7 @@ namespace QRCoderArt
                     }
                     catch (Exception e)
                     {
-                        ret =   "Invoke Error:\r\n" + e.Message + "\r\n\r\n" +
+                        ret =   "\r\nInvoke Error:\r\n" + e.Message + "\r\n\r\n" +
                                 "init Constructot\r\nTry filling in the parameters...\r\n\r\n" +
                                 "I haven't figured it out yet... in progress";
                     }
