@@ -14,11 +14,11 @@ using System.Collections;
 
 namespace QRCoderArt
 {
-    public partial class Form1 : Form
+    public partial class mainForm : Form
     {
         private bool completePayloadPanel = false;
-        public Form1()
-        {    
+        public mainForm()
+        {
             InitializeComponent();
             using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
             {
@@ -34,14 +34,14 @@ namespace QRCoderArt
 
             this.viewMode.DataSource = Enum.GetValues(typeof(ImageLayout));
             this.viewMode.SelectedIndex = 4;
-            
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             comboBoxECC.SelectedIndex = 0; //Pre-select ECC level "L"
             textBoxQRCode.Text = "enter your text or select payload + constructor + fill in the parameters";
-      //      GeyPayLoadStringFromForm(null, null);
+            //      GeyPayLoadStringFromForm(null, null);
         }
 
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ namespace QRCoderArt
         //change constructor cjmbobox select
         private void cbConstructor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbConstructor.SelectedItem != null) 
+            if (cbConstructor.SelectedItem != null)
             {
                 completePayloadPanel = false;
                 removeControlPlayloadPanel();               //clear payload panel
@@ -101,123 +101,123 @@ namespace QRCoderArt
         //create payload panel from constructor parameters
         private void createControlPlayloadPanel(IList controlsList)
         {
-                int labelTop = 2;
-                int labelLeft = 0;
-                int controlLeft = 140;
-                int offSet = 21;
-                int labelWidth=135;
-                int controlWidth;
+            int labelTop = 2;
+            int labelLeft = 0;
+            int controlLeft = 140;
+            int offSet = 21;
+            int labelWidth = 135;
+            int controlWidth;
 
             foreach (FieldProperty prop in controlsList)
+            {
+                if (panelPayload.HasChildren)
                 {
-                    if (panelPayload.HasChildren)
-                    {
-                        labelTop += offSet;
-                    }
-                    controlWidth=prop.fNull?125:140;
+                    labelTop += offSet;
+                }
+                controlWidth = prop.fNull ? 125 : 140;
 
-                    TextBox lb = new TextBox(); //Label();
-                    lb.Enabled = false;
-                    lb.BorderStyle = BorderStyle.FixedSingle;//.None;
-                    lb.TextAlign = HorizontalAlignment.Right;
-                    lb.Location = new Point(labelLeft, labelTop);
-                    lb.Size = new Size(labelWidth, 20);
-                    lb.Text = prop.fName;
-//                    lb.AccessibleDescription = prop.fType;
-                    panelPayload.Controls.Add(lb);
-                    switch (prop.fForm)
-                    {
-                        case "TextBox":
-                            TextBox tb = new TextBox();
-                            tb.Location = new Point(controlLeft, labelTop);
-                            tb.Size = new Size(controlWidth, 20);
-                            tb.Name = "" + prop.fName;
-                            tb.AccessibleName = "Get";
-                            tb.AccessibleDescription = prop.fType;                          //type in tooltype
-                            tb.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                            tb.TextChanged += new EventHandler(GeyPayLoadStringFromForm);
+                TextBox lb = new TextBox(); //Label();
+                lb.Enabled = false;
+                lb.BorderStyle = BorderStyle.FixedSingle;//.None;
+                lb.TextAlign = HorizontalAlignment.Right;
+                lb.Location = new Point(labelLeft, labelTop);
+                lb.Size = new Size(labelWidth, 20);
+                lb.Text = prop.fName;
+                //                    lb.AccessibleDescription = prop.fType;
+                panelPayload.Controls.Add(lb);
+                switch (prop.fForm)
+                {
+                    case "TextBox":
+                        TextBox tb = new TextBox();
+                        tb.Location = new Point(controlLeft, labelTop);
+                        tb.Size = new Size(controlWidth, 20);
+                        tb.Name = "" + prop.fName;
+                        tb.AccessibleName = "Get";
+                        tb.AccessibleDescription = prop.fType;                          //type in tooltype
+                        tb.MouseHover += new System.EventHandler(ToolTipMouseHover);
+                        tb.TextChanged += new EventHandler(GeyPayLoadStringFromForm);
                         //    tb.EnabledChanged += new EventHandler(GeyPayLoadStringFromForm);
-                            switch (prop.fType)
-                            {
-                                case "Single":
-                                case "Int32":
-                                case "Decimal":
-                                case "Double":
-                                   tb.BackColor = Color.GhostWhite;//.OldLace;// LightBlue;
-                                   tb.KeyPress += new KeyPressEventHandler(filterOnlyReal);
-                                   tb.Text = prop.fDef == null ? "" : Convert.ToString(prop.fDef);
-                                   break;
-                                default:
-                                   tb.Text = prop.fDef == null ? "" : Convert.ToString(prop.fDef);
-                                   break;
-                            }
-                            panelPayload.Controls.Add(tb);
-                            if (prop.fNull)
-                            {
-                                CheckBox chtb = new CheckBox();
-                                chtb.Size = new Size(13, 20);
-                                chtb.Location = new Point(controlLeft + controlWidth + 2, labelTop);
-                                chtb.Name = "" + prop.fName;
-                                chtb.AccessibleDescription = "Nullable";                          //type in tooltype
-                                chtb.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                                chtb.CheckedChanged += (sender, e) => tb.Enabled = (chtb.CheckState == CheckState.Checked); // GeyPayLoadStringFromForm(null, null);
-                                panelPayload.Controls.Add(chtb);
-                                tb.Enabled = false;// chtb.Checked;
-                            }
-                            break;
-                        case "CheckBox":
-                            CheckBox chb = new CheckBox();
-                            chb.Size = new Size(controlWidth, 20);
-                            chb.Location = new Point(controlLeft, labelTop);
-                            chb.Name = "" + prop.fName;
-                            chb.AccessibleName = "Get";
-                            chb.AccessibleDescription = prop.fType;
-                            chb.CheckedChanged += new EventHandler(GeyPayLoadStringFromForm);
-           //                 chb.Checked = Convert.ToBoolean(prop.fDef);// prop.fDef == null ? false : Convert.ToBoolean(prop.fDef);
-                            panelPayload.Controls.Add(chb);
-                            break;
-                        case "DateTime":
-                            DateTimePicker dtp = new DateTimePicker();
-                            dtp.Size = new Size(controlWidth, 20);
-                            dtp.Location = new Point(controlLeft, labelTop);
-                            dtp.Name = "" + prop.fName;
-                            dtp.AccessibleName = "Get";
-                            dtp.AccessibleDescription = prop.fType;
-                            dtp.Format = DateTimePickerFormat.Short;
-                            dtp.ValueChanged += new EventHandler(GeyPayLoadStringFromForm);
-                            dtp.EnabledChanged += new EventHandler(GeyPayLoadStringFromForm);
-                 //           dtp.Value = prop.fDef == null ? DateTime.Today : Convert.ToDateTime(prop.fDef);
-                            panelPayload.Controls.Add(dtp);
-                            if (prop.fNull)
-                            {
-                                CheckBox chdtp = new CheckBox();
-                                chdtp.Size = new Size(13, 20);
-                                chdtp.Location = new Point(controlLeft + controlWidth + 2, labelTop);
-                                chdtp.Name = "" + prop.fName;
-                                chdtp.AccessibleDescription = "Nullable";                          //type in tooltype
-                                chdtp.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                                chdtp.CheckedChanged += (sender, e) => dtp.Enabled = (chdtp.CheckState == CheckState.Checked);// GeyPayLoadStringFromForm(null, null);
-                                panelPayload.Controls.Add(chdtp);
-                                dtp.Enabled = false;// chdtp.Checked;
-                            }
-                            break;
-                        case "ComboBox":
-                            ComboBox cmb = new ComboBox();
-                            cmb.Size = new Size(controlWidth, 20);
-                            cmb.Location = new Point(controlLeft, labelTop);
-                            cmb.Name = "" + prop.fName;
-                            cmb.AccessibleName = "Get";
-                            cmb.AccessibleDescription = prop.fType;
-                            cmb.DataSource = new BindingSource(prop.fList, null);   //получить конструкторы member
-                            cmb.DisplayMember = "Key";                                            //Имя    
-                            cmb.ValueMember = "Value";                                            //значение  
-                            cmb.SelectedItem = 0;
-                          //  cmb.SelectedItem  = prop.fDef;// == null ? DateTime.Today : Convert.ToDateTime(prop.fDef);
-                            cmb.DropDownStyle = ComboBoxStyle.DropDownList; 
-                            cmb.SelectedIndexChanged += new EventHandler(GeyPayLoadStringFromForm);
-                            panelPayload.Controls.Add(cmb);
-                            break;
-                    }
+                        switch (prop.fType)
+                        {
+                            case "Single":
+                            case "Int32":
+                            case "Decimal":
+                            case "Double":
+                                tb.BackColor = Color.GhostWhite;//.OldLace;// LightBlue;
+                                tb.KeyPress += new KeyPressEventHandler(filterOnlyReal);
+                                tb.Text = prop.fDef == null ? "" : Convert.ToString(prop.fDef);
+                                break;
+                            default:
+                                tb.Text = prop.fDef == null ? "" : Convert.ToString(prop.fDef);
+                                break;
+                        }
+                        panelPayload.Controls.Add(tb);
+                        if (prop.fNull)
+                        {
+                            CheckBox chtb = new CheckBox();
+                            chtb.Size = new Size(13, 20);
+                            chtb.Location = new Point(controlLeft + controlWidth + 2, labelTop);
+                            chtb.Name = "" + prop.fName;
+                            chtb.AccessibleDescription = "Nullable";                          //type in tooltype
+                            chtb.MouseHover += new System.EventHandler(ToolTipMouseHover);
+                            chtb.CheckedChanged += (sender, e) => tb.Enabled = (chtb.CheckState == CheckState.Checked); // GeyPayLoadStringFromForm(null, null);
+                            panelPayload.Controls.Add(chtb);
+                            tb.Enabled = false;// chtb.Checked;
+                        }
+                        break;
+                    case "CheckBox":
+                        CheckBox chb = new CheckBox();
+                        chb.Size = new Size(controlWidth, 20);
+                        chb.Location = new Point(controlLeft, labelTop);
+                        chb.Name = "" + prop.fName;
+                        chb.AccessibleName = "Get";
+                        chb.AccessibleDescription = prop.fType;
+                        chb.CheckedChanged += new EventHandler(GeyPayLoadStringFromForm);
+                        //                 chb.Checked = Convert.ToBoolean(prop.fDef);// prop.fDef == null ? false : Convert.ToBoolean(prop.fDef);
+                        panelPayload.Controls.Add(chb);
+                        break;
+                    case "DateTime":
+                        DateTimePicker dtp = new DateTimePicker();
+                        dtp.Size = new Size(controlWidth, 20);
+                        dtp.Location = new Point(controlLeft, labelTop);
+                        dtp.Name = "" + prop.fName;
+                        dtp.AccessibleName = "Get";
+                        dtp.AccessibleDescription = prop.fType;
+                        dtp.Format = DateTimePickerFormat.Short;
+                        dtp.ValueChanged += new EventHandler(GeyPayLoadStringFromForm);
+                        dtp.EnabledChanged += new EventHandler(GeyPayLoadStringFromForm);
+                        //           dtp.Value = prop.fDef == null ? DateTime.Today : Convert.ToDateTime(prop.fDef);
+                        panelPayload.Controls.Add(dtp);
+                        if (prop.fNull)
+                        {
+                            CheckBox chdtp = new CheckBox();
+                            chdtp.Size = new Size(13, 20);
+                            chdtp.Location = new Point(controlLeft + controlWidth + 2, labelTop);
+                            chdtp.Name = "" + prop.fName;
+                            chdtp.AccessibleDescription = "Nullable";                          //type in tooltype
+                            chdtp.MouseHover += new System.EventHandler(ToolTipMouseHover);
+                            chdtp.CheckedChanged += (sender, e) => dtp.Enabled = (chdtp.CheckState == CheckState.Checked);// GeyPayLoadStringFromForm(null, null);
+                            panelPayload.Controls.Add(chdtp);
+                            dtp.Enabled = false;// chdtp.Checked;
+                        }
+                        break;
+                    case "ComboBox":
+                        ComboBox cmb = new ComboBox();
+                        cmb.Size = new Size(controlWidth, 20);
+                        cmb.Location = new Point(controlLeft, labelTop);
+                        cmb.Name = "" + prop.fName;
+                        cmb.AccessibleName = "Get";
+                        cmb.AccessibleDescription = prop.fType;
+                        cmb.DataSource = new BindingSource(prop.fList, null);   //получить конструкторы member
+                        cmb.DisplayMember = "Key";                                            //Имя    
+                        cmb.ValueMember = "Value";                                            //значение  
+                        cmb.SelectedItem = 0;
+                        //  cmb.SelectedItem  = prop.fDef;// == null ? DateTime.Today : Convert.ToDateTime(prop.fDef);
+                        cmb.DropDownStyle = ComboBoxStyle.DropDownList;
+                        cmb.SelectedIndexChanged += new EventHandler(GeyPayLoadStringFromForm);
+                        panelPayload.Controls.Add(cmb);
+                        break;
+                }
             }
         }
 
@@ -233,7 +233,7 @@ namespace QRCoderArt
         //check numeric wiht system separator 
         private void filterOnlyReal(object sender, KeyPressEventArgs e)
         {
-            string sep= ((float)1 / 2).ToString().Substring(1, 1);  // system sparator
+            string sep = ((float)1 / 2).ToString().Substring(1, 1);  // system sparator
             if (!(Char.IsDigit(e.KeyChar)) && !((e.KeyChar == Convert.ToChar(sep)) && (((TextBox)sender).Text.IndexOf(sep) == -1) && (((TextBox)sender).Text.Length != 0)))
             {
                 if (e.KeyChar != (char)Keys.Back)
@@ -253,7 +253,7 @@ namespace QRCoderArt
                 {
                     foreach (Control cntrl in panelPayload.Controls)
                     {
-//                        if (cntrl.Created && cntrl.AccessibleName == "Get")
+                        //                        if (cntrl.Created && cntrl.AccessibleName == "Get")
                         if (cntrl.Created && completePayloadPanel && cntrl.AccessibleName == "Get")
                         {
                             ret = null;
@@ -307,7 +307,7 @@ namespace QRCoderArt
         //create QR image
         private void RenderQrCode()
         {
-            if (textBoxQRCode.Text.IndexOf("Error:")>=0)
+            if (textBoxQRCode.Text.IndexOf("Error:") >= 0)
             {
                 textBoxQRCode.BackColor = System.Drawing.Color.WhiteSmoke;
                 pictureBoxQRCode.BackgroundImage = global::QRCoderArt.Properties.Resources.qr1;
@@ -419,7 +419,7 @@ namespace QRCoderArt
             if (saveFileDialog1.FileName != "")
             {
                 // Saves the Image via a FileStream created by the OpenFile method.
-                using (FileStream fs = (System.IO.FileStream) saveFileDialog1.OpenFile())
+                using (FileStream fs = (System.IO.FileStream)saveFileDialog1.OpenFile())
                 {
                     // Saves the Image in the appropriate ImageFormat based upon the
                     // File type selected in the dialog box.
@@ -486,10 +486,10 @@ namespace QRCoderArt
             if (openFileDlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 artPath.Text = openFileDlg.FileName;
-               // if (iconSize.Value == 0)
-               // {
-               //     iconSize.Value = 15;
-               // }
+                // if (iconSize.Value == 0)
+                // {
+                //     iconSize.Value = 15;
+                // }
             }
             else
             {
@@ -501,6 +501,12 @@ namespace QRCoderArt
         private void viewMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             pictureBoxQRCode.BackgroundImageLayout = (ImageLayout)Enum.Parse(typeof(ImageLayout), viewMode.Text);// Enum.GetName(typeof(ImageLayout), "2"); //Enum.Parse(typeof(ImageLayout), sender.ToString());
+        }
+
+        private void Form1_HelpButtonClicked(object sender, CancelEventArgs e)
+        {
+            aboutForm a = new aboutForm();
+            a.Show();
         }
     }
 }

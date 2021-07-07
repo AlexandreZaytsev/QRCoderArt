@@ -61,6 +61,32 @@ namespace QRCoderArt.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Demo project WinForm application
+        ///creating a file with a picture of a QR code based on QRCoder (1.4.1).
+        ///  - the ability to create a label (top layer)
+        ///  - or a background image (background) based on ArtQRCode.cs.
+        ///
+        ///using
+        ///   1. Select payload
+        ///   2. Select construction
+        ///   3. Fill in the parameters
+        ///
+        ///Payload interface - dynamic (Reflection) QRCoder.dll
+        ///
+        ///QR code picture generator QRCoder 1.4.1 QRCoder.dll + QRCoderDemo
+        ///(Raffael Herrmann)
+        ///(https://github.com/codebude/QRCoder)
+        ///
+        ///ArtQRCode.cs file background image
+        ///(Nig [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string AboutString {
+            get {
+                return ResourceManager.GetString("AboutString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
         /// </summary>
         internal static System.Drawing.Icon qr {
@@ -87,6 +113,16 @@ namespace QRCoderArt.Properties {
             get {
                 object obj = ResourceManager.GetObject("ric_", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap smart {
+            get {
+                object obj = ResourceManager.GetObject("smart", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
