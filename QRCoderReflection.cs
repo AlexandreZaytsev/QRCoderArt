@@ -10,13 +10,17 @@ using System.Windows.Forms;
 
 namespace QRCoderArt
 {
-    class FieldProperty                                 //to create Control WinForm
+    class FieldProperty                                 //info to create Control WinForm
     {
-        public string fName;// { get; set; }            //parameter name
-        public string fType;// { get; set; }            //parameter type
-        public string fForm;// { get; set; }            //control view to display on the form
-        public Dictionary<string, object> fList;        //enum
-        public Boolean fNull;                           //presence of zero value
+        //constructor
+        public ConstructorInfo fCtor;                   //constructor object
+        public int nestingLevelCtor;                    //nesting level constructor
+        //control parameter to create formControl from constructor
+        public string fName;// { get; set; }            //name parameter 
+        public string fType;// { get; set; }            //type parameter 
+        public string fForm;// { get; set; }            //type control view to display on the form
+        public Dictionary<string, object> fList;        //data source for combobox control
+        public Boolean fNull;                           //presence of zero value for checkbox control
         public object fDef;                             //default value    
     }
 
@@ -202,7 +206,12 @@ namespace QRCoderArt
 
     }
 }
-
+/*
+ MemberInfo mi getmember
+ Dictionary<string, ConstructorInfo> GetConstructor(MemberInfo mi)
+ IList propToCntrl qqRef.GetParamsConstuctor(((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Value);
+ class FieldProperty GetItemInfoForForm(t.Name, t.ParameterType, t.DefaultValue, t))
+ */
 
 /*just links to study the question reflection
         https://blog.rc21net.ru/рефлексия-отражение-reflection-в-c-sharp/
