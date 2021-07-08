@@ -40,9 +40,9 @@ namespace QRCoderArt
         }
 
         //get member by name
-        public MemberInfo GetMemberByName(string baseName)
+        public Type GetMemberByName(string baseName)
         {
-            return tRef.GetMember(baseName).First();
+            return (Type)tRef.GetMember(baseName).First();
         }
 
         //get class names named (payload)
