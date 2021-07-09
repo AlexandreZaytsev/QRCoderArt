@@ -77,8 +77,7 @@ namespace QRCoderArt.Properties {
         ///(Raffael Herrmann)
         ///https://github.com/codebude/QRCoder
         ///
-        ///ArtQRCode.cs file background image
-        ///(Nigel [остаток строки не уместился]&quot;;.
+        ///ArtQRCode.cs file backgro [остаток строки не уместился]&quot;;.
         /// </summary>
         internal static string AboutString {
             get {

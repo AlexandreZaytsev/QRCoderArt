@@ -204,30 +204,6 @@ namespace QRCoderArt
         {
             List<FieldProperty> Params = new List<FieldProperty>(); //list of parameters
             int nestingLevel = 0;                                   //nesting level of the parameter
-/*
-            if (ctor.GetParameters().Length == 0)
-            {
-                //for pure (witout k__BackingField) names here we use GetProperties()  
-                //from t in ctor.ReflectedType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) select t
-
-                //constrictor without parameters = there is 'no constructor'
-                foreach (var t in ctor.ReflectedType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly))
-                {
-                    if (!t.IsDefined(typeof(ObsoleteAttribute), true))
-                        GetItemInfoForForm(t, t.Name, t.PropertyType, null, Params, nestingLevel);
-                }
-            }
-            else
-            {
-                //constrictor with parameters = there is 'constructor'
-                foreach (var t in ctor.GetParameters())
-                {
-                    if (!t.IsDefined(typeof(ObsoleteAttribute), true))
-                        GetItemInfoForForm(t, t.Name, t.ParameterType, t.DefaultValue, Params, nestingLevel);
-                }
-            }
-            return Params;
-*/
 
             //for pure (witout k__BackingField) names here we use GetProperties()  
             //from t in ctor.ReflectedType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) select t
@@ -235,12 +211,12 @@ namespace QRCoderArt
             //constrictor without parameters = there is 'no constructor'
             IEnumerable queryProp = from t in ctor.ReflectedType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
                                     where !t.IsDefined(typeof(ObsoleteAttribute), true)
-                                    select GetItemInfoForForm(t, t.Name, t.PropertyType, null, Params, nestingLevel);
+                                   select GetItemInfoForForm(t, t.Name, t.PropertyType, null, Params, nestingLevel);
 
             //constrictor with parameters = there is 'constructor'
             IEnumerable queryParam = from t in ctor.GetParameters()
                                      where !t.IsDefined(typeof(ObsoleteAttribute), true)
-                                     select GetItemInfoForForm(t, t.Name, t.ParameterType, t.DefaultValue, Params, nestingLevel);
+                                    select GetItemInfoForForm(t, t.Name, t.ParameterType, t.DefaultValue, Params, nestingLevel);
 
             //Deferred Execution
             foreach (object Param in ctor.GetParameters().Length == 0 ? queryProp : queryParam) { } //run function from query
@@ -251,29 +227,4 @@ namespace QRCoderArt
 
     }
 }
-/*
- MemberInfo mi getmember
- Dictionary<string, ConstructorInfo> GetConstructor(MemberInfo mi)
- IList propToCntrl qqRef.GetParamsConstuctor(((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Value);
- class FieldProperty GetItemInfoForForm(t.Name, t.ParameterType, t.DefaultValue, t))
- */
 
-/*just links to study the question reflection
-        https://blog.rc21net.ru/рефлексия-отражение-reflection-в-c-sharp/
-
-        https://johnlnelson.com/tag/assembly-gettypes/
-        https://johnlnelson.com/2014/06/17/system-reflection-working-with-the-type-class/
-
-        https://forum.unity.com/threads/c-reflection-refuses-to-give-me-private-fields.587506/
-
-        https://docs.microsoft.com/en-us/dotnet/api/system.type.getfields?view=netframework-4.7.2
-
-        https://metanit.com/sharp/tutorial/14.2.php
-        https://www.nookery.ru/understand-with-reflection/
-
-        https://www.thebestcsharpprogrammerintheworld.com/2017/01/29/using-linq-with-reflection-in-c/
-
-        https://question-it.com/questions/848396/preobrazovanie-fieldinfo-v-propertyinfo-ili-naoborot
-        https://fooobar.com/questions/273903/how-to-get-both-fields-and-properties-in-single-call-via-reflection
-
- */
