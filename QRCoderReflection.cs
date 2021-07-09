@@ -65,60 +65,6 @@ namespace QRCoderArt
                     }).ToDictionary(k => k.name, v => v.ctor);
         }
 
-        //initialize the constructor and execute the default method
-        public string GetPayloadString(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm)
-        {
-            //https://metanit.com/sharp/tutorial/14.2.php
-            string ret = "";
-
-            if (ctor.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
-            {
-                object ctorObj = ctor.Invoke(new object[] { });
-                foreach (KeyValuePair<string, object> entry in cntrlFromForm)
-                {
-                    ctorObj.GetType().GetProperty(entry.Key).SetValue(ctorObj, entry.Value);
-                }
-                try
-                {
-                    ret = ctor.ReflectedType.GetMethod("ToString").Invoke(ctorObj, new object[] { }).ToString();
-                }
-                catch (Exception e)
-                {
-                    ret = "\r\nInvoke Error:\r\n" + e.Message + "\r\n\r\n" +
-                        "Error creating string for QR code generation:\r\n" +
-                        " - no default parameters specified(QRCoder.dll)(not documented).\r\n\r\n" +
-                        "Please: -initialize the required fields";
-                }
-                finally
-                {
-                }
-            }
-            else
-            {
-                if (cntrlFromForm.Count != 0)
-                {
-                    //                    object[] propFromForm = cntrlFromForm.Cast<object>().ToArray();
-                    object[] propFromForm = cntrlFromForm.Select(z => z.Value).ToArray();
-
-                    try
-                    {
-                        object ctorObj = ctor.Invoke(propFromForm);
-                        ret = ctor.ReflectedType.GetMethod("ToString").Invoke(ctorObj, null).ToString();
-                    }
-                    catch (Exception e)
-                    {
-                        ret = "\r\nInvoke Error:\r\n" + e.Message + "\r\n\r\n" +
-                                "init Constructot\r\nTry filling in the parameters...\r\n\r\n" +
-                                "I haven't figured it out yet... in progress";
-                    }
-                    finally
-                    {
-                    }
-                }
-            }
-            return ret;
-        }
-
         //get enum
         private IDictionary<string, object> GetItemEnum(ParameterInfo param)
         {
@@ -126,7 +72,6 @@ namespace QRCoderArt
         }
 
         //get field property to create control form
-        //        private FieldProperty GetItemInfoForForm(string paramName, Type paramType, object defValue, object src)
         private int GetItemInfoForForm(object Param, string paramName, Type paramType, object defValue, List<FieldProperty> Params, int nestingLevel)
         {
             FieldProperty mParam = new FieldProperty { fName = paramName, fType = paramType.Name, fForm = "TextBox", fList = null, fNull = false, fDef = defValue, fLevel = nestingLevel };
@@ -223,6 +168,63 @@ namespace QRCoderArt
 
             return Params;
 
+        }
+
+        /***********************************************************************************************************
+          RUN
+        ************************************************************************************************************/
+        //initialize the constructor and execute the default method
+        public string GetPayloadString(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm)
+        {
+            //https://metanit.com/sharp/tutorial/14.2.php
+            string ret = "";
+
+            if (ctor.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
+            {
+                object ctorObj = ctor.Invoke(new object[] { });
+                foreach (KeyValuePair<string, object> entry in cntrlFromForm)
+                {
+                    ctorObj.GetType().GetProperty(entry.Key).SetValue(ctorObj, entry.Value);
+                }
+                try
+                {
+                    ret = ctor.ReflectedType.GetMethod("ToString").Invoke(ctorObj, new object[] { }).ToString();
+                }
+                catch (Exception e)
+                {
+                    ret = "\r\nInvoke Error:\r\n" + e.Message + "\r\n\r\n" +
+                        "Error creating string for QR code generation:\r\n" +
+                        " - no default parameters specified(QRCoder.dll)(not documented).\r\n\r\n" +
+                        "Please: -initialize the required fields";
+                }
+                finally
+                {
+                }
+            }
+            else
+            {
+                if (cntrlFromForm.Count != 0)
+                {
+                    //                    object[] propFromForm = cntrlFromForm.Cast<object>().ToArray();
+                    object[] propFromForm = cntrlFromForm.Select(z => z.Value).ToArray();
+
+                    try
+                    {
+                        object ctorObj = ctor.Invoke(propFromForm);
+                        ret = ctor.ReflectedType.GetMethod("ToString").Invoke(ctorObj, null).ToString();
+                    }
+                    catch (Exception e)
+                    {
+                        ret = "\r\nInvoke Error:\r\n" + e.Message + "\r\n\r\n" +
+                                "init Constructot\r\nTry filling in the parameters...\r\n\r\n" +
+                                "I haven't figured it out yet... in progress";
+                    }
+                    finally
+                    {
+                    }
+                }
+            }
+            return ret;
         }
 
     }
