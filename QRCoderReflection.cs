@@ -127,7 +127,7 @@ namespace QRCoderArt
 
         //get field property to create control form
         //        private FieldProperty GetItemInfoForForm(string paramName, Type paramType, object defValue, object src)
-        private void GetItemInfoForForm(object Param, string paramName, Type paramType, object defValue, List<FieldProperty> Params, int nestingLevel)
+        private int GetItemInfoForForm(object Param, string paramName, Type paramType, object defValue, List<FieldProperty> Params, int nestingLevel)
         {
             FieldProperty mParam = new FieldProperty { fName = paramName, fType = paramType.Name, fForm = "TextBox", fList = null, fNull = false, fDef = defValue, fLevel = nestingLevel };
             if (paramType.IsClass && paramType.Namespace != "System")
@@ -193,6 +193,7 @@ namespace QRCoderArt
                 }
                 Params.Add(mParam);
             }
+            return Params.Count;
         }
 
         private void SetGetItemInfoForForm(object Param)
@@ -203,7 +204,7 @@ namespace QRCoderArt
         {
             List<FieldProperty> Params = new List<FieldProperty>(); //list of parameters
             int nestingLevel = 0;                                   //nesting level of the parameter
-
+/*
             if (ctor.GetParameters().Length == 0)
             {
                 //for pure (witout k__BackingField) names here we use GetProperties()  
@@ -226,6 +227,26 @@ namespace QRCoderArt
                 }
             }
             return Params;
+*/
+
+            //for pure (witout k__BackingField) names here we use GetProperties()  
+            //from t in ctor.ReflectedType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) select t
+
+            //constrictor without parameters = there is 'no constructor'
+            IEnumerable queryProp = from t in ctor.ReflectedType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
+                                    where !t.IsDefined(typeof(ObsoleteAttribute), true)
+                                    select GetItemInfoForForm(t, t.Name, t.PropertyType, null, Params, nestingLevel);
+
+            //constrictor with parameters = there is 'constructor'
+            IEnumerable queryParam = from t in ctor.GetParameters()
+                                     where !t.IsDefined(typeof(ObsoleteAttribute), true)
+                                     select GetItemInfoForForm(t, t.Name, t.ParameterType, t.DefaultValue, Params, nestingLevel);
+
+            //Deferred Execution
+            foreach (object Param in ctor.GetParameters().Length == 0 ? queryProp : queryParam) { } //run function from query
+
+            return Params;
+
         }
 
     }
