@@ -341,10 +341,18 @@ namespace QRCoderArt
                             ParamFromControl.Add(cntrl.Name, ret);
                         }
                     }
-                }
-                using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
-                {
-        //            textBoxQRCode.Text = qqRef.GetPayloadString(((KeyValuePair<string, ConstructorInfo>)((ComboBox)combo[0]).SelectedItem).Value, ParamFromControl);
+
+
+                    using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
+                    {
+                        Control[] cmb = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is ComboBox);
+                        ComboBox cm = (ComboBox)cmb[0];
+                        ConstructorInfo ctrm = (ConstructorInfo)((System.Collections.Generic.KeyValuePair<string, object>)cm.SelectedItem).Value;
+                        textBoxQRCode.Text = qqRef.GetPayloadString(ctrm, ParamFromControl);
+                        //         textBoxQRCode.Text = qqRef.GetPayloadString(((System.Collections.Generic.KeyValuePair<string, object>)cm.SelectedItem).Value, ParamFromControl);
+
+                    }
+
 
                 }
             }
