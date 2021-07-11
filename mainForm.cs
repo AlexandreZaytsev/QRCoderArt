@@ -14,9 +14,11 @@ using System.Collections;
 
 namespace QRCoderArt
 {
+
     public partial class mainForm : Form
     {
         private bool completePayloadPanel = false;
+
         public mainForm()
         {
             InitializeComponent();
@@ -37,6 +39,8 @@ namespace QRCoderArt
 
         }
 
+
+
         private void Form1_Load(object sender, EventArgs e)
         {
             comboBoxECC.SelectedIndex = 0; //Pre-select ECC level "L"
@@ -47,96 +51,87 @@ namespace QRCoderArt
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
                      REFLECTION
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
-        //select payload content  
-        private void cbPayload_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
-            {
-
-                MemberInfo mi = qqRef.GetMemberByName(cbPayload.Text);                          //get member from name
-                cbConstructor.DataSource = null;
-                cbConstructor.Items.Clear();
-                cbConstructor.DataSource = new BindingSource(qqRef.GetConstructor(mi), null);   //get constructors from member
-                cbConstructor.DisplayMember = "Key";                                            //name    
-                cbConstructor.ValueMember = "Value";                                            //value                                                
-                cbConstructor.SelectedItem = 0;
-                tbConstructor.Text = "Payload (" + cbConstructor.Items.Count.ToString() + ")";
-            }
-        }
-
-        //change constructor cjmbobox select
-        private void cbConstructor_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cbConstructor.SelectedItem != null)
-            {
-                completePayloadPanel = false;
-                removeControlPlayloadPanel();               //clear payload panel
-                IList propToCntrl = null;
-                using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
-                {
-                    propToCntrl = qqRef.GetParamsConstuctor(((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Value);
-                }
-                createControlPlayloadPanel(propToCntrl);    //create payload panel from constructor parameters
-                completePayloadPanel = true;
-                //!!!
-                GeyPayLoadStringFromForm(null, null);
-            }
-        }
-
         //clear payload panel
-        private void removeControlPlayloadPanel()
+        private void removeControlPlayloadPanel(Control panel)
         {
-            if (panelPayload.HasChildren)
+            if (panel.HasChildren)
             {
-                for (int i = this.panelPayload.Controls.Count - 1; i >= 0; i--) //not foreach use...
+                for (int i = panel.Controls.Count - 1; i >= 0; i--) //not foreach use...
                 {
-                    Control cn = this.panelPayload.Controls[0];
+                    Control cn = panel.Controls[0];
                     //     cn -= new System.EventHandler(cn, playload_Changed);
-                    this.panelPayload.Controls.Remove(cn);
+                    panel.Controls.Remove(cn);
                     cn.Dispose();
                 }
             }
         }
 
         //create payload panel from constructor parameters
-        private void createControlPlayloadPanel(IList controlsList)
+        private void createControlPlayloadPanel(IList controlsList, Control panel)
         {
-            int labelTop = 2;
-            int labelLeft = 0;
-            int controlLeft = 140;
-            int offSet = 21;
-            int labelWidth = 135;
+            int labelWidth = 135;// 122;// 135;
+            int sizeWidth = 263;
+            int reverseShift = 5;   // paddind compensation for nested controls
             int controlWidth;
+            Panel tPanel;
+
+            Padding padding = new Padding(0,1,1,1);
+
+            Color[] bColor = {  Color.AliceBlue, 
+                                Color.Beige, 
+                                Color.AliceBlue, 
+                                Color.BlanchedAlmond, 
+                                Color.Linen,
+                                Color.GhostWhite,
+                                Color.Snow,
+                                Color.LightGoldenrodYellow,
+                                Color.WhiteSmoke };
+            Random rnd = new Random();
+
+            Stack<Panel> panels= new Stack<Panel>();
+            panels.Push((Panel)panel);
+
+            panelPayload.Visible = false;       //render off
 
             foreach (FieldProperty prop in controlsList)
             {
-                if (panelPayload.HasChildren)
+                //                 this.Refresh();
+                controlWidth = prop.fNull ? 113 : 128;
+                if (panels.Peek().Name != prop.fParentName && panels.Peek().Name != panel.Name)
                 {
-                    labelTop += offSet;
+                    tPanel = panels.Pop();  //go back to the previous panel
                 }
-                controlWidth = prop.fNull ? 125 : 140;
 
-                TextBox lb = new TextBox(); //Label();
-                lb.Enabled = false;
-                lb.BorderStyle = BorderStyle.FixedSingle;//.None;
-                lb.TextAlign = HorizontalAlignment.Right;
-                lb.Location = new Point(labelLeft, labelTop);
-                lb.Size = new Size(labelWidth, 20);
-                lb.Text = prop.fName;
-                //                    lb.AccessibleDescription = prop.fType;
-                panelPayload.Controls.Add(lb);
+                Label lb = new Label(); //Label();
+                lb.Name = prop.fName;
+                lb.AutoSize = false;
+                lb.Margin = padding;
+                if (prop.fType != "Constructor")
+                {
+                    lb.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+                    lb.Text = prop.fName;
+                    lb.Size = new Size(labelWidth - prop.fLevel * reverseShift, 20);
+                    panels.Peek().Controls.Add(lb);
+                }
+                else 
+                {
+                    lb.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+                    lb.Text = prop.fName + " constructor's"; //(panels.Peek().Name == "panelPayload" ? "Class: " : "subClass: ") + prop.fName + " constructor's";
+                    lb.Size = new Size(sizeWidth - prop.fLevel * reverseShift, 20);
+                    panels.Peek().Controls.Add(lb);
+                }
+
                 switch (prop.fForm)
                 {
                     case "TextBox":
                         TextBox tb = new TextBox();
-                        tb.Location = new Point(controlLeft, labelTop);
                         tb.Size = new Size(controlWidth, 20);
+                        tb.Margin = padding;
                         tb.Name = "" + prop.fName;
                         tb.AccessibleName = "Get";
                         tb.AccessibleDescription = prop.fType;                          //type in tooltype
                         tb.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                        tb.TextChanged += new EventHandler(GeyPayLoadStringFromForm);
-                        //    tb.EnabledChanged += new EventHandler(GeyPayLoadStringFromForm);
+                        tb.TextChanged += new EventHandler(GetPayloadStringFromForm);
                         switch (prop.fType)
                         {
                             case "Single":
@@ -151,60 +146,56 @@ namespace QRCoderArt
                                 tb.Text = prop.fDef == null ? "" : Convert.ToString(prop.fDef);
                                 break;
                         }
-                        panelPayload.Controls.Add(tb);
+                        panels.Peek().Controls.Add(tb);
                         if (prop.fNull)
                         {
                             CheckBox chtb = new CheckBox();
                             chtb.Size = new Size(13, 20);
-                            chtb.Location = new Point(controlLeft + controlWidth + 2, labelTop);
+                            chtb.Margin = padding;
                             chtb.Name = "" + prop.fName;
                             chtb.AccessibleDescription = "Nullable";                          //type in tooltype
                             chtb.MouseHover += new System.EventHandler(ToolTipMouseHover);
                             chtb.CheckedChanged += (sender, e) => tb.Enabled = (chtb.CheckState == CheckState.Checked); // GeyPayLoadStringFromForm(null, null);
-                            panelPayload.Controls.Add(chtb);
+                            panels.Peek().Controls.Add(chtb);
                             tb.Enabled = false;// chtb.Checked;
                         }
                         break;
                     case "CheckBox":
                         CheckBox chb = new CheckBox();
                         chb.Size = new Size(controlWidth, 20);
-                        chb.Location = new Point(controlLeft, labelTop);
+                        chb.Margin = padding;
                         chb.Name = "" + prop.fName;
                         chb.AccessibleName = "Get";
                         chb.AccessibleDescription = prop.fType;
-                        chb.CheckedChanged += new EventHandler(GeyPayLoadStringFromForm);
-                        //                 chb.Checked = Convert.ToBoolean(prop.fDef);// prop.fDef == null ? false : Convert.ToBoolean(prop.fDef);
-                        panelPayload.Controls.Add(chb);
+                        chb.CheckedChanged += new EventHandler(GetPayloadStringFromForm);
+                        panels.Peek().Controls.Add(chb);
                         break;
                     case "DateTime":
                         DateTimePicker dtp = new DateTimePicker();
                         dtp.Size = new Size(controlWidth, 20);
-                        dtp.Location = new Point(controlLeft, labelTop);
+                        dtp.Margin = padding;
                         dtp.Name = "" + prop.fName;
                         dtp.AccessibleName = "Get";
                         dtp.AccessibleDescription = prop.fType;
                         dtp.Format = DateTimePickerFormat.Short;
-                        dtp.ValueChanged += new EventHandler(GeyPayLoadStringFromForm);
-                        dtp.EnabledChanged += new EventHandler(GeyPayLoadStringFromForm);
-                        //           dtp.Value = prop.fDef == null ? DateTime.Today : Convert.ToDateTime(prop.fDef);
-                        panelPayload.Controls.Add(dtp);
+                        dtp.ValueChanged += new EventHandler(GetPayloadStringFromForm);
+                        dtp.EnabledChanged += new EventHandler(GetPayloadStringFromForm);
+                        panels.Peek().Controls.Add(dtp);
                         if (prop.fNull)
                         {
                             CheckBox chdtp = new CheckBox();
                             chdtp.Size = new Size(13, 20);
-                            chdtp.Location = new Point(controlLeft + controlWidth + 2, labelTop);
+                            chdtp.Margin = padding;
                             chdtp.Name = "" + prop.fName;
                             chdtp.AccessibleDescription = "Nullable";                          //type in tooltype
                             chdtp.MouseHover += new System.EventHandler(ToolTipMouseHover);
                             chdtp.CheckedChanged += (sender, e) => dtp.Enabled = (chdtp.CheckState == CheckState.Checked);// GeyPayLoadStringFromForm(null, null);
-                            panelPayload.Controls.Add(chdtp);
+                            panels.Peek().Controls.Add(chdtp);
                             dtp.Enabled = false;// chdtp.Checked;
                         }
                         break;
                     case "ComboBox":
                         ComboBox cmb = new ComboBox();
-                        cmb.Size = new Size(controlWidth, 20);
-                        cmb.Location = new Point(controlLeft, labelTop);
                         cmb.Name = "" + prop.fName;
                         cmb.AccessibleName = "Get";
                         cmb.AccessibleDescription = prop.fType;
@@ -212,13 +203,34 @@ namespace QRCoderArt
                         cmb.DisplayMember = "Key";                                            //Имя    
                         cmb.ValueMember = "Value";                                            //значение  
                         cmb.SelectedItem = 0;
-                        //  cmb.SelectedItem  = prop.fDef;// == null ? DateTime.Today : Convert.ToDateTime(prop.fDef);
                         cmb.DropDownStyle = ComboBoxStyle.DropDownList;
-                        cmb.SelectedIndexChanged += new EventHandler(GeyPayLoadStringFromForm);
-                        panelPayload.Controls.Add(cmb);
+                        if (prop.fType == "Constructor")
+                        {
+                            cmb.SelectedIndexChanged += new EventHandler(RebuildingPanelUpload);
+                            panels.Peek().Controls.Add(cmb);
+                            cmb.Size = new Size(sizeWidth - prop.fLevel * reverseShift, 20);
+
+                            FlowLayoutPanel cPanel = new FlowLayoutPanel();
+                            cPanel.Name = "" + prop.fName;
+                            cPanel.AutoSize = true;
+                            cPanel.Padding = new Padding(0,2,0,2);
+                            cPanel.BorderStyle = BorderStyle.FixedSingle;
+                            panels.Peek().Controls.Add(cPanel);
+                            panels.Push(cPanel);
+                            Control cntrl = this.FilterControls(c => c.Name != null && c.Name.Equals(prop.fName) && c is Label).First();
+                            cntrl.Text += " (" + prop.fList.Count.ToString() + ")";
+                        }
+                        else 
+                        {
+                            cmb.SelectedIndexChanged += new EventHandler(GetPayloadStringFromForm);
+                            cmb.Size = new Size(controlWidth, 20);
+                            cmb.Margin = padding;
+                            panels.Peek().Controls.Add(cmb);
+                        }
                         break;
                 }
             }
+            panelPayload.Visible = true;    //render on
         }
 
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
@@ -242,16 +254,54 @@ namespace QRCoderArt
                 }
             }
         }
+        //update Payload control panel
+        private void RebuildingPanelUpload(object sender, EventArgs e)
+        {
+            ComboBox combo = sender as ComboBox;
+            Control[] panel = combo.Name == "cbPayload" ?
+                                this.FilterControls(c => c.Name != null && c.Name.Equals("panelPayload") && c is FlowLayoutPanel) :
+                                this.FilterControls(c => c.Name != null && c.Name.Equals(combo.Name) && c is FlowLayoutPanel);
+            
+ //           string s = string.Join(@"\", panel[0].GetControlPath().Reverse());
+//            int i = panel[0].GetNestleLevel("panelPayload");
+            if (combo.SelectedItem != null)
+            {
+                completePayloadPanel = false;
+                removeControlPlayloadPanel(panel.First());               //clear payload panel
+                IList propToCntrl = null;
+                using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
+                {
+                    if (combo.Name == "cbPayload") 
+                    {
+                        propToCntrl = qqRef.GetParamsObject(qqRef.GetMemberByName(combo.Text));
+                    }
+                    else 
+                    {
+                        propToCntrl = qqRef.GetParamsCtor(((ConstructorInfo)((KeyValuePair<string, object>)combo.SelectedItem).Value), combo.Name, panel[0].GetNestleLevel("panelPayload"));
+                    }
+                }
+                createControlPlayloadPanel(propToCntrl, panel.First());    //create payload panel from constructor parameters
+                completePayloadPanel = true;
+                //!!!
+                GetPayloadStringFromForm(null, null);
+            }
+        }
+
         //get string Payload from panel control
-        private void GeyPayLoadStringFromForm(object sender, EventArgs e)
+        private void GetPayloadStringFromForm(object sender, EventArgs e)
         {
             if (completePayloadPanel)
             {
                 Dictionary<string, object> ParamFromControl = new Dictionary<string, object>();
                 object ret = null;
+                
+                var combo = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is ComboBox);
+        //        ComboBox cb = ((KeyValuePair<string, object>)((Type)combo[0]).SelectedItem).Value;
+                Control[] panel = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is FlowLayoutPanel);
+       
                 if (panelPayload.HasChildren)
                 {
-                    foreach (Control cntrl in panelPayload.Controls)
+                    foreach (Control cntrl in panel[0].Controls)
                     {
                         //                        if (cntrl.Created && cntrl.AccessibleName == "Get")
                         if (cntrl.Created && completePayloadPanel && cntrl.AccessibleName == "Get")
@@ -294,7 +344,7 @@ namespace QRCoderArt
                 }
                 using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
                 {
-                    textBoxQRCode.Text = qqRef.GetPayloadString(((KeyValuePair<string, ConstructorInfo>)cbConstructor.SelectedItem).Value, ParamFromControl);
+        //            textBoxQRCode.Text = qqRef.GetPayloadString(((KeyValuePair<string, ConstructorInfo>)((ComboBox)combo[0]).SelectedItem).Value, ParamFromControl);
 
                 }
             }
@@ -508,5 +558,61 @@ namespace QRCoderArt
             aboutForm a = new aboutForm();
             a.ShowDialog();
         }
+    }
+    /*-----------------------------------------------------------------------------------------------------------------------------------------------
+                 EXTENSION
+     ------------------------------------------------------------------------------------------------------------------------------------------------*/
+    static public class ControlExtensions
+    {
+        /// <summary>
+        /// Recurses through all controls, starting at given control,
+        /// and returns an array of those matching the given criteria.
+        /// </summary>
+        static public Control[] FilterControls(this Control start, Func<Control, bool> isMatch)
+        {
+            var matches = new List<Control>();
+
+            Action<Control> filter = null;
+            (filter = new Action<Control>(c => {
+                if (isMatch(c))
+                    matches.Add(c);
+                foreach (Control c2 in c.Controls)
+                    filter(c2);
+            }))(start);
+
+            //            Control[] arrMatches = ControlExtensions.FilterControls(start, isMatch);
+            //            return arrMatches.Length == 0 ? null : arrMatches[0];
+            return matches.ToArray();
+        }
+
+        public static IEnumerable<string> GetControlPath(this Control c)
+        {
+            yield return c.Name;
+            if (c.Parent != null)
+            {
+                Control parent = c.Parent;
+                while (parent != null)
+                {
+                    yield return parent.Name;
+                    parent = parent.Parent;
+                }
+            }
+        }
+
+        public static int GetNestleLevel(this Control c, string parentName)
+        {
+            int l = 1;
+            if (c.Parent != null && c.Name!= parentName)
+            {
+                Control parent = c.Parent;
+                while (parent.Name != parentName)
+                {
+                    l = l + 1;
+                    parent = parent.Parent;
+                }
+            }
+            return l;    
+        }
+
     }
 }

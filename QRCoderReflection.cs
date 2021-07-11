@@ -10,19 +10,16 @@ using System.Windows.Forms;
 
 namespace QRCoderArt
 {
-    class FieldProperty                                 //info to create Control WinForm
+    public class FieldProperty                          //info to create Control WinForm
     {
-        //constructor
-        //        public ConstructorInfo fCtor;                   //constructor object
-        //        public int nestingLevelCtor;                    //nesting level constructor
-        //control parameter to create formControl from constructor
-        public string fName;// { get; set; }            //name parameter 
-        public string fType;// { get; set; }            //type parameter 
-        public string fForm;// { get; set; }            //type control view to display on the form
-        public Dictionary<string, object> fList;        //data source for combobox control
-        public Boolean fNull;                           //presence of zero value for checkbox control
+        public int fLevel;                              //nesting level of the parameter
+        public string fParentName;                      //parentName (parameter block name) 
+        public string fName;                            //name parameter 
+        public string fType;                            //parameter data type name 
+        public string fForm;                            //name of the control type to display on the winform
+        public Dictionary<string, object> fList;        //winform control data source (for combobox)
+        public Boolean fNull;                           //presence of zero value (for checkbox)
         public object fDef;                             //default value    
-        public int fLevel;                              //nesting level constructor
     }
 
     public class QRCoderReflection : IDisposable
@@ -54,124 +51,45 @@ namespace QRCoderArt
                     select t.Name).ToList();
         }
 
-        //get the constructor dictionary for the drop-down list
-        public Dictionary<string, ConstructorInfo> GetConstructor(MemberInfo mi)
+        //get constructor dictionary
+        public Dictionary<string, object> GetConstructor(Type param)
         {
-            return (from ctor in ((Type)mi).GetConstructors()
+            return (from ctor in param.GetConstructors()
                     select new
                     {
                         name = ctor.GetParameters().Count() == 0 ? "the constructor is not used here" : string.Join(", ", ctor.GetParameters().Select(pr => pr.Name)),
                         ctor
-                    }).ToDictionary(k => k.name, v => v.ctor);
+                    }).ToDictionary(k => k.name, v => (Object)v.ctor);
         }
 
-        //get enum
+        //get enum dictionary
         private IDictionary<string, object> GetItemEnum(ParameterInfo param)
         {
             return param.ParameterType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v); ;
         }
 
-        //get field property to create control form
-        private int GetItemInfoForForm(object Param, string paramName, Type paramType, object defValue, List<FieldProperty> Params, int nestingLevel)
-        {
-            FieldProperty mParam = new FieldProperty { fName = paramName, fType = paramType.Name, fForm = "TextBox", fList = null, fNull = false, fDef = defValue, fLevel = nestingLevel };
-            if (paramType.IsClass && paramType.Namespace != "System")
-            {
-                mParam.fForm = "ComboBox";
-                mParam.fList = (from ctor in paramType.GetConstructors()
-                                select new
-                                {
-                                    name = ctor.GetParameters().Count() == 0 ? "the constructor is not used here" : string.Join(", ", ctor.GetParameters().Select(pr => pr.Name)),
-                                    ctor
-                                }).Cast<object>().ToDictionary(k => k.ToString(), v => v);
-                mParam.fLevel = nestingLevel + 1;
-                Params.Add(mParam);
-                foreach (var ctor in paramType.GetConstructors())
-                {
-                    foreach (var t in ctor.GetParameters())
-                    {
-                        if (!t.IsDefined(typeof(ObsoleteAttribute), true))
-                            GetItemInfoForForm(t, t.Name, t.ParameterType, t.DefaultValue, Params, mParam.fLevel);
-                    }
-                }
-            }
-            else
-            {
-                switch (paramType.Name)
-                {
-                    case "String":
-                    case "Double":
-                    case "Single":
-                    case "Int32":
-                    case "Decimal":
-                        mParam.fForm = "TextBox";
-                        break;
-                    case "DateTime":
-                        mParam.fForm = "DateTime";
-                        break;
-                    case "Nullable`1":
-                        mParam.fType = paramType.GenericTypeArguments.First().Name;
-                        mParam.fNull = true;
-                        switch (mParam.fType)
-                        {
-                            case "DateTime":
-                                mParam.fForm = "DateTime";
-                                break;
-                            default:
-                                mParam.fForm = "TextBox";
-                                break;
-                        }
-                        break;
-                    case "Boolean":
-                        mParam.fForm = "CheckBox";
-                        break;
-                    default:
-                        if (paramType.IsEnum)
-                        {
-                            mParam.fForm = "ComboBox";
-                            mParam.fList = paramType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
-                        }
-                        else
-                        {
-                        }
-                        break;
-                }
-                Params.Add(mParam);
-            }
-            return Params.Count;
-        }
-
-        private void SetGetItemInfoForForm(object Param)
-        {
-        }
         //get constructor parameters
-        public IList GetParamsConstuctor(ConstructorInfo ctor)
+        private void GetParamsConstuctor(ConstructorInfo ctor, List<FieldProperty> Params, int nestingLevel, string parentName)
         {
-            List<FieldProperty> Params = new List<FieldProperty>(); //list of parameters
-            int nestingLevel = 0;                                   //nesting level of the parameter
-
             //for pure (witout k__BackingField) names here we use GetProperties()  
             //from t in ctor.ReflectedType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) select t
 
             //constrictor without parameters = there is 'no constructor'
             IEnumerable queryProp = from t in ctor.ReflectedType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
                                     where !t.IsDefined(typeof(ObsoleteAttribute), true)
-                                   select GetItemInfoForForm(t, t.Name, t.PropertyType, null, Params, nestingLevel);
+                                   select GetItemInfoForForm(t, t.Name, t.PropertyType, null, Params, nestingLevel, parentName);
 
             //constrictor with parameters = there is 'constructor'
             IEnumerable queryParam = from t in ctor.GetParameters()
                                      where !t.IsDefined(typeof(ObsoleteAttribute), true)
-                                    select GetItemInfoForForm(t, t.Name, t.ParameterType, t.DefaultValue, Params, nestingLevel);
+                                    select GetItemInfoForForm(t, t.Name, t.ParameterType, t.DefaultValue, Params, nestingLevel, parentName);
 
             //Deferred Execution
-            foreach (object Param in ctor.GetParameters().Length == 0 ? queryProp : queryParam) { } //run function from query
-
-            return Params;
-
+            foreach (object Param in ctor.GetParameters().Length == 0 ? queryProp : queryParam){ }  //run function from query
         }
 
-        /***********************************************************************************************************
-          RUN
+        /**********************************************************************************************************
+          EXECUTE MEMBER
         ************************************************************************************************************/
         //initialize the constructor and execute the default method
         public string GetPayloadString(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm)
@@ -226,6 +144,130 @@ namespace QRCoderArt
             }
             return ret;
         }
+
+        /**********************************************************************************************************
+          START
+        ************************************************************************************************************/
+        /// <summary>
+        /// get list field propertys to create All control form member
+        /// input - member (name payload) reflection,
+        /// returns an list parameter member for create winform panel payload.
+        /// </summary>
+        public IList GetParamsObject(Object obj)
+        {
+            List<FieldProperty> Params = new List<FieldProperty>();                                 //list of parameters
+            int nestingLevel = 0;                                                                   //nesting level of the parameter
+
+            GetItemInfoForForm(obj, ((Type)obj).Name, (Type)obj, null, Params, nestingLevel,"");    //get parameter list
+            return Params;
+        }
+        /// <summary>
+        /// get list field propertys to create one control form constructor
+        /// input - constructor
+        /// returns an list parameter member for create winform panel payload.
+        /// </summary>
+        public IList GetParamsCtor(ConstructorInfo obj, string parentName, int nestingLevel)
+        {
+            List<FieldProperty> Params = new List<FieldProperty>();                                 //list of parameters
+            GetParamsConstuctor(obj, Params, nestingLevel, parentName);   //!!! attention - recursion
+            return Params;
+        }
+
+        /// <summary>
+        /// get field property to create control form
+        /// input - member (name payload) reflection,
+        /// returns an list parameter member for create winform panel payload.
+        /// </summary>
+        private int GetItemInfoForForm(object Param, string paramName, Type paramType, object defValue, List<FieldProperty> Params, int nestingLevel, string paramParent)
+        {
+            FieldProperty mParam = new FieldProperty();// { fName = paramName, fType = paramType.Name, fForm = "TextBox", fList = null, fNull = false, fDef = defValue, fLevel = nestingLevel };
+            if (paramType.IsClass && paramType.Namespace != "System")
+            {
+                if (nestingLevel > 1)
+                    nestingLevel--;
+
+                mParam.fParentName = nestingLevel == 0 ? "" : paramParent;// paramName; ;
+                mParam.fName = paramName; //"ctor_" +paramName;
+                mParam.fType = "Constructor";
+                mParam.fForm = "ComboBox";
+                mParam.fList = GetConstructor(paramType);// (((Type)Param));
+                                                         //                mParam.fNull
+                                                         //                mParam.fDef
+
+ //               nestingLevel++;
+                mParam.fLevel = nestingLevel;
+
+                Params.Add(mParam);
+                nestingLevel ++;
+
+                GetParamsConstuctor((ConstructorInfo)mParam.fList.Values.First(), Params, nestingLevel, mParam.fName);   //!!! attention - recursion
+                /*
+                foreach (var ctor in mParam.fList.Values)
+                {
+                    GetParamsConstuctor((ConstructorInfo)ctor, Params, nestingLevel, mParam.fParentName);   //!!! attention - recursion
+                }
+                */
+            }
+            else
+            {
+                mParam.fParentName = paramParent;
+                mParam.fName = paramName;
+                mParam.fType = paramType.Name;
+//                mParam.fForm 
+//                mParam.fList 
+//                mParam.fNull 
+                mParam.fDef = defValue;
+                mParam.fLevel = nestingLevel;
+
+                switch (paramType.Name)
+                {
+                    case "String":
+                    case "Double":
+                    case "Single":
+                    case "Int32":
+                    case "Decimal":
+                        mParam.fForm = "TextBox";
+                        break;
+                    case "DateTime":
+                        mParam.fForm = "DateTime";
+                        break;
+                    case "Nullable`1":
+                        mParam.fType = paramType.GenericTypeArguments.First().Name;
+                        mParam.fNull = true;
+                        switch (mParam.fType)
+                        {
+                            case "DateTime":
+                                mParam.fForm = "DateTime";
+                                break;
+                            default:
+                                mParam.fForm = "TextBox";
+                                break;
+                        }
+                        break;
+                    case "Boolean":
+                        mParam.fForm = "CheckBox";
+                        break;
+                    default:
+                        if (paramType.IsEnum)
+                        {
+                            mParam.fForm = "ComboBox";
+                            mParam.fList = paramType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
+                        }
+                        else
+                        {
+                        }
+                        break;
+                }
+                Params.Add(mParam);
+            }
+            return Params.Count;
+        }
+
+
+
+
+
+
 
     }
 }
