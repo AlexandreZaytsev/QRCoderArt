@@ -61,9 +61,9 @@ current state 07.07.2021 ([+] ok; [ ] trying to implement)
 - [ ] SwissQrCode 
   - (Iban iban, Currency currency, Contact creditor, Reference reference, AdditionalInformation additionalInformation = null, Contact debitor = null, decimal? amount = null, DateTime? requestedDateOfPayment = null, Contact ultimateCreditor = null, string alternativeProcedure1 = null, string alternativeProcedure2 = null)  
 ***still in operation (several nested classes)***
-- [ ] Girocode
+- [x] Girocode
   - (string iban, string bic, string name, decimal amount, string remittanceInformation = "", TypeOfRemittance typeOfRemittance = TypeOfRemittance.Unstructured, string purposeOfCreditTransfer = "", string messageToGirocodeUser = "", GirocodeVersion version = GirocodeVersion.Version1, GirocodeEncoding encoding = GirocodeEncoding.ISO_8859_1)   
-  ***still in work (not yet figured out)***
+  ***default variables (iban, bic, amount) are not specified***
 - [ ] BezahlCode
   - (AuthorityType authority, string name, string account = "", string bnc = "", string iban = "", string bic = "", string reason = "") : this(authority, name, account, bnc, iban, bic, 0, string.Empty, 0, null, null, string.Empty, string.Empty, null, reason, 0, string.Empty, Currency.EUR, null, 1)     
   ***still in work (not yet figured out)***
