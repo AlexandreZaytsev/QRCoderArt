@@ -261,8 +261,9 @@ namespace QRCoderArt
                             //https://stackoverflow.com/questions/577092/c-sharp-gui-control-for-editing-a-dictionary
                             if (paramParent == "ShadowSocksConfig" && paramName == "parameters")
                             {
-                                mParam.fForm = "Button"; //"Dictionary`2"
+                                //mParam.fForm = "Button"; //"Dictionary`2"
                                 //mParam.fList = (new Dictionary<string, string> {["plugin"] = "plugin" + (string.IsNullOrEmpty("pluginOption") ? "" : $";" + $"{"pluginOption"}")}).Values.Cast<object>().ToDictionary(k => k.ToString(), v => v); ;
+                                mParam.fForm = "dataGridView";
                             }
                         }
                         else 

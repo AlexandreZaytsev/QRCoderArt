@@ -107,6 +107,8 @@ namespace QRCoderArt
             {
                 //                 this.Refresh();
                 controlWidth = prop.fNull ? 113 : 128;
+//                controlWidth = prop.fNull ? 103 : 128;
+
                 if (panels.Peek().Name != prop.fParentName && panels.Peek().Name != panel.Name)
                 {
                     tPanel = panels.Pop();  //go back to the previous panel
@@ -180,12 +182,49 @@ namespace QRCoderArt
                         chb.CheckedChanged += new EventHandler(GetPayloadStringFromForm);
                         panels.Peek().Controls.Add(chb);
                         break;
-                    case "Button":          //for custom parameter
+                    case "dataGridView":
+
+                        DataGridViewTextBoxColumn plugin = new DataGridViewTextBoxColumn();
+                        plugin.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+                        plugin.FillWeight = 50F;
+                        plugin.HeaderText = "plugin";
+                        plugin.MinimumWidth = 22;
+                        plugin.Name = "plugin";
+                        plugin.Width = 25;
+
+                        DataGridViewTextBoxColumn pluginOption = new DataGridViewTextBoxColumn();
+                        pluginOption.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+                        pluginOption.FillWeight = 50F;
+                        pluginOption.HeaderText = "pluginOption";
+                        pluginOption.MinimumWidth = 22;
+                        pluginOption.Name = "pluginOption";
+                        pluginOption.Width = 25;
+
+                        DataGridView dgv = new DataGridView();
+                        dgv.Size = new Size(103, 20);
+                        dgv.Margin = padding;
+                        dgv.Name = "" + prop.fName;
+                        dgv.TabIndex = 2;
+                        dgv.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {plugin, pluginOption});
+                        dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                        dgv.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                        dgv.AccessibleName = "Get";
+                        dgv.AccessibleDescription = prop.fType;
+                        //     dgv.Format = DateTimePickerFormat.Short;
+                        //     dtp.ValueChanged += new EventHandler(GetPayloadStringFromForm);
+                        //     dtp.EnabledChanged += new EventHandler(GetPayloadStringFromForm);
+
+
+
+                        panels.Peek().Controls.Add(dgv);
+
+                        //break;
+                        // case "Button":          //for custom parameter
                         Button bt = new Button();
-                        bt.Size = new Size(controlWidth, 20);
+                        bt.Size = new Size(23, 20);
                         bt.Margin = padding;
                         bt.Name = "" + prop.fName;
-                        bt.Text = "Custom parameter";
+                        bt.Text = "...";
                         bt.AccessibleName = "";// "Get";
                   //    bt.Enabled = false;
                         bt.FlatStyle = FlatStyle.System;
@@ -610,7 +649,6 @@ namespace QRCoderArt
             aboutForm a = new aboutForm();
             a.ShowDialog();
         }
-
 
     }
     /*-----------------------------------------------------------------------------------------------------------------------------------------------
