@@ -309,95 +309,90 @@ namespace QRCoderArt
             }
         }
 
-        //get string (invoke ToString() execute) Payload from panel control
-        private void GetPayloadStringFromForm(object sender, EventArgs e)
+        //get param from panel control
+        private Dictionary<string, object> GetParamFromPanel(FlowLayoutPanel panel)
+        {
+            object ret = null;
+            Dictionary<string, object> ParamFromControl = new Dictionary<string, object>();
+            if (panelPayload.HasChildren)
+            {
+                foreach (Control cntrl in panel.Controls)
+                {
+                    if (cntrl.Created && cntrl.AccessibleName == "Get")
+                    {
+                        ret = null;
+                        if (cntrl.Enabled)
+                        {
+                            switch (cntrl.AccessibleDescription)
+                            {
+                                case "String":
+                                    ret = ((TextBox)cntrl).Text;
+                                    break;
+                                case "Double":
+                                    ret = Convert.ToDouble(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
+                                    break;
+                                case "Single":
+                                    ret = Convert.ToSingle(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
+                                    break;
+                                case "Int32":
+                                    ret = Convert.ToInt32(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
+                                    break;
+                                case "Decimal":
+                                    ret = Convert.ToDecimal(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
+                                    break;
+                                case "Boolean":
+                                    ret = ((CheckBox)cntrl).Checked;
+                                    break;
+                                case "DateTime":
+                                    ret = ((DateTimePicker)cntrl).Value;
+                                    break;
+                                default:
+                                    if (cntrl.GetType().Name == "ComboBox")
+                                        ret = ((KeyValuePair<string, object>)((ComboBox)cntrl).SelectedItem).Value;
+                                    break;
+                            }
+                        }
+                        ParamFromControl.Add(cntrl.Name, ret);
+                    }
+                }
+            }    
+            return ParamFromControl;
+        }
+
+            //get string (invoke ToString() execute) Payload from panel control
+            private void GetPayloadStringFromForm(object sender, EventArgs e)
         {
             if (readyState[0] && readyState[1] && readyState[2])            //full ready:= Data preparation completed && form load && form show
             {
-                Dictionary<string, object> ParamFromControl = new Dictionary<string, object>();
+                Dictionary<string, object> ParamFromControl = null;// = new Dictionary<string, object>();
                 object ret = null;
+                //collect all current payload constructors
                 Control[] ctrls = panelPayload.FilterControls(c => c.Name != null
                                                         && c.AccessibleDescription != null
                                                         && c.AccessibleDescription == "Constructor"
                                                         && c is ComboBox);
-         
- //               for (int i = ctrls.Count() - 1; i >= 0; i--)
+                //init ctor from panel controls         
                 for (int i = 0; i < ctrls.Count(); i++)
                  {
                     ComboBox cb = (ComboBox)ctrls[i];
                     ConstructorInfo ctor = (ConstructorInfo)((KeyValuePair<string, object>)cb.SelectedItem).Value;
                     Control[] pan = panelPayload.FilterControls(c => c.Name != null
-                                                            && c.Name == cb.Name && c is Panel);
+                                                            && c.Name == cb.Name && c is FlowLayoutPanel);
 
                 }
 
-                /*
-                Hashtable ht = from t in panelPayload.FilterControls(c => c.Name != null
-                                                        && c.AccessibleDescription != null
-                                                        && c.AccessibleDescription == "Constructor"
-                                                        && c is ComboBox)
-                               select new {c=((KeyValuePair<string, object>)t).SelectedItem).Value });
-                */
-
-
                 //        ComboBox cb = ((KeyValuePair<string, object>)((Type)combo[0]).SelectedItem).Value;
                 Control[] panel = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is FlowLayoutPanel);
-       
-                if (panelPayload.HasChildren)
+                FlowLayoutPanel fpanel = (FlowLayoutPanel)panel[0];
+                ParamFromControl = GetParamFromPanel(fpanel);
+
+                using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
                 {
-                    foreach (Control cntrl in panel[0].Controls)
-                    {
-                        //                        if (cntrl.Created && cntrl.AccessibleName == "Get")
-                        if (cntrl.Created && cntrl.AccessibleName == "Get")
-                        {
-                            ret = null;
-                            if (cntrl.Enabled)
-                            {
-                                switch (cntrl.AccessibleDescription)
-                                {
-                                    case "String":
-                                        ret = ((TextBox)cntrl).Text;
-                                        break;
-                                    case "Double":
-                                        ret = Convert.ToDouble(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
-                                        break;
-                                    case "Single":
-                                        ret = Convert.ToSingle(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
-                                        break;
-                                    case "Int32":
-                                        ret = Convert.ToInt32(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
-                                        break;
-                                    case "Decimal":
-                                        ret = Convert.ToDecimal(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
-                                        break;
-                                    case "Boolean":
-                                        ret = ((CheckBox)cntrl).Checked;
-                                        break;
-                                    case "DateTime":
-                                        ret = ((DateTimePicker)cntrl).Value;
-                                        break;
-                                    default:
-                                        if (cntrl.GetType().Name == "ComboBox")
-                                            ret = ((KeyValuePair<string, object>)((ComboBox)cntrl).SelectedItem).Value;
-                                        break;
-                                }
-                            }
-                            ParamFromControl.Add(cntrl.Name, ret);
-                        }
-                    }
-
-
-                    using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
-                    {
-                        Control[] cmb = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is ComboBox);
-                        ComboBox cm = (ComboBox)cmb[0];
-                        ConstructorInfo ctrm = (ConstructorInfo)((System.Collections.Generic.KeyValuePair<string, object>)cm.SelectedItem).Value;
-                        textBoxQRCode.Text = qqRef.GetPayloadString(ctrm, ParamFromControl);
+                     Control[] cmb = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is ComboBox);
+                     ComboBox cm = (ComboBox)cmb[0];
+                     ConstructorInfo ctrm = (ConstructorInfo)((System.Collections.Generic.KeyValuePair<string, object>)cm.SelectedItem).Value;
+                     textBoxQRCode.Text = qqRef.GetPayloadString(ctrm, ParamFromControl);
                         //         textBoxQRCode.Text = qqRef.GetPayloadString(((System.Collections.Generic.KeyValuePair<string, object>)cm.SelectedItem).Value, ParamFromControl);
-
-                    }
-
-
                 }
             }
         }
