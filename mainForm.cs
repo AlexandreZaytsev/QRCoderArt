@@ -371,13 +371,14 @@ namespace QRCoderArt
             if (readyState[0] && readyState[1] && readyState[2])            //full ready:= Data preparation completed && form load && form show
             {
                 Dictionary<string, object> ParamFromControl = null;// = new Dictionary<string, object>();
-                object ret = null;
+
+/*
                 //collect all current payload constructors
                 Control[] ctrls = panelPayload.FilterControls(c => c.Name != null
                                                         && c.AccessibleDescription != null
                                                         && c.AccessibleDescription == "Constructor"
                                                         && c is ComboBox);
-                //init ctor from panel controls         
+                //init all ctor from panel controls         
                 for (int i = 0; i < ctrls.Count(); i++)
                  {
                     ComboBox cb = (ComboBox)ctrls[i];
@@ -386,7 +387,9 @@ namespace QRCoderArt
                                                             && c.Name == cb.Name && c is FlowLayoutPanel);
 
                 }
+*/
 
+                //init single ctor from panel controls (delete later)
                 Control[] panel = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is FlowLayoutPanel);
                 ParamFromControl = GetParamFromPanel((FlowLayoutPanel)panel[0]);
 
