@@ -17,6 +17,7 @@ namespace QRCoderArt
 
     public partial class mainForm : Form
     {
+        //To fix errors (when controls have not yet been created) at the first
         private bool[] readyState = {false,     //Data preparation completed
                                      false,     //MainForm is Load
                                      false };   //Mainform is Show    
@@ -40,14 +41,12 @@ namespace QRCoderArt
         }
 
 
-
         private void Form1_Load(object sender, EventArgs e)
         {
             comboBoxECC.SelectedIndex = 0; //Pre-select ECC level "L"
             textBoxQRCode.Text = "enter your text or select payload + constructor + fill in the parameters";
             readyState[1] = true;           //MainForm is Load
         }
-
         private void mainForm_Shown(object sender, EventArgs e)
         {
             readyState[2] = true;           //Mainform is Show
@@ -287,8 +286,6 @@ namespace QRCoderArt
                                 this.FilterControls(c => c.Name != null && c.Name.Equals("panelPayload") && c is FlowLayoutPanel) :
                                 this.FilterControls(c => c.Name != null && c.Name.Equals(combo.Name) && c is FlowLayoutPanel);
             
- //           string s = string.Join(@"\", panel[0].GetControlPath().Reverse());
-//            int i = panel[0].GetNestleLevel("panelPayload");
             if (combo.SelectedItem != null)
             {
                 readyState[0] = false;                                      //full ready:= Data preparation not completed
@@ -312,7 +309,7 @@ namespace QRCoderArt
             }
         }
 
-        //get string Payload from panel control
+        //get string (invoke ToString() execute) Payload from panel control
         private void GetPayloadStringFromForm(object sender, EventArgs e)
         {
             if (readyState[0] && readyState[1] && readyState[2])            //full ready:= Data preparation completed && form load && form show
