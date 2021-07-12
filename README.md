@@ -85,7 +85,7 @@ current state 07.07.2021 ([+] ok; [ ] trying to implement)
 ***default variables (port) are not specified***
   - (string hostname, int port, string password, Method method, Dictionary<string, string> parameters, string tag = null)  
 ***setting a custom parameter (Dictionary parameters) (not currently used); still in work (not yet figured out)***
-- [ ] MoneroTransaction
+- [x] MoneroTransaction
   - (string address, float? txAmount = null, string txPaymentId = null, string recipientName = null, string txDescription = null)  
 ***default variables (address) are not specified***
 - [X] SlovenianUpnQr
