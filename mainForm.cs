@@ -381,18 +381,14 @@ namespace QRCoderArt
 
                 }
 
-                //        ComboBox cb = ((KeyValuePair<string, object>)((Type)combo[0]).SelectedItem).Value;
                 Control[] panel = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is FlowLayoutPanel);
-                FlowLayoutPanel fpanel = (FlowLayoutPanel)panel[0];
-                ParamFromControl = GetParamFromPanel(fpanel);
+                ParamFromControl = GetParamFromPanel((FlowLayoutPanel)panel[0]);
 
                 using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
                 {
                      Control[] cmb = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is ComboBox);
-                     ComboBox cm = (ComboBox)cmb[0];
-                     ConstructorInfo ctrm = (ConstructorInfo)((System.Collections.Generic.KeyValuePair<string, object>)cm.SelectedItem).Value;
+                     ConstructorInfo ctrm = (ConstructorInfo)((System.Collections.Generic.KeyValuePair<string, object>)((ComboBox)cmb[0]).SelectedItem).Value;
                      textBoxQRCode.Text = qqRef.GetPayloadString(ctrm, ParamFromControl);
-                        //         textBoxQRCode.Text = qqRef.GetPayloadString(((System.Collections.Generic.KeyValuePair<string, object>)cm.SelectedItem).Value, ParamFromControl);
                 }
             }
         }
