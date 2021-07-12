@@ -258,6 +258,7 @@ namespace QRCoderArt
                         else if (paramType.IsGenericType)
                         {
                             //!!! Exception
+                            //https://stackoverflow.com/questions/577092/c-sharp-gui-control-for-editing-a-dictionary
                             if (paramParent == "ShadowSocksConfig" && paramName == "parameters")
                             {
                                 mParam.fForm = "Button"; //"Dictionary`2"

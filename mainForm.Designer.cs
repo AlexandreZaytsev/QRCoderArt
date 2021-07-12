@@ -105,8 +105,8 @@ namespace QRCoderArt
             this.pictureBoxQRCode.InitialImage = global::QRCoderArt.Properties.Resources.qr1;
             this.pictureBoxQRCode.Location = new System.Drawing.Point(3, 3);
             this.pictureBoxQRCode.Name = "pictureBoxQRCode";
-            this.pictureBoxQRCode.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.pictureBoxQRCode.Size = new System.Drawing.Size(394, 322);
+            this.pictureBoxQRCode.Padding = new System.Windows.Forms.Padding(3);
+            this.pictureBoxQRCode.Size = new System.Drawing.Size(394, 323);
             this.pictureBoxQRCode.TabIndex = 2;
             this.pictureBoxQRCode.TabStop = false;
             // 
@@ -495,7 +495,7 @@ namespace QRCoderArt
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.panelPayload);
             this.panel2.Location = new System.Drawing.Point(410, 128);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(296, 431);
             this.panel2.TabIndex = 33;
@@ -517,7 +517,7 @@ namespace QRCoderArt
             | System.Windows.Forms.AnchorStyles.Right)));
             this.outSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.outSplitContainer.Location = new System.Drawing.Point(3, 7);
-            this.outSplitContainer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.outSplitContainer.Margin = new System.Windows.Forms.Padding(2);
             this.outSplitContainer.Name = "outSplitContainer";
             this.outSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -543,7 +543,7 @@ namespace QRCoderArt
             this.panel3.Controls.Add(this.buttonSave);
             this.panel3.Controls.Add(this.label4);
             this.panel3.Location = new System.Drawing.Point(3, 526);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(402, 33);
             this.panel3.TabIndex = 3;
