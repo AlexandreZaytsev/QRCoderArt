@@ -17,8 +17,9 @@ namespace QRCoderArt
 
     public partial class mainForm : Form
     {
-        private bool completePayloadPanel = false;
-
+        private bool[] readyState = {false,     //Data preparation completed
+                                     false,     //MainForm is Load
+                                     false };   //Mainform is Show    
         public mainForm()
         {
             InitializeComponent();
@@ -36,7 +37,6 @@ namespace QRCoderArt
 
             this.viewMode.DataSource = Enum.GetValues(typeof(ImageLayout));
             this.viewMode.SelectedIndex = 4;
-
         }
 
 
@@ -45,7 +45,12 @@ namespace QRCoderArt
         {
             comboBoxECC.SelectedIndex = 0; //Pre-select ECC level "L"
             textBoxQRCode.Text = "enter your text or select payload + constructor + fill in the parameters";
-            //      GeyPayLoadStringFromForm(null, null);
+            readyState[1] = true;           //MainForm is Load
+        }
+
+        private void mainForm_Shown(object sender, EventArgs e)
+        {
+            readyState[2] = true;           //Mainform is Show
         }
 
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
@@ -196,9 +201,10 @@ namespace QRCoderArt
                         break;
                     case "ComboBox":
                         ComboBox cmb = new ComboBox();
+//                        cmb.BeginUpdate();
                         cmb.Name = "" + prop.fName;
                         cmb.AccessibleName = "Get";
-                        cmb.AccessibleDescription = prop.fType;
+                        //cmb.AccessibleDescription = prop.fType;
                         cmb.DataSource = new BindingSource(prop.fList, null);   //получить конструкторы member
                         cmb.DisplayMember = "Key";                                            //Имя    
                         cmb.ValueMember = "Value";                                            //значение  
@@ -206,9 +212,12 @@ namespace QRCoderArt
                         cmb.DropDownStyle = ComboBoxStyle.DropDownList;
                         if (prop.fType == "Constructor")
                         {
+                            //  cmb.Name += "ctor_";
+                            cmb.AccessibleDescription = "Constructor";
                             cmb.SelectedIndexChanged += new EventHandler(RebuildingPanelUpload);
                             panels.Peek().Controls.Add(cmb);
                             cmb.Size = new Size(sizeWidth - prop.fLevel * reverseShift, 20);
+
 
                             FlowLayoutPanel cPanel = new FlowLayoutPanel();
                             cPanel.Name = "" + prop.fName;
@@ -217,6 +226,7 @@ namespace QRCoderArt
                             cPanel.BorderStyle = BorderStyle.FixedSingle;
                             panels.Peek().Controls.Add(cPanel);
                             panels.Push(cPanel);
+
                             Control cntrl = this.FilterControls(c => c.Name != null && c.Name.Equals(prop.fName) && c is Label).First();
                             cntrl.Text += " (" + prop.fList.Count.ToString() + ")";
                         }
@@ -227,6 +237,7 @@ namespace QRCoderArt
                             cmb.Margin = padding;
                             panels.Peek().Controls.Add(cmb);
                         }
+  //                      cmb.EndUpdate();
                         break;
                 }
             }
@@ -266,8 +277,8 @@ namespace QRCoderArt
 //            int i = panel[0].GetNestleLevel("panelPayload");
             if (combo.SelectedItem != null)
             {
-                completePayloadPanel = false;
-                removeControlPlayloadPanel(panel.First());               //clear payload panel
+                readyState[0] = false;                                      //full ready:= Data preparation not completed
+                removeControlPlayloadPanel(panel.First());                  //clear payload panel
                 IList propToCntrl = null;
                 using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
                 {
@@ -281,8 +292,8 @@ namespace QRCoderArt
                     }
                 }
                 createControlPlayloadPanel(propToCntrl, panel.First());    //create payload panel from constructor parameters
-                completePayloadPanel = true;
-                //!!!
+//                this.Refresh();
+                readyState[0] = true;                                      //full ready:= Data preparation completed
                 GetPayloadStringFromForm(null, null);
             }
         }
@@ -290,13 +301,35 @@ namespace QRCoderArt
         //get string Payload from panel control
         private void GetPayloadStringFromForm(object sender, EventArgs e)
         {
-            if (completePayloadPanel)
+            if (readyState[0] && readyState[1] && readyState[2])            //full ready:= Data preparation completed && form load && form show
             {
                 Dictionary<string, object> ParamFromControl = new Dictionary<string, object>();
                 object ret = null;
-                
-                var combo = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is ComboBox);
-        //        ComboBox cb = ((KeyValuePair<string, object>)((Type)combo[0]).SelectedItem).Value;
+                Control[] ctrls = panelPayload.FilterControls(c => c.Name != null
+                                                        && c.AccessibleDescription != null
+                                                        && c.AccessibleDescription == "Constructor"
+                                                        && c is ComboBox);
+         
+ //               for (int i = ctrls.Count() - 1; i >= 0; i--)
+                for (int i = 0; i < ctrls.Count(); i++)
+                 {
+                    ComboBox cb = (ComboBox)ctrls[i];
+                    ConstructorInfo ctor = (ConstructorInfo)((KeyValuePair<string, object>)cb.SelectedItem).Value;
+                    Control[] pan = panelPayload.FilterControls(c => c.Name != null
+                                                            && c.Name == cb.Name && c is Panel);
+
+                }
+
+                /*
+                Hashtable ht = from t in panelPayload.FilterControls(c => c.Name != null
+                                                        && c.AccessibleDescription != null
+                                                        && c.AccessibleDescription == "Constructor"
+                                                        && c is ComboBox)
+                               select new {c=((KeyValuePair<string, object>)t).SelectedItem).Value });
+                */
+
+
+                //        ComboBox cb = ((KeyValuePair<string, object>)((Type)combo[0]).SelectedItem).Value;
                 Control[] panel = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is FlowLayoutPanel);
        
                 if (panelPayload.HasChildren)
@@ -304,7 +337,7 @@ namespace QRCoderArt
                     foreach (Control cntrl in panel[0].Controls)
                     {
                         //                        if (cntrl.Created && cntrl.AccessibleName == "Get")
-                        if (cntrl.Created && completePayloadPanel && cntrl.AccessibleName == "Get")
+                        if (cntrl.Created && cntrl.AccessibleName == "Get")
                         {
                             ret = null;
                             if (cntrl.Enabled)
@@ -566,6 +599,8 @@ namespace QRCoderArt
             aboutForm a = new aboutForm();
             a.ShowDialog();
         }
+
+
     }
     /*-----------------------------------------------------------------------------------------------------------------------------------------------
                  EXTENSION
