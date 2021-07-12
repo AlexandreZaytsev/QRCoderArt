@@ -84,7 +84,7 @@ current state 07.07.2021 ([+] ok; [ ] trying to implement)
   - (string hostname, int port, string password, Method method, string plugin, string pluginOption, string tag = null)  
 ***default variables (port) are not specified***
   - (string hostname, int port, string password, Method method, Dictionary<string, string> parameters, string tag = null)  
-***still in work (not yet figured out)***
+***setting a custom parameter (not currently used); still in work (not yet figured out)***
 - [ ] MoneroTransaction
   - (string address, float? txAmount = null, string txPaymentId = null, string recipientName = null, string txDescription = null)  
 ***default variables (address) are not specified***

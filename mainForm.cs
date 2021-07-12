@@ -175,6 +175,20 @@ namespace QRCoderArt
                         chb.CheckedChanged += new EventHandler(GetPayloadStringFromForm);
                         panels.Peek().Controls.Add(chb);
                         break;
+                    case "Button":          //for custom parameter
+                        Button bt = new Button();
+                        bt.Size = new Size(controlWidth, 20);
+                        bt.Margin = padding;
+                        bt.Name = "" + prop.fName;
+                        bt.Text = "Custom parameter";
+                        bt.AccessibleName = "";// "Get";
+                  //    bt.Enabled = false;
+                        bt.FlatStyle = FlatStyle.System;
+                        bt.AccessibleDescription = "setting a custom parameter (not currently used)";// prop.fType;
+                        bt.MouseHover += new System.EventHandler(ToolTipMouseHover);
+                        //chb.CheckedChanged += new EventHandler(GetPayloadStringFromForm);
+                        panels.Peek().Controls.Add(bt);
+                        break;
                     case "DateTime":
                         DateTimePicker dtp = new DateTimePicker();
                         dtp.Size = new Size(controlWidth, 20);

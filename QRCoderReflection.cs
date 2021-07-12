@@ -181,7 +181,7 @@ namespace QRCoderArt
         private int GetItemInfoForForm(object Param, string paramName, Type paramType, object defValue, List<FieldProperty> Params, int nestingLevel, string paramParent)
         {
             FieldProperty mParam = new FieldProperty();// { fName = paramName, fType = paramType.Name, fForm = "TextBox", fList = null, fNull = false, fDef = defValue, fLevel = nestingLevel };
-            if (paramType.IsClass && paramType.Namespace != "System")
+            if (paramType.IsClass && paramType.Namespace != "System" && !paramType.IsGenericType)
             {
                 if (nestingLevel > 1)
                     nestingLevel--;
@@ -244,6 +244,8 @@ namespace QRCoderArt
                                 break;
                         }
                         break;
+//                    case "Dictionary`2":
+//                        break:
                     case "Boolean":
                         mParam.fForm = "CheckBox";
                         break;
@@ -253,7 +255,16 @@ namespace QRCoderArt
                             mParam.fForm = "ComboBox";
                             mParam.fList = paramType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
                         }
-                        else
+                        else if (paramType.IsGenericType)
+                        {
+                            //!!! Exception
+                            if (paramParent == "ShadowSocksConfig" && paramName == "parameters")
+                            {
+                                mParam.fForm = "Button"; //"Dictionary`2"
+                                //mParam.fList = (new Dictionary<string, string> {["plugin"] = "plugin" + (string.IsNullOrEmpty("pluginOption") ? "" : $";" + $"{"pluginOption"}")}).Values.Cast<object>().ToDictionary(k => k.ToString(), v => v); ;
+                            }
+                        }
+                        else 
                         {
                         }
                         break;
