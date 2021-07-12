@@ -81,16 +81,22 @@ namespace QRCoderArt
 
             Padding padding = new Padding(0,1,1,1);
 
-            Color[] bColor = {  Color.AliceBlue, 
-                                Color.Beige, 
-                                Color.AliceBlue, 
-                                Color.BlanchedAlmond, 
-                                Color.Linen,
-                                Color.GhostWhite,
-                                Color.Snow,
-                                Color.LightGoldenrodYellow,
-                                Color.WhiteSmoke };
-            Random rnd = new Random();
+            /* to paint panels in random colors
+              
+                        Color[] bColor = {  Color.AliceBlue, 
+                                            Color.Beige, 
+                                            Color.AliceBlue, 
+                                            Color.BlanchedAlmond, 
+                                            Color.Linen,
+                                            Color.GhostWhite,
+                                            Color.Snow,
+                                            Color.LightGoldenrodYellow,
+                                            Color.WhiteSmoke };
+                        Random rnd = new Random();
+                        ...
+                    foreach
+                        ...Color = bColor[rnd.Next(0, 8)];
+            */
 
             Stack<Panel> panels= new Stack<Panel>();
             panels.Push((Panel)panel);
