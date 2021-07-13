@@ -24,7 +24,7 @@ pps
 если сможете помочь - будет - супер
  
 ![QRCoderArtInfo](https://user-images.githubusercontent.com/16114000/124744118-168d2700-df27-11eb-9cea-66fa37da21a5.png)
-
+![payload](https://user-images.githubusercontent.com/16114000/125486591-23b995d2-3a1e-44b3-bf25-cbca1393af51.png)
 ***
 ps.
 current state 07.07.2021 ([+] ok; [ ] trying to implement)
