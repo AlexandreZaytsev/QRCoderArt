@@ -12,8 +12,7 @@ namespace QRCoderArt
 {
     public partial class dictionaryForm : Form
     {
-        public Dictionary<String, String> property;// = new Dictionary<String, String>();
-        //        public Dictionary<String, String> property;
+//        public Dictionary<String, String> property;// = new Dictionary<String, String>();
         private string cntrlName;
         private string cntrlParentName;
 
@@ -27,13 +26,13 @@ namespace QRCoderArt
         {
             Dictionary<String, String> property = new Dictionary<String, String>();
             property.Clear();
-            for (int i = 0; i < dataGridView2.RowCount; i++)
+            for (int i = 0; i < dataGridViewProperty.RowCount; i++)
             {
-                if (dataGridView2[0, i].Value !=null && dataGridView2[1, i].Value != null) 
+                if (dataGridViewProperty[0, i].Value !=null && dataGridViewProperty[1, i].Value != null) 
                 {
-                    if (!property.ContainsKey(dataGridView2[0, i].Value.ToString())) 
+                    if (!property.ContainsKey(dataGridViewProperty[0, i].Value.ToString())) 
                     {
-                        property.Add(dataGridView2[0, i].Value.ToString(), dataGridView2[1, i].Value.ToString());
+                        property.Add(dataGridViewProperty[0, i].Value.ToString(), dataGridViewProperty[1, i].Value.ToString());
                     }
                 }
             }
@@ -47,43 +46,20 @@ namespace QRCoderArt
         {
             cntrlName = controlName;
             cntrlParentName = cotrolParentName;
+            //!!!param -readonly
 
-            property = new Dictionary<string, string>(param);
-
-            //   Dictionary<String, String> param
-
-            dataGridView1.Dock = DockStyle.Fill;            // Set up the DataGridView. 
-            dataGridView1.AutoGenerateColumns = true;       // Automatically generate the DataGridView columns.
-                                                            //            bindingSource1.DataSource = param.Cast<BindingSource>();//.Where(some linq query); ;              // Set up the data source.
-                                                            //            dataGridView1.DataSource = bindingSource1;
-                                                            //            dataGridView1.DataSource = (from entry in param 
-                                                            //                               //         orderby entry.Key
-                                                            //                                        select new { entry.Key, entry.Value }).ToList();
-                                                            //      dataGridView1.DataSource = (from entry in param select entry).ToList();
-
-
-
-            dataGridView1.DataSource = property.ToArray();
-            dataGridView1.Update();
-       //     dataGridView1.Rows[1].ReadOnly = false;
-
-            //        dataGridView1.Columns[0].ReadOnly = false;
-            //        dataGridView1.Columns[1].ReadOnly = false;
-
-            // Automatically resize the visible rows.
-            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
-//            dataGridView1.BorderStyle = BorderStyle.Fixed3D;    // Set the DataGridView control's border.        
-            dataGridView1.EditMode = DataGridViewEditMode.EditOnEnter;  // Put the cells in edit mode when user enters them.
-
-
-/*
-
-            dataGridView1.DataSource = param;
-            dataGridView1.AutoGenerateColumns = false;
-            dataGridView1.EditMode = DataGridViewEditMode.EditOnEnter;
-            dataGridView1.Update();
-     //       dataGridView1.b
-*/
+//            dataGridViewProperty.DataSource = (from t in param select new { t.Key, t.Value }).ToList();
+            var pairs = from t in param select new { t.Key, t.Value };
+            foreach ( var pair in pairs)
+            {
+                dataGridViewProperty.Rows.Add(pair.Key, pair.Value);
+            }
+            //dataGridViewProperty.Dock = DockStyle.Fill;            // Set up the DataGridView. 
+            //dataGridViewProperty.AutoGenerateColumns = true;       // Automatically generate the DataGridView columns.
+            //dataGridViewProperty.Update();
+            //dataGridViewProperty resize the visible rows.
+            //dataGridViewProperty.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
+            //dataGridViewProperty.EditMode = DataGridViewEditMode.EditOnEnter;  // Put the cells in edit mode when user enters them.
         }
     }
     /*-----------------------------------------------------------------------------------------------------------------------------------------------
