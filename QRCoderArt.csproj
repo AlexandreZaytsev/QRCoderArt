@@ -79,6 +79,12 @@
       <DependentUpon>aboutForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ArtQRCode.cs" />
+    <Compile Include="dictionaryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dictionaryForm.Designer.cs">
+      <DependentUpon>dictionaryForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="QRCoderReflection.cs" />
     <Compile Include="mainForm.cs">
       <SubType>Form</SubType>
@@ -90,6 +96,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="aboutForm.resx">
       <DependentUpon>aboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dictionaryForm.resx">
+      <DependentUpon>dictionaryForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="mainForm.resx">
       <DependentUpon>mainForm.cs</DependentUpon>

@@ -14,15 +14,18 @@ using System.Collections;
 
 namespace QRCoderArt
 {
-
     public partial class mainForm : Form
     {
         //To fix errors (when controls have not yet been created) at the first
-        private bool[] readyState = {false,     //Data preparation completed
-                                     false,     //MainForm is Load
-                                     false };   //Mainform is Show    
+        private bool[] readyState = {false,                 //Data preparation completed
+                                     false,                 //MainForm is Load
+                                     false };               //Mainform is Show    
+
         public mainForm()
         {
+            CallBack_SetParam.callbackEventHandler = new CallBack_SetParam.callbackEvent(this.callbackReload);    //subscribe (listen) to the general notification
+
+
             InitializeComponent();
             using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
             {
@@ -183,42 +186,18 @@ namespace QRCoderArt
                         panels.Peek().Controls.Add(chb);
                         break;
                     case "dataGridView":
-
-                        DataGridViewTextBoxColumn plugin = new DataGridViewTextBoxColumn();
-                        plugin.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-                        plugin.FillWeight = 50F;
-                        plugin.HeaderText = "plugin";
-                        plugin.MinimumWidth = 22;
-                        plugin.Name = "plugin";
-                        plugin.Width = 25;
-
-                        DataGridViewTextBoxColumn pluginOption = new DataGridViewTextBoxColumn();
-                        pluginOption.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-                        pluginOption.FillWeight = 50F;
-                        pluginOption.HeaderText = "pluginOption";
-                        pluginOption.MinimumWidth = 22;
-                        pluginOption.Name = "pluginOption";
-                        pluginOption.Width = 25;
-
                         DataGridView dgv = new DataGridView();
                         dgv.Size = new Size(103, 20);
                         dgv.Margin = padding;
                         dgv.Name = "" + prop.fName;
-                        dgv.TabIndex = 2;
-                        dgv.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {plugin, pluginOption});
-                        dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                        dgv.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                        dgv.DataSource = new Dictionary<string, string> {["plugin"] = "plugin + pluginOption", ["-"]="-"}; //!!! refresh from callback -> CallBack_GetParam
+                        //new Dictionary<string, string>{["plugin"] = plugin + (string.IsNullOrEmpty(pluginOption)? "": $";{pluginOption}")}
                         dgv.AccessibleName = "Get";
                         dgv.AccessibleDescription = prop.fType;
-                        //     dgv.Format = DateTimePickerFormat.Short;
-                        //     dtp.ValueChanged += new EventHandler(GetPayloadStringFromForm);
-                        //     dtp.EnabledChanged += new EventHandler(GetPayloadStringFromForm);
-
-
-
+                        dgv.MouseHover += new System.EventHandler(ToolTipMouseHover);
+                        dgv.DataSourceChanged += new EventHandler(GetPayloadStringFromForm);
                         panels.Peek().Controls.Add(dgv);
 
-                        //break;
                         // case "Button":          //for custom parameter
                         Button bt = new Button();
                         bt.Size = new Size(23, 20);
@@ -226,11 +205,11 @@ namespace QRCoderArt
                         bt.Name = "" + prop.fName;
                         bt.Text = "...";
                         bt.AccessibleName = "";// "Get";
-                  //    bt.Enabled = false;
                         bt.FlatStyle = FlatStyle.System;
                         bt.AccessibleDescription = "setting a custom parameter (not currently used)";// prop.fType;
                         bt.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                        //chb.CheckedChanged += new EventHandler(GetPayloadStringFromForm);
+                        bt.Click += new EventHandler(GetPropretyForParameter);
+//                        bt.Click += (sender, e) => {dictionaryForm a = new dictionaryForm(); a.ShowDialog(); };
                         panels.Peek().Controls.Add(bt);
                         break;
                     case "DateTime":
@@ -323,6 +302,21 @@ namespace QRCoderArt
                 }
             }
         }
+        //edit property generic collection
+        private void GetPropretyForParameter(object sender, EventArgs e)
+        {
+            Button bt = sender as Button;
+            dictionaryForm a = new dictionaryForm();
+
+            Control[] cntrl = this.FilterControls(c => c.Name != null && c.Name.Equals(bt.Name) && c is DataGridView);
+            CallBack_GetParam.callbackEventHandler(bt.Name, bt.Parent.Name, (Dictionary < String, String >)((DataGridView)cntrl[0]).DataSource);  //send a general notification
+            a.Owner = this;
+            a.ShowDialog();
+        }
+
+        /*-----------------------------------------------------------------------------------------------------------------------------------------*/
+
+
         //update Payload control panel
         private void RebuildingPanelUpload(object sender, EventArgs e)
         {
@@ -353,6 +347,7 @@ namespace QRCoderArt
                 GetPayloadStringFromForm(null, null);
             }
         }
+
 
         //get param from panel control
         private Dictionary<string, object> GetParamFromPanel(FlowLayoutPanel panel)
@@ -650,6 +645,17 @@ namespace QRCoderArt
             a.ShowDialog();
         }
 
+        /*-----------------------------------------------------------------------------------------------------------------------------------------------
+                CALLBACK return
+        ------------------------------------------------------------------------------------------------------------------------------------------------*/
+        private void callbackReload(string controlName, string controlParentName, Dictionary<String, String> param)
+        {
+            if (param.Count() != 0) 
+            {
+                Control[] cntrl = this.FilterControls(c => c.Name != null && c.Name.Equals(controlName) && c is DataGridView);
+                ((DataGridView)cntrl[0]).DataSource = param;
+            }
+        }
     }
     /*-----------------------------------------------------------------------------------------------------------------------------------------------
                  EXTENSION
@@ -707,4 +713,15 @@ namespace QRCoderArt
         }
 
     }
+
+    /*-----------------------------------------------------------------------------------------------------------------------------------------------
+             CALLBACK
+     ------------------------------------------------------------------------------------------------------------------------------------------------*/
+    //general notification
+    public static class CallBack_GetParam
+    {
+        public delegate void callbackEvent(string controlName, string controlParentName, Dictionary<String, String> par);
+        public static callbackEvent callbackEventHandler;
+    }
+
 }
