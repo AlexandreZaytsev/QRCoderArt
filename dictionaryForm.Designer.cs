@@ -32,10 +32,10 @@ namespace QRCoderArt
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(dictionaryForm));
             this.dataGridViewProperty = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.plugin = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pluginOption = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button1 = new System.Windows.Forms.Button();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProperty)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
@@ -49,23 +49,11 @@ namespace QRCoderArt
             this.dataGridViewProperty.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewProperty.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dataGridViewProperty.Location = new System.Drawing.Point(0, 0);
-            this.dataGridViewProperty.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dataGridViewProperty.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewProperty.Name = "dataGridViewProperty";
             this.dataGridViewProperty.RowHeadersWidth = 51;
             this.dataGridViewProperty.Size = new System.Drawing.Size(591, 266);
             this.dataGridViewProperty.TabIndex = 0;
-            // 
-            // button1
-            // 
-            this.button1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button1.Location = new System.Drawing.Point(0, 238);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(591, 28);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Send data to parameter";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // plugin
             // 
@@ -83,6 +71,19 @@ namespace QRCoderArt
             this.pluginOption.MinimumWidth = 6;
             this.pluginOption.Name = "pluginOption";
             // 
+            // button1
+            // 
+            this.button1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Location = new System.Drawing.Point(0, 238);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(591, 28);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Send data to parameter";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // dictionaryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -91,7 +92,9 @@ namespace QRCoderArt
             this.Controls.Add(this.button1);
             this.Controls.Add(this.dataGridViewProperty);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "dictionaryForm";
             this.Text = "Properties (for the dictionary type)";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProperty)).EndInit();

@@ -117,10 +117,12 @@ namespace QRCoderArt
                     tPanel = panels.Pop();  //go back to the previous panel
                 }
 
-                Label lb = new Label(); //Label();
-                lb.Name = prop.fName;
-                lb.AutoSize = false;
-                lb.Margin = padding;
+                Label lb = new Label
+                {
+                    Name = prop.fName,
+                    AutoSize = false,
+                    Margin = padding
+                }; //Label();
                 if (prop.fType != "Constructor")
                 {
                     lb.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -139,12 +141,14 @@ namespace QRCoderArt
                 switch (prop.fForm)
                 {
                     case "TextBox":
-                        TextBox tb = new TextBox();
-                        tb.Size = new Size(controlWidth, 20);
-                        tb.Margin = padding;
-                        tb.Name = "" + prop.fName;
-                        tb.AccessibleName = "Get";
-                        tb.AccessibleDescription = prop.fType;                          //type in tooltype
+                        TextBox tb = new TextBox
+                        {
+                            Size = new Size(controlWidth, 20),
+                            Margin = padding,
+                            Name = "" + prop.fName,
+                            AccessibleName = "Get",
+                            AccessibleDescription = prop.fType                          //type in tooltype
+                        };
                         tb.MouseHover += new System.EventHandler(ToolTipMouseHover);
                         tb.TextChanged += new EventHandler(GetPayloadStringFromForm);
                         switch (prop.fType)
@@ -164,11 +168,13 @@ namespace QRCoderArt
                         panels.Peek().Controls.Add(tb);
                         if (prop.fNull)
                         {
-                            CheckBox chtb = new CheckBox();
-                            chtb.Size = new Size(13, 20);
-                            chtb.Margin = padding;
-                            chtb.Name = "" + prop.fName;
-                            chtb.AccessibleDescription = "Nullable";                          //type in tooltype
+                            CheckBox chtb = new CheckBox
+                            {
+                                Size = new Size(13, 20),
+                                Margin = padding,
+                                Name = "" + prop.fName,
+                                AccessibleDescription = "Nullable"                          //type in tooltype
+                            };
                             chtb.MouseHover += new System.EventHandler(ToolTipMouseHover);
                             chtb.CheckedChanged += (sender, e) => tb.Enabled = (chtb.CheckState == CheckState.Checked); // GeyPayLoadStringFromForm(null, null);
                             panels.Peek().Controls.Add(chtb);
@@ -176,60 +182,70 @@ namespace QRCoderArt
                         }
                         break;
                     case "CheckBox":
-                        CheckBox chb = new CheckBox();
-                        chb.Size = new Size(controlWidth, 20);
-                        chb.Margin = padding;
-                        chb.Name = "" + prop.fName;
-                        chb.AccessibleName = "Get";
-                        chb.AccessibleDescription = prop.fType;
+                        CheckBox chb = new CheckBox
+                        {
+                            Size = new Size(controlWidth, 20),
+                            Margin = padding,
+                            Name = "" + prop.fName,
+                            AccessibleName = "Get",
+                            AccessibleDescription = prop.fType
+                        };
                         chb.CheckedChanged += new EventHandler(GetPayloadStringFromForm);
                         panels.Peek().Controls.Add(chb);
                         break;
                     case "dataGridView":
-                        DataGridView dgv = new DataGridView();
-                        dgv.Size = new Size(103, 20);
-                        dgv.Margin = padding;
-                        dgv.Name = "" + prop.fName;
-                        dgv.DataSource = new Dictionary<string, string> {["plugin"] = "plugin + pluginOption", ["-"]="-"}; //!!! refresh from callback -> CallBack_GetParam
-                        //new Dictionary<string, string>{["plugin"] = plugin + (string.IsNullOrEmpty(pluginOption)? "": $";{pluginOption}")}
-                        dgv.AccessibleName = "Get";
-                        dgv.AccessibleDescription = prop.fType;
+                        DataGridView dgv = new DataGridView
+                        {
+                            Size = new Size(103, 20),
+                            Margin = padding,
+                            Name = "" + prop.fName,
+                            DataSource = new Dictionary<string, string> { ["plugin"] = "plugin + pluginOption", ["-"] = "-" }, //!!! refresh from callback -> CallBack_GetParam
+                                                                                                                               //new Dictionary<string, string>{["plugin"] = plugin + (string.IsNullOrEmpty(pluginOption)? "": $";{pluginOption}")}
+                            AccessibleName = "Get",
+                            AccessibleDescription = prop.fType
+                        };
                         dgv.MouseHover += new System.EventHandler(ToolTipMouseHover);
                         dgv.DataSourceChanged += new EventHandler(GetPayloadStringFromForm);
                         panels.Peek().Controls.Add(dgv);
 
                         // case "Button":          //for custom parameter
-                        Button bt = new Button();
-                        bt.Size = new Size(23, 20);
-                        bt.Margin = padding;
-                        bt.Name = "" + prop.fName;
-                        bt.Text = "...";
-                        bt.AccessibleName = "";// "Get";
-                        bt.FlatStyle = FlatStyle.System;
-                        bt.AccessibleDescription = "setting a custom parameter (not currently used)";// prop.fType;
+                        Button bt = new Button
+                        {
+                            Size = new Size(23, 20),
+                            Margin = padding,
+                            Name = "" + prop.fName,
+                            Text = "...",
+                            AccessibleName = "",// "Get";
+                            FlatStyle = FlatStyle.System,
+                            AccessibleDescription = "setting a custom parameter (not currently used)"// prop.fType;
+                        };
                         bt.MouseHover += new System.EventHandler(ToolTipMouseHover);
                         bt.Click += new EventHandler(GetPropretyForParameter);
 //                        bt.Click += (sender, e) => {dictionaryForm a = new dictionaryForm(); a.ShowDialog(); };
                         panels.Peek().Controls.Add(bt);
                         break;
                     case "DateTime":
-                        DateTimePicker dtp = new DateTimePicker();
-                        dtp.Size = new Size(controlWidth, 20);
-                        dtp.Margin = padding;
-                        dtp.Name = "" + prop.fName;
-                        dtp.AccessibleName = "Get";
-                        dtp.AccessibleDescription = prop.fType;
-                        dtp.Format = DateTimePickerFormat.Short;
+                        DateTimePicker dtp = new DateTimePicker
+                        {
+                            Size = new Size(controlWidth, 20),
+                            Margin = padding,
+                            Name = "" + prop.fName,
+                            AccessibleName = "Get",
+                            AccessibleDescription = prop.fType,
+                            Format = DateTimePickerFormat.Short
+                        };
                         dtp.ValueChanged += new EventHandler(GetPayloadStringFromForm);
                         dtp.EnabledChanged += new EventHandler(GetPayloadStringFromForm);
                         panels.Peek().Controls.Add(dtp);
                         if (prop.fNull)
                         {
-                            CheckBox chdtp = new CheckBox();
-                            chdtp.Size = new Size(13, 20);
-                            chdtp.Margin = padding;
-                            chdtp.Name = "" + prop.fName;
-                            chdtp.AccessibleDescription = "Nullable";                          //type in tooltype
+                            CheckBox chdtp = new CheckBox
+                            {
+                                Size = new Size(13, 20),
+                                Margin = padding,
+                                Name = "" + prop.fName,
+                                AccessibleDescription = "Nullable"                          //type in tooltype
+                            };
                             chdtp.MouseHover += new System.EventHandler(ToolTipMouseHover);
                             chdtp.CheckedChanged += (sender, e) => dtp.Enabled = (chdtp.CheckState == CheckState.Checked);// GeyPayLoadStringFromForm(null, null);
                             panels.Peek().Controls.Add(chdtp);
@@ -237,16 +253,18 @@ namespace QRCoderArt
                         }
                         break;
                     case "ComboBox":
-                        ComboBox cmb = new ComboBox();
-//                        cmb.BeginUpdate();
-                        cmb.Name = "" + prop.fName;
-                        cmb.AccessibleName = "Get";
-                        //cmb.AccessibleDescription = prop.fType;
-                        cmb.DataSource = new BindingSource(prop.fList, null);   //получить конструкторы member
-                        cmb.DisplayMember = "Key";                                            //Имя    
-                        cmb.ValueMember = "Value";                                            //значение  
-                        cmb.SelectedItem = 0;
-                        cmb.DropDownStyle = ComboBoxStyle.DropDownList;
+                        ComboBox cmb = new ComboBox
+                        {
+                            //                        cmb.BeginUpdate();
+                            Name = "" + prop.fName,
+                            AccessibleName = "Get",
+                            //cmb.AccessibleDescription = prop.fType;
+                            DataSource = new BindingSource(prop.fList, null),   //получить конструкторы member
+                            DisplayMember = "Key",                                            //Имя    
+                            ValueMember = "Value",                                            //значение  
+                            SelectedItem = 0,
+                            DropDownStyle = ComboBoxStyle.DropDownList
+                        };
                         if (prop.fType == "Constructor")
                         {
                             //  cmb.Name += "ctor_";
@@ -256,11 +274,13 @@ namespace QRCoderArt
                             cmb.Size = new Size(sizeWidth - prop.fLevel * reverseShift, 20);
 
 
-                            FlowLayoutPanel cPanel = new FlowLayoutPanel();
-                            cPanel.Name = "" + prop.fName;
-                            cPanel.AutoSize = true;
-                            cPanel.Padding = new Padding(0,2,0,2);
-                            cPanel.BorderStyle = BorderStyle.FixedSingle;
+                            FlowLayoutPanel cPanel = new FlowLayoutPanel
+                            {
+                                Name = "" + prop.fName,
+                                AutoSize = true,
+                                Padding = new Padding(0, 2, 0, 2),
+                                BorderStyle = BorderStyle.FixedSingle
+                            };
                             panels.Peek().Controls.Add(cPanel);
                             panels.Push(cPanel);
 
@@ -385,6 +405,12 @@ namespace QRCoderArt
                                     break;
                                 case "DateTime":
                                     ret = ((DateTimePicker)cntrl).Value;
+                                    break;
+                                case "Dictionary`2":
+                                    if (cntrl.Parent.Name == "ShadowSocksConfig" && cntrl.Name == "parameters") 
+                                    {
+                                        ret = ((DataGridView)cntrl).DataSource;
+                                    }
                                     break;
                                 default:
                                     if (cntrl.GetType().Name == "ComboBox")
@@ -523,10 +549,12 @@ namespace QRCoderArt
 
         private void selectIconBtn_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDlg = new OpenFileDialog();
-            openFileDlg.Title = "Select icon";
-            openFileDlg.Multiselect = false;
-            openFileDlg.CheckFileExists = true;
+            OpenFileDialog openFileDlg = new OpenFileDialog
+            {
+                Title = "Select icon",
+                Multiselect = false,
+                CheckFileExists = true
+            };
             if (openFileDlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 iconPath.Text = openFileDlg.FileName;
@@ -546,9 +574,11 @@ namespace QRCoderArt
         {
 
             // Displays a SaveFileDialog so the user can save the Image
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.Filter = "Bitmap Image|*.bmp|PNG Image|*.png|JPeg Image|*.jpg|Gif Image|*.gif";
-            saveFileDialog1.Title = "Save an Image File";
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog
+            {
+                Filter = "Bitmap Image|*.bmp|PNG Image|*.png|JPeg Image|*.jpg|Gif Image|*.gif",
+                Title = "Save an Image File"
+            };
             _ = saveFileDialog1.ShowDialog();
 
             // If the file name is not an empty string open it for saving.
@@ -615,10 +645,12 @@ namespace QRCoderArt
 
         private void selectArtBtn_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDlg = new OpenFileDialog();
-            openFileDlg.Title = "Select art";
-            openFileDlg.Multiselect = false;
-            openFileDlg.CheckFileExists = true;
+            OpenFileDialog openFileDlg = new OpenFileDialog
+            {
+                Title = "Select art",
+                Multiselect = false,
+                CheckFileExists = true
+            };
             if (openFileDlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 artPath.Text = openFileDlg.FileName;
