@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace QRCoderArt
 {
     public partial class dictionaryForm : Form
     {
-//        public Dictionary<String, String> property;// = new Dictionary<String, String>();
+        //        public Dictionary<String, String> property;// = new Dictionary<String, String>();
         private string cntrlName;
         private string cntrlParentName;
 
@@ -28,9 +24,9 @@ namespace QRCoderArt
             property.Clear();
             for (int i = 0; i < dataGridViewProperty.RowCount; i++)
             {
-                if (dataGridViewProperty[0, i].Value !=null && dataGridViewProperty[1, i].Value != null) 
+                if (dataGridViewProperty[0, i].Value != null && dataGridViewProperty[1, i].Value != null)
                 {
-                    if (!property.ContainsKey(dataGridViewProperty[0, i].Value.ToString())) 
+                    if (!property.ContainsKey(dataGridViewProperty[0, i].Value.ToString()))
                     {
                         property.Add(dataGridViewProperty[0, i].Value.ToString(), dataGridViewProperty[1, i].Value.ToString());
                     }
@@ -39,18 +35,18 @@ namespace QRCoderArt
             CallBack_SetParam.callbackEventHandler(cntrlName, cntrlParentName, property);  //send a general notification
             this.Close();
         }
-       /*-----------------------------------------------------------------------------------------------------------------------------------------------
-               CALLBACK return
-       ------------------------------------------------------------------------------------------------------------------------------------------------*/
-        private void callbackReload(string controlName,string cotrolParentName, Dictionary<String, String> param)
+        /*-----------------------------------------------------------------------------------------------------------------------------------------------
+                CALLBACK return
+        ------------------------------------------------------------------------------------------------------------------------------------------------*/
+        private void callbackReload(string controlName, string cotrolParentName, Dictionary<String, String> param)
         {
             cntrlName = controlName;
             cntrlParentName = cotrolParentName;
             //!!!param -readonly
 
-//            dataGridViewProperty.DataSource = (from t in param select new { t.Key, t.Value }).ToList();
+            //            dataGridViewProperty.DataSource = (from t in param select new { t.Key, t.Value }).ToList();
             var pairs = from t in param select new { t.Key, t.Value };
-            foreach ( var pair in pairs)
+            foreach (var pair in pairs)
             {
                 dataGridViewProperty.Rows.Add(pair.Key, pair.Value);
             }

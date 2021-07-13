@@ -1,12 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reflection;
-using QRCoder;
-using System.Collections;
-using System.Windows.Forms;
 
 namespace QRCoderArt
 {
@@ -77,15 +73,15 @@ namespace QRCoderArt
             //constrictor without parameters = there is 'no constructor'
             IEnumerable queryProp = from t in ctor.ReflectedType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
                                     where !t.IsDefined(typeof(ObsoleteAttribute), true)
-                                   select GetItemInfoForForm(t, t.Name, t.PropertyType, null, Params, nestingLevel, parentName);
+                                    select GetItemInfoForForm(t, t.Name, t.PropertyType, null, Params, nestingLevel, parentName);
 
             //constrictor with parameters = there is 'constructor'
             IEnumerable queryParam = from t in ctor.GetParameters()
                                      where !t.IsDefined(typeof(ObsoleteAttribute), true)
-                                    select GetItemInfoForForm(t, t.Name, t.ParameterType, t.DefaultValue, Params, nestingLevel, parentName);
+                                     select GetItemInfoForForm(t, t.Name, t.ParameterType, t.DefaultValue, Params, nestingLevel, parentName);
 
             //Deferred Execution
-            foreach (object Param in ctor.GetParameters().Length == 0 ? queryProp : queryParam){ }  //run function from query
+            foreach (object Param in ctor.GetParameters().Length == 0 ? queryProp : queryParam) { }  //run function from query
         }
 
         /**********************************************************************************************************
@@ -158,7 +154,7 @@ namespace QRCoderArt
             List<FieldProperty> Params = new List<FieldProperty>();                                 //list of parameters
             int nestingLevel = 0;                                                                   //nesting level of the parameter
 
-            GetItemInfoForForm(obj, ((Type)obj).Name, (Type)obj, null, Params, nestingLevel,"");    //get parameter list
+            GetItemInfoForForm(obj, ((Type)obj).Name, (Type)obj, null, Params, nestingLevel, "");    //get parameter list
             return Params;
         }
         /// <summary>
@@ -194,11 +190,11 @@ namespace QRCoderArt
                                                          //                mParam.fNull
                                                          //                mParam.fDef
 
- //               nestingLevel++;
+                //               nestingLevel++;
                 mParam.fLevel = nestingLevel;
 
                 Params.Add(mParam);
-                nestingLevel ++;
+                nestingLevel++;
 
                 GetParamsConstuctor((ConstructorInfo)mParam.fList.Values.First(), Params, nestingLevel, mParam.fName);   //!!! attention - recursion
                 /*
@@ -213,9 +209,9 @@ namespace QRCoderArt
                 mParam.fParentName = paramParent;
                 mParam.fName = paramName;
                 mParam.fType = paramType.Name;
-//                mParam.fForm 
-//                mParam.fList 
-//                mParam.fNull 
+                //                mParam.fForm 
+                //                mParam.fList 
+                //                mParam.fNull 
                 mParam.fDef = defValue;
                 mParam.fLevel = nestingLevel;
 
@@ -244,8 +240,8 @@ namespace QRCoderArt
                                 break;
                         }
                         break;
-//                    case "Dictionary`2":
-//                        break:
+                    //                    case "Dictionary`2":
+                    //                        break:
                     case "Boolean":
                         mParam.fForm = "CheckBox";
                         break;
@@ -266,7 +262,7 @@ namespace QRCoderArt
                                 mParam.fForm = "dataGridView";
                             }
                         }
-                        else 
+                        else
                         {
                         }
                         break;
