@@ -63,9 +63,9 @@ namespace QRCoderArt
 
 
 
-            dataGridView1.DataSource = property;//.ToArray();
+            dataGridView1.DataSource = property.ToArray();
             dataGridView1.Update();
-            dataGridView1.Rows[1].ReadOnly = false;
+       //     dataGridView1.Rows[1].ReadOnly = false;
 
             //        dataGridView1.Columns[0].ReadOnly = false;
             //        dataGridView1.Columns[1].ReadOnly = false;
