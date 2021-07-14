@@ -21,17 +21,18 @@ namespace QRCoderArt
 {
     /// <summary>
     /// Class FormDictionary.
+    /// Форма для заполнения пользовательских свойств имя-значение
     /// Implements the <see cref="System.Windows.Forms.Form" />
     /// </summary>
     /// <seealso cref="System.Windows.Forms.Form" />
     public partial class FormDictionary : Form
     {
         /// <summary>
-        /// The CNTRL name
+        /// имя CNTRL (используется в возврате)
         /// </summary>
         private string cntrlName;
         /// <summary>
-        /// The CNTRL parent name
+        /// имя родителя CNTRL (используется в возврате)
         /// </summary>
         private string cntrlParentName;
 
@@ -45,7 +46,7 @@ namespace QRCoderArt
         }
 
         /// <summary>
-        /// Handles the Click event of the Button1 control.
+        /// Прочитать и отправить текущую таблицу параметров
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
@@ -66,51 +67,50 @@ namespace QRCoderArt
             CallBack_SetParam.callbackEventHandler(cntrlName, cntrlParentName, property);  //send a general notification
             this.Close();
         }
-        /*-----------------------------------------------------------------------------------------------------------------------------------------------
-                CALLBACK return
-        ------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+        /*--------------------------------------------------------------------------------------------  
+            CALLBACK OutPut
+        --------------------------------------------------------------------------------------------*/
         /// <summary>
         /// Callbacks the reload.
+        /// входящее асинхронное сообщение для подписанных слушателей с передачей текущих параметров
         /// </summary>
-        /// <param name="controlName">Name of the control.</param>
-        /// <param name="cotrolParentName">Name of the cotrol parent.</param>
-        /// <param name="param">The parameter.</param>
-        private void CallbackReload(string controlName, string cotrolParentName, Dictionary<String, String> param)
+        /// <param name="controlName">имя CTRL</param>
+        /// <param name="cotrolParentName">имя родителя CNTRL</param>
+        /// <param name="parameterPairs">параметры ключ-значение</param>
+        private void CallbackReload(string controlName, string cotrolParentName, Dictionary<String, String> parameterPairs)
         {
             cntrlName = controlName;
             cntrlParentName = cotrolParentName;
-            //!!!param -readonly
 
-            //            dataGridViewProperty.DataSource = (from t in param select new { t.Key, t.Value }).ToList();
-            var pairs = from t in param select new { t.Key, t.Value };
+            //!!!param -readonly
+            //dataGridViewProperty.DataSource = (from t in param select new { t.Key, t.Value }).ToList();
+
+            var pairs = from t in parameterPairs select new { t.Key, t.Value };
             foreach (var pair in pairs)
             {
-                dataGridViewProperty.Rows.Add(pair.Key, pair.Value);
+                dataGridViewProperty.Rows.Add(pair.Key, pair.Value);    //r/w - ok
             }
-            //dataGridViewProperty.Dock = DockStyle.Fill;            // Set up the DataGridView. 
-            //dataGridViewProperty.AutoGenerateColumns = true;       // Automatically generate the DataGridView columns.
-            //dataGridViewProperty.Update();
-            //dataGridViewProperty resize the visible rows.
-            //dataGridViewProperty.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
-            //dataGridViewProperty.EditMode = DataGridViewEditMode.EditOnEnter;  // Put the cells in edit mode when user enters them.
         }
     }
-    /*-----------------------------------------------------------------------------------------------------------------------------------------------
-           CALLBACK
-   ------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+    /*--------------------------------------------------------------------------------------------  
+        CALLBACK InPut
+    --------------------------------------------------------------------------------------------*/
     //general notification
     /// <summary>
     /// Class CallBack_SetParam.
+    /// исходящее асинхронное сообщение для подписанных слушателей с передачей текущих параметров 
     /// </summary>
     public static class CallBack_SetParam
     {
         /// <summary>
         /// Delegate callbackEvent
         /// </summary>
-        /// <param name="controlName">Name of the control.</param>
-        /// <param name="controlParentName">Name of the control parent.</param>
-        /// <param name="par">The par.</param>
-        public delegate void callbackEvent(string controlName, string controlParentName, Dictionary<String, String> par);
+        /// <param name="controlName">имя CTRL</param>
+        /// <param name="controlParentName">имя родителя CNTRL</param>
+        /// <param name="parameterPairs">параметры ключ-значение</param>
+        public delegate void callbackEvent(string controlName, string controlParentName, Dictionary<String, String> parameterPairs);
         /// <summary>
         /// The callback event handler
         /// </summary>
