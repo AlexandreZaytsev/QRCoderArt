@@ -231,6 +231,7 @@ namespace QRCoderArt
         ************************************************************************************************************/
         /// <summary>
         /// вернуть все дерево GUI от узла Reflection payload
+        /// для создания всей панели payload
         /// </summary>
         /// <param name="obj">payload узел Reflection</param>
         /// <returns>payload дерево GUI &lt;System.String&gt;</returns>
@@ -245,6 +246,7 @@ namespace QRCoderArt
 
         /// <summary>
         /// вернуть фрагмент дерева GUI от конкретного конструктора
+        /// для пересоздания фрагмента панели payload
         /// </summary>
         /// <param name="obj">узел конструктора Reflection</param>
         /// <param name="parentName">текущее имя родителя в дереве GUI</param>
@@ -365,13 +367,6 @@ namespace QRCoderArt
             }
             return Params.Count;
         }
-
-
-
-
-
-
-
     }
 }
 
