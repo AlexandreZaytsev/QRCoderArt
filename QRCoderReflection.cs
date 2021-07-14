@@ -6,11 +6,24 @@ using System.Reflection;
 
 namespace QRCoderArt
 {
+    //FieldProperty
+    /// <summary>
+    /// Class FieldProperty
+    /// parameter structure for creating a form control
+    /// </summary>
+    /// <value name="fLevel">(int) nesting level of the parameter</value>
+    /// <value name="fParentName">(string) parentName (parameter block name)</value>
+    /// <value name="fName">(string) name parameter</value>
+    /// <value name="fType">(string) data type name</value>
+    /// <value name="fForm">(string) name of the control type to display on the winform</value>
+    /// <value name="fList">(Dictionary) winform control data source (for combobox)</value>
+    /// <value name="fNull">(Boolean)presence of zero value (for checkbox)</value>
+    /// <value name="fDef">(object )default value</value>
     public class FieldProperty                          //info to create Control WinForm
     {
-        public int fLevel;                              //nesting level of the parameter
+        public int fLevel;                              
         public string fParentName;                      //parentName (parameter block name) 
-        public string fName;                            //name parameter 
+        public string fName;                            //name parameter
         public string fType;                            //parameter data type name 
         public string fForm;                            //name of the control type to display on the winform
         public Dictionary<string, object> fList;        //winform control data source (for combobox)
@@ -18,15 +31,18 @@ namespace QRCoderArt
         public object fDef;                             //default value    
     }
 
+    //QRCoderReflection
+    /// <summary>
+    /// Class FieldProperty
+    /// to work with reflection
+    /// </summary>
     public class QRCoderReflection : IDisposable
     {
         private Type tRef;
-
         public QRCoderReflection(string name)
         {
             tRef = Type.GetType(name);
         }
-
         public void Dispose()
         {
             //         throw new NotImplementedException();
@@ -171,9 +187,15 @@ namespace QRCoderArt
 
         /// <summary>
         /// get field property to create control form
-        /// input - member (name payload) reflection,
-        /// returns an list parameter member for create winform panel payload.
         /// </summary>
+        /// <param name="Param">(object) member (name payload) reflection</param>
+        /// <param name="paramName">(string) member name</param>
+        /// <param name="paramType">(Type) member type</param>
+        /// <param name="defValue">(object) default value </param>
+        /// <param name="Params">(List) FieldProperty</param>
+        /// <param name="nestingLevel">(int) nesting level in tree</param>
+        /// <param name="paramParent">(string) member parent name</param>
+        /// <returns>list parameter member for create winform panel payload</returns>
         private int GetItemInfoForForm(object Param, string paramName, Type paramType, object defValue, List<FieldProperty> Params, int nestingLevel, string paramParent)
         {
             FieldProperty mParam = new FieldProperty();// { fName = paramName, fType = paramType.Name, fForm = "TextBox", fList = null, fNull = false, fDef = defValue, fLevel = nestingLevel };

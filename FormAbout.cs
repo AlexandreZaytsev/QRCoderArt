@@ -5,9 +5,9 @@ using System.Windows.Forms;
 
 namespace QRCoderArt
 {
-    partial class aboutForm : Form
+    partial class FormAbout : Form
     {
-        public aboutForm()
+        public FormAbout()
         {
             InitializeComponent();
             this.Text = String.Format("О программе {0}", AssemblyTitle);

@@ -1,7 +1,7 @@
 ﻿
 namespace QRCoderArt
 {
-    partial class dictionaryForm
+    partial class FormDictionary
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@ namespace QRCoderArt
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(dictionaryForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDictionary));
             this.dataGridViewProperty = new System.Windows.Forms.DataGridView();
             this.plugin = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pluginOption = new System.Windows.Forms.DataGridViewTextBoxColumn();

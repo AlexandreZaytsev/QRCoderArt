@@ -2,7 +2,7 @@
 
 namespace QRCoderArt
 {
-    partial class mainForm
+    partial class FormMain
     {
         /// <summary>
         /// Erforderliche Designervariable.
@@ -31,7 +31,7 @@ namespace QRCoderArt
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.textBoxQRCode = new System.Windows.Forms.TextBox();
             this.pictureBoxQRCode = new System.Windows.Forms.PictureBox();
             this.comboBoxECC = new System.Windows.Forms.ComboBox();

@@ -6,13 +6,13 @@ using System.Windows.Forms;
 
 namespace QRCoderArt
 {
-    public partial class dictionaryForm : Form
+    public partial class FormDictionary : Form
     {
         //        public Dictionary<String, String> property;// = new Dictionary<String, String>();
         private string cntrlName;
         private string cntrlParentName;
 
-        public dictionaryForm()
+        public FormDictionary()
         {
             CallBack_GetParam.callbackEventHandler = new CallBack_GetParam.callbackEvent(this.callbackReload);    //subscribe (listen) to the general notification
             InitializeComponent();

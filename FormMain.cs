@@ -12,14 +12,14 @@ using System.Windows.Forms;
 
 namespace QRCoderArt
 {
-    public partial class mainForm : Form
+    public partial class FormMain : Form
     {
         //To fix errors (when controls have not yet been created) at the first
         private bool[] readyState = {false,                 //Data preparation completed
                                      false,                 //MainForm is Load
                                      false };               //Mainform is Show    
 
-        public mainForm()
+        public FormMain()
         {
             CallBack_SetParam.callbackEventHandler = new CallBack_SetParam.callbackEvent(this.callbackReload);    //subscribe (listen) to the general notification
 
@@ -324,7 +324,7 @@ namespace QRCoderArt
         private void GetPropretyForParameter(object sender, EventArgs e)
         {
             Button bt = sender as Button;
-            dictionaryForm a = new dictionaryForm();
+            FormDictionary a = new FormDictionary();
 
             Control[] cntrl = this.FilterControls(c => c.Name != null && c.Name.Equals(bt.Name) && c is DataGridView);
             CallBack_GetParam.callbackEventHandler(bt.Name, bt.Parent.Name, (Dictionary<String, String>)((DataGridView)cntrl[0]).DataSource);  //send a general notification
@@ -671,7 +671,7 @@ namespace QRCoderArt
 
         private void Form1_HelpButtonClicked(object sender, CancelEventArgs e)
         {
-            aboutForm a = new aboutForm();
+            FormAbout a = new FormAbout();
             a.ShowDialog();
         }
 

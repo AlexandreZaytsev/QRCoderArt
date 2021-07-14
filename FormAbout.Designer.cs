@@ -1,7 +1,7 @@
 ﻿
 namespace QRCoderArt
 {
-    partial class aboutForm
+    partial class FormAbout
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -28,7 +28,7 @@ namespace QRCoderArt
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(aboutForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAbout));
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.logoPictureBox = new System.Windows.Forms.PictureBox();
             this.labelProductName = new System.Windows.Forms.Label();
