@@ -914,16 +914,17 @@ namespace QRCoderArt
 
         /// <summary>
         /// Gets the nestle level.
+        /// получить уровень вложенности по отношению к родителю
         /// </summary>
-        /// <param name="c">The c.</param>
-        /// <param name="parentName">Name of the parent.</param>
-        /// <returns>System.Int32.</returns>
-        public static int GetNestleLevel(this Control c, string parentName)
+        /// <param name="controlName">имя CTRL</param>
+        /// <param name="parentName">имя CTRL родителя</param>
+        /// <returns>глубина System.Int32.</returns>
+        public static int GetNestleLevel(this Control controlName, string parentName)
         {
             int l = 1;
-            if (c.Parent != null && c.Name != parentName)
+            if (controlName.Parent != null && controlName.Name != parentName)
             {
-                Control parent = c.Parent;
+                Control parent = controlName.Parent;
                 while (parent.Name != parentName)
                 {
                     l++;//= l + 1;
