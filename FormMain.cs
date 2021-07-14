@@ -858,12 +858,13 @@ namespace QRCoderArt
         public static callbackEvent callbackEventHandler;
     }
 
-
-    /*-----------------------------------------------------------------------------------------------------------------------------------------------
+    /*--------------------------------------------------------------------------------------------  
                  EXTENSION
-     ------------------------------------------------------------------------------------------------------------------------------------------------*/
+    --------------------------------------------------------------------------------------------*/
+
     /// <summary>
     /// Class ControlExtensions.
+    /// мега супер пуппер расширение по поиску CTRL - используется здесь везде!!!
     /// </summary>
     static public class ControlExtensions
     {
@@ -873,7 +874,7 @@ namespace QRCoderArt
         /// </summary>
         /// <param name="start">The start.</param>
         /// <param name="isMatch">The is match.</param>
-        /// <returns>Control[].</returns>
+        /// <returns>массив найденных CTRL Control[].</returns>
         static public Control[] FilterControls(this Control start, Func<Control, bool> isMatch)
         {
             var matches = new List<Control>();
