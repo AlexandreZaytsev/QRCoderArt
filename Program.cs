@@ -43,7 +43,6 @@ namespace QRCoderArt
         /// <param name="format">The format.</param>
         /// <param name="param">The parameter.</param>
         public static void Display(Int32 indent, string format, params object[] param)
-
         {
             //            System.Diagnostics.Debug.WriteLine(new string(' ', indent * 2));
             //            System.Diagnostics.Debug.WriteLine(format, param);
