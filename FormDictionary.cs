@@ -26,7 +26,6 @@ namespace QRCoderArt
     /// <seealso cref="System.Windows.Forms.Form" />
     public partial class FormDictionary : Form
     {
-        //        public Dictionary<String, String> property;// = new Dictionary<String, String>();
         /// <summary>
         /// The CNTRL name
         /// </summary>

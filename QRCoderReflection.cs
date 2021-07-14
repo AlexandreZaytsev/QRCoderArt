@@ -21,10 +21,10 @@ namespace QRCoderArt
 {
 
     /// <summary>
-    /// Class GUIFieldProperty.
-    /// структура (дерево) параметров GUI для создания элемента формы (GUI Control)
+    /// Class GUITreeNode
+    /// узел дерева параметров GUI для создания элемента формы (GUI Control)
     /// </summary>
-    public class GUIFieldProperty                          
+    public class GUITreeNode                          
     {
         /// <summary>
         /// уровень вложенности параметра в дереве
@@ -144,7 +144,7 @@ namespace QRCoderArt
         /// <param name="Params">текущее дерево GIU</param>
         /// <param name="nestingLevel">текущий уровень вложенности параметра</param>
         /// <param name="parentName">текущее имя родителя параметра</param>
-        private void GetParamsConstuctor(ConstructorInfo ctor, List<GUIFieldProperty> Params, int nestingLevel, string parentName)
+        private void GetParamsConstuctor(ConstructorInfo ctor, List<GUITreeNode> Params, int nestingLevel, string parentName)
         {
             //for pure (witout k__BackingField) names here we use GetProperties()  
             //from t in ctor.ReflectedType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) select t
@@ -237,11 +237,11 @@ namespace QRCoderArt
         /// <returns>payload дерево GUI &lt;System.String&gt;</returns>
         public IList GetParamsObject(Object obj)
         {
-            List<GUIFieldProperty> Params = new List<GUIFieldProperty>();                           //list of parameters
+            List<GUITreeNode> GUITree = new List<GUITreeNode>();                           //list of parameters
             int nestingLevel = 0;                                                                   //nesting level of the parameter
 
-            GetItemInfoForForm(((Type)obj).Name, (Type)obj, null, Params, nestingLevel, "");    //get parameter list
-            return Params;
+            GetItemInfoForForm(((Type)obj).Name, (Type)obj, null, GUITree, nestingLevel, "");    //get parameter list
+            return GUITree;
         }
 
         /// <summary>
@@ -254,9 +254,9 @@ namespace QRCoderArt
         /// <returns>IList.</returns>
         public IList GetParamsCtor(ConstructorInfo obj, string parentName, int nestingLevel)
         {
-            List<GUIFieldProperty> Params = new List<GUIFieldProperty>();                                 //list of parameters
-            GetParamsConstuctor(obj, Params, nestingLevel, parentName);   //!!! attention - recursion
-            return Params;
+            List<GUITreeNode> GUITreeNodes = new List<GUITreeNode>();           //list of parameters
+            GetParamsConstuctor(obj, GUITreeNodes, nestingLevel, parentName);   //!!! attention - recursion
+            return GUITreeNodes;
         }
 
 
@@ -267,12 +267,12 @@ namespace QRCoderArt
         /// <param name="paramType">параметр (приведен к типу Type)</param>
         /// <param name="defValue">значение по умолчанию</param>
         /// <param name="Params">текущее дерево GUI</param>
-        /// <param name="nestingLevel">текущий уровень вложенности в дереве GUI<</param>
+        /// <param name="nestingLevel">текущий уровень вложенности в дереве GUI</param>
         /// <param name="paramParent">текущее имя родителя в дереве GUI</param>
         /// <returns>System.Int32.</returns>
-        private int GetItemInfoForForm(string paramName, Type paramType, object defValue, List<GUIFieldProperty> Params, int nestingLevel, string paramParent)
+        private int GetItemInfoForForm(string paramName, Type paramType, object defValue, List<GUITreeNode> Params, int nestingLevel, string paramParent)
         {
-            GUIFieldProperty mParam = new GUIFieldProperty();// { fName = paramName, fType = paramType.Name, fForm = "TextBox", fList = null, fNull = false, fDef = defValue, fLevel = nestingLevel };
+            GUITreeNode mParam = new GUITreeNode();// { fName = paramName, fType = paramType.Name, fForm = "TextBox", fList = null, fNull = false, fDef = defValue, fLevel = nestingLevel };
             if (paramType.IsClass && paramType.Namespace != "System" && !paramType.IsGenericType)
             {
                 if (nestingLevel > 1)

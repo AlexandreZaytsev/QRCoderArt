@@ -146,7 +146,7 @@ namespace QRCoderArt
 
             panelPayload.Visible = false;       //render off
 
-            foreach (GUIFieldProperty prop in controlsList)
+            foreach (GUITreeNode prop in controlsList)
             {
                 //                 this.Refresh();
                 controlWidth = prop.fNull ? 113 : 128;
