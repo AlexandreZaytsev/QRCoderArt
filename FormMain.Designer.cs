@@ -397,7 +397,7 @@ namespace QRCoderArt
             this.cbPayload.Size = new System.Drawing.Size(203, 21);
             this.cbPayload.TabIndex = 1;
             this.toolTip1.SetToolTip(this.cbPayload, "Select PAYLOAD and Set property");
-            this.cbPayload.SelectedIndexChanged += new System.EventHandler(this.RebuildingPanelUpload);
+            this.cbPayload.SelectedIndexChanged += new System.EventHandler(this.RebuildingGUITreePanel);
             // 
             // tbConstructor
             // 

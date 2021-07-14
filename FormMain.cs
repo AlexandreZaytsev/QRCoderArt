@@ -27,14 +27,15 @@ namespace QRCoderArt
 {
     /// <summary>
     /// Class FormMain.
+    /// Форма использующая динамический интерфейс на плавающих панелях для работы с payload на базе GUITree 
     /// Implements the <see cref="System.Windows.Forms.Form" />
     /// </summary>
     /// <seealso cref="System.Windows.Forms.Form" />
     public partial class FormMain : Form
     {
-        //To fix errors (when controls have not yet been created) at the first
         /// <summary>
-        /// The ready state
+        /// readyState
+        /// структура для фиксации ошибки (при пересоздании CTRL из GUITree) при первом запуске функции payload
         /// </summary>
         private bool[] readyState = {false,                 //Data preparation completed
                                      false,                 //MainForm is Load
@@ -57,8 +58,8 @@ namespace QRCoderArt
                                                where ((System.Type)t).IsAbstract
                                                select t.Name).First();
                 */
-                string baseName = "Payload";
-                this.cbPayload.DataSource = qqRef.GetMembersClassName(baseName);        //get list names ckasses members QRCoder.PayloadGenerator
+                string baseName = "Payload";                                        //проще сразу указать имя
+                this.cbPayload.DataSource = qqRef.GetMembersClassName(baseName);    //get list names ckasses members QRCoder.PayloadGenerator
             }
 
             this.viewMode.DataSource = Enum.GetValues(typeof(ImageLayout));
@@ -67,6 +68,7 @@ namespace QRCoderArt
 
         /// <summary>
         /// Handles the Load event of the FormMain control.
+        /// устанавливает флаг readyState[1] для первого корректного вызова payload
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
@@ -76,8 +78,10 @@ namespace QRCoderArt
             textBoxQRCode.Text = "enter your text or select payload + constructor + fill in the parameters";
             readyState[1] = true;           //MainForm is Load
         }
+
         /// <summary>
         /// Handles the Shown event of the FormMain control.
+        /// устанавливает флаг readyState[2] для первого корректного вызова payload
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
@@ -89,32 +93,32 @@ namespace QRCoderArt
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
                      REFLECTION
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
-        //clear payload panel
         /// <summary>
-        /// Removes the control playload panel.
+        /// ClearGUITreePanel
+        /// очистить все CTRL из плавающей панели playload
         /// </summary>
-        /// <param name="panel">The panel.</param>
-        private void RemoveControlPlayloadPanel(Control panel)
+        /// <param name="panelGUITree">плавающая панель CTRL из GUITree</param>
+        private void ClearGUITreePanel(Control panelGUITree)
         {
-            if (panel.HasChildren)
+            if (panelGUITree.HasChildren)
             {
-                for (int i = panel.Controls.Count - 1; i >= 0; i--) //not foreach use...
+                for (int i = panelGUITree.Controls.Count - 1; i >= 0; i--) //not foreach use...
                 {
-                    Control cn = panel.Controls[0];
+                    Control cn = panelGUITree.Controls[0];
                     //     cn -= new System.EventHandler(cn, playload_Changed);
-                    panel.Controls.Remove(cn);
+                    panelGUITree.Controls.Remove(cn);
                     cn.Dispose();
                 }
             }
         }
 
-        //create payload panel from constructor parameters
         /// <summary>
-        /// Creates the control playload panel.
+        /// CreateControlPlayloadPanel
+        /// создать CTRL panel из GUITree
         /// </summary>
-        /// <param name="controlsList">The controls list.</param>
-        /// <param name="panel">The panel.</param>
-        private void CreateControlPlayloadPanel(IList controlsList, Control panel)
+        /// <param name="sourceGUITree">GUITree</param>
+        /// <param name="panelGUITree">плавающая панель CTRL из GUITree</param>
+        private void CreateGUITreePanel(IList sourceGUITree, Control panelGUITree)
         {
             int labelWidth = 135;// 122;// 135;
             int sizeWidth = 263;
@@ -142,17 +146,17 @@ namespace QRCoderArt
             */
 
             Stack<Panel> panels = new Stack<Panel>();
-            panels.Push((Panel)panel);
+            panels.Push((Panel)panelGUITree);
 
             panelPayload.Visible = false;       //render off
 
-            foreach (GUITreeNode prop in controlsList)
+            foreach (GUITreeNode prop in sourceGUITree)
             {
                 //                 this.Refresh();
                 controlWidth = prop.fNull ? 113 : 128;
                 //                controlWidth = prop.fNull ? 103 : 128;
 
-                if (panels.Peek().Name != prop.fParentName && panels.Peek().Name != panel.Name)
+                if (panels.Peek().Name != prop.fParentName && panels.Peek().Name != panelGUITree.Name)
                 {
                     tPanel = panels.Pop();  //go back to the previous panel
                 }
@@ -190,7 +194,7 @@ namespace QRCoderArt
                             AccessibleDescription = prop.fType                          //type in tooltype
                         };
                         tb.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                        tb.TextChanged += new EventHandler(GetPayloadStringFromForm);
+                        tb.TextChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
                         switch (prop.fType)
                         {
                             case "Single":
@@ -230,7 +234,7 @@ namespace QRCoderArt
                             AccessibleName = "Get",
                             AccessibleDescription = prop.fType
                         };
-                        chb.CheckedChanged += new EventHandler(GetPayloadStringFromForm);
+                        chb.CheckedChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
                         panels.Peek().Controls.Add(chb);
                         break;
                     case "dataGridView":
@@ -245,7 +249,7 @@ namespace QRCoderArt
                             AccessibleDescription = prop.fType
                         };
                         dgv.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                        dgv.DataSourceChanged += new EventHandler(GetPayloadStringFromForm);
+                        dgv.DataSourceChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
                         panels.Peek().Controls.Add(dgv);
 
                         // case "Button":          //for custom parameter
@@ -260,7 +264,7 @@ namespace QRCoderArt
                             AccessibleDescription = "setting a custom parameter"// prop.fType;
                         };
                         bt.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                        bt.Click += new EventHandler(GetPropretyForParameter);
+                        bt.Click += new EventHandler(SetPropretyPairs);
                         //                        bt.Click += (sender, e) => {dictionaryForm a = new dictionaryForm(); a.ShowDialog(); };
                         panels.Peek().Controls.Add(bt);
                         break;
@@ -274,8 +278,8 @@ namespace QRCoderArt
                             AccessibleDescription = prop.fType,
                             Format = DateTimePickerFormat.Short
                         };
-                        dtp.ValueChanged += new EventHandler(GetPayloadStringFromForm);
-                        dtp.EnabledChanged += new EventHandler(GetPayloadStringFromForm);
+                        dtp.ValueChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
+                        dtp.EnabledChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
                         panels.Peek().Controls.Add(dtp);
                         if (prop.fNull)
                         {
@@ -309,7 +313,7 @@ namespace QRCoderArt
                         {
                             //  cmb.Name += "ctor_";
                             cmb.AccessibleDescription = "Constructor";
-                            cmb.SelectedIndexChanged += new EventHandler(RebuildingPanelUpload);
+                            cmb.SelectedIndexChanged += new EventHandler(RebuildingGUITreePanel);
                             panels.Peek().Controls.Add(cmb);
                             cmb.Size = new Size(sizeWidth - prop.fLevel * reverseShift, 20);
 
@@ -329,7 +333,7 @@ namespace QRCoderArt
                         }
                         else
                         {
-                            cmb.SelectedIndexChanged += new EventHandler(GetPayloadStringFromForm);
+                            cmb.SelectedIndexChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
                             cmb.Size = new Size(controlWidth, 20);
                             cmb.Margin = padding;
                             panels.Peek().Controls.Add(cmb);
@@ -341,12 +345,13 @@ namespace QRCoderArt
             panelPayload.Visible = true;    //render on
         }
 
-        /*-----------------------------------------------------------------------------------------------------------------------------------------------
+        /*--------------------------------------------------------------------------------------------  
                      EVENTS
-         ------------------------------------------------------------------------------------------------------------------------------------------------*/
-        //show tooltip from AccessibleDescription
+        --------------------------------------------------------------------------------------------*/
+
         /// <summary>
-        /// Tools the tip mouse hover.
+        /// ToolTipMouseHover
+        /// отобразить всплывающую подсказку из AccessibleDescription
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
@@ -355,9 +360,10 @@ namespace QRCoderArt
             toolTip1.SetToolTip((System.Windows.Forms.Control)sender,
                                ((System.Windows.Forms.Control)sender).AccessibleDescription);
         }
-        //check numeric wiht system separator 
+
         /// <summary>
-        /// Filters the only real.
+        /// FilterOnlyReal
+        /// проверка ввода на числа с плавающей точкой (контролируя системный разделитель)
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="KeyPressEventArgs" /> instance containing the event data.</param>
@@ -372,13 +378,14 @@ namespace QRCoderArt
                 }
             }
         }
-        //edit property generic collection
+
         /// <summary>
-        /// Gets the proprety for parameter.
+        /// SetPropretyPairs
+        /// передать через асинхронное сообщение (callback) пары параметров ключ-значение во внешнюю форму на редактирование
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void GetPropretyForParameter(object sender, EventArgs e)
+        private void SetPropretyPairs(object sender, EventArgs e)
         {
             Button bt = sender as Button;
             FormDictionary a = new FormDictionary();
@@ -391,14 +398,13 @@ namespace QRCoderArt
 
         /*-----------------------------------------------------------------------------------------------------------------------------------------*/
 
-
-        //update Payload control panel
         /// <summary>
-        /// Rebuildings the panel upload.
+        /// RebuildingGUITreePanel
+        /// обновить GUITree панель или ее фрагмент GUITreeNodes
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void RebuildingPanelUpload(object sender, EventArgs e)
+        private void RebuildingGUITreePanel(object sender, EventArgs e)
         {
             ComboBox combo = sender as ComboBox;
             Control[] panel = combo.Name == "cbPayload" ?
@@ -407,8 +413,8 @@ namespace QRCoderArt
 
             if (combo.SelectedItem != null)
             {
-                readyState[0] = false;                                      //full ready:= Data preparation not completed
-                RemoveControlPlayloadPanel(panel.First());                  //clear payload panel
+                readyState[0] = false;                             //full ready:= Data preparation not completed
+                ClearGUITreePanel(panel.First());                  //clear payload panel
                 IList propToCntrl = null;
                 using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
                 {
@@ -421,27 +427,27 @@ namespace QRCoderArt
                         propToCntrl = qqRef.GetGUITreeNodes(((ConstructorInfo)((KeyValuePair<string, object>)combo.SelectedItem).Value), combo.Name, panel[0].GetNestleLevel("panelPayload"));
                     }
                 }
-                CreateControlPlayloadPanel(propToCntrl, panel.First());    //create payload panel from constructor parameters
-                                                                           //                this.Refresh();
-                readyState[0] = true;                                      //full ready:= Data preparation completed
-                GetPayloadStringFromForm(null, null);
+                CreateGUITreePanel(propToCntrl, panel.First());    //create payload panel from constructor parameters
+                                                                   //                this.Refresh();
+                readyState[0] = true;                              //full ready:= Data preparation completed
+                GetPayloadStringFromGUITreePanel(null, null);
             }
         }
 
 
-        //get param from panel control
         /// <summary>
-        /// Gets the parameter from panel.
+        /// ReadGUITreePanel
+        /// прочитать текущие значения CTRL панели GUITree 
         /// </summary>
-        /// <param name="panel">The panel.</param>
+        /// <param name="panelGUITree">The panel.</param>
         /// <returns>Dictionary&lt;System.String, System.Object&gt;.</returns>
-        private Dictionary<string, object> GetParamFromPanel(FlowLayoutPanel panel)
+        private Dictionary<string, object> GetParamFromGUITreePanel(FlowLayoutPanel panelGUITree)
         {
             object ret = null;
             Dictionary<string, object> ParamFromControl = new Dictionary<string, object>();
             if (panelPayload.HasChildren)
             {
-                foreach (Control cntrl in panel.Controls)
+                foreach (Control cntrl in panelGUITree.Controls)
                 {
                     if (cntrl.Created && cntrl.AccessibleName == "Get")
                     {
@@ -490,13 +496,13 @@ namespace QRCoderArt
             return ParamFromControl;
         }
 
-        //get string (invoke ToString() execute) Payload from panel control
         /// <summary>
-        /// Gets the payload string from form.
+        /// GetPayloadStringFromGUITreePanel
+        /// прочитать параметры панели GUITree и вызвать базовый метод payload ((invoke ToString() execute))
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void GetPayloadStringFromForm(object sender, EventArgs e)
+        private void GetPayloadStringFromGUITreePanel(object sender, EventArgs e)
         {
             if (readyState[0] && readyState[1] && readyState[2])            //full ready:= Data preparation completed && form load && form show
             {
@@ -521,7 +527,7 @@ namespace QRCoderArt
 
                 //init single ctor from panel controls (delete later)
                 Control[] panel = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is FlowLayoutPanel);
-                ParamFromControl = GetParamFromPanel((FlowLayoutPanel)panel[0]);
+                ParamFromControl = GetParamFromGUITreePanel((FlowLayoutPanel)panel[0]);
 
                 using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
                 {
@@ -531,9 +537,10 @@ namespace QRCoderArt
                 }
             }
         }
-        //change parameters panel Payload
+
         /// <summary>
-        /// Handles the Changed event of the Setting control.
+        /// Setting_Changed
+        /// общеия обработчик события изменения параметров панели GUITree 
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
@@ -541,9 +548,10 @@ namespace QRCoderArt
         {
             RenderQrCode();     //create QR image
         }
-        //create QR image
+
         /// <summary>
-        /// Renders the qr code.
+        /// RenderQrCode
+        /// создать картинку QR кода
         /// </summary>
         private void RenderQrCode()
         {
@@ -590,9 +598,9 @@ namespace QRCoderArt
             }
         }
 
-        /*-----------------------------------------------------------------------------------------------------------------------------------------------
+        /*--------------------------------------------------------------------------------------------  
                      INTERFACE
-         ------------------------------------------------------------------------------------------------------------------------------------------------*/
+        --------------------------------------------------------------------------------------------*/
         /// <summary>
         /// Gets the icon bitmap.
         /// </summary>
@@ -807,15 +815,16 @@ namespace QRCoderArt
             a.ShowDialog();
         }
 
-        /*-----------------------------------------------------------------------------------------------------------------------------------------------
-                CALLBACK return
-        ------------------------------------------------------------------------------------------------------------------------------------------------*/
+        /*--------------------------------------------------------------------------------------------  
+            CALLBACK InPut (подписка на вешние сообщения)
+        --------------------------------------------------------------------------------------------*/
         /// <summary>
         /// Callbacks the reload.
+        /// входящее асинхронное сообщение для подписанных слушателей с передачей текущих параметров
         /// </summary>
-        /// <param name="controlName">Name of the control.</param>
-        /// <param name="controlParentName">Name of the control parent.</param>
-        /// <param name="param">The parameter.</param>
+        /// <param name="controlName">имя CTRL</param>
+        /// <param name="controlParentName">имя родителя CNTRL</param>
+        /// <param name="param">параметры ключ-значение.</param>
         private void CallbackReload(string controlName, string controlParentName, Dictionary<String, String> param)
         {
             if (param.Count() != 0)
@@ -825,6 +834,31 @@ namespace QRCoderArt
             }
         }
     }
+
+    /*--------------------------------------------------------------------------------------------  
+        CALLBACK OutPut (собственные сообщения)
+    --------------------------------------------------------------------------------------------*/
+    //general notification
+    /// <summary>
+    /// CallBack_GetParam
+    /// исходящее асинхронное сообщение для подписанных слушателей с передачей текущих параметров 
+    /// </summary>
+    public static class CallBack_GetParam
+    {
+        /// <summary>
+        /// Delegate callbackEvent
+        /// </summary>
+        /// <param name="controlName">имя CTRL</param>
+        /// <param name="controlParentName">имя родителя CNTRL</param>
+        /// <param name="parameterPairs">параметры ключ-значение</param>
+        public delegate void callbackEvent(string controlName, string controlParentName, Dictionary<String, String> parameterPairs);
+        /// <summary>
+        /// The callback event handler
+        /// </summary>
+        public static callbackEvent callbackEventHandler;
+    }
+
+
     /*-----------------------------------------------------------------------------------------------------------------------------------------------
                  EXTENSION
      ------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -898,28 +932,6 @@ namespace QRCoderArt
             return l;
         }
 
-    }
-
-    /*-----------------------------------------------------------------------------------------------------------------------------------------------
-             CALLBACK
-     ------------------------------------------------------------------------------------------------------------------------------------------------*/
-    //general notification
-    /// <summary>
-    /// Class CallBack_GetParam.
-    /// </summary>
-    public static class CallBack_GetParam
-    {
-        /// <summary>
-        /// Delegate callbackEvent
-        /// </summary>
-        /// <param name="controlName">Name of the control.</param>
-        /// <param name="controlParentName">Name of the control parent.</param>
-        /// <param name="par">The par.</param>
-        public delegate void callbackEvent(string controlName, string controlParentName, Dictionary<String, String> par);
-        /// <summary>
-        /// The callback event handler
-        /// </summary>
-        public static callbackEvent callbackEventHandler;
     }
 
 }
