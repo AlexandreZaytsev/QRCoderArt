@@ -414,11 +414,11 @@ namespace QRCoderArt
                 {
                     if (combo.Name == "cbPayload")
                     {
-                        propToCntrl = qqRef.GetParamsObject(qqRef.GetMemberByName(combo.Text));
+                        propToCntrl = qqRef.GetGUITree(qqRef.GetMemberByName(combo.Text));
                     }
                     else
                     {
-                        propToCntrl = qqRef.GetParamsCtor(((ConstructorInfo)((KeyValuePair<string, object>)combo.SelectedItem).Value), combo.Name, panel[0].GetNestleLevel("panelPayload"));
+                        propToCntrl = qqRef.GetGUITreeNodes(((ConstructorInfo)((KeyValuePair<string, object>)combo.SelectedItem).Value), combo.Name, panel[0].GetNestleLevel("panelPayload"));
                     }
                 }
                 CreateControlPlayloadPanel(propToCntrl, panel.First());    //create payload panel from constructor parameters
