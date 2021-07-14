@@ -21,7 +21,7 @@ namespace QRCoderArt
     /// <value name="fDef">(object )default value</value>
     public class FieldProperty                          //info to create Control WinForm
     {
-        public int fLevel;                              
+        public int fLevel;
         public string fParentName;                      //parentName (parameter block name) 
         public string fName;                            //name parameter
         public string fType;                            //parameter data type name 

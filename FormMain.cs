@@ -736,7 +736,7 @@ namespace QRCoderArt
                 Control parent = c.Parent;
                 while (parent.Name != parentName)
                 {
-                    l = l + 1;
+                    l++;//= l + 1;
                     parent = parent.Parent;
                 }
             }
