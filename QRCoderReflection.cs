@@ -162,9 +162,9 @@ namespace QRCoderArt
         ************************************************************************************************************/
         /// <summary>
         /// get list field propertys to create All control form member
-        /// input - member (name payload) reflection,
-        /// returns an list parameter member for create winform panel payload.
         /// </summary>
+        /// <param name="obj">(object) member (name payload) reflection</param>
+        /// <returns>list parameter member for create winform panel payload</returns>
         public IList GetParamsObject(Object obj)
         {
             List<FieldProperty> Params = new List<FieldProperty>();                                 //list of parameters
@@ -173,11 +173,14 @@ namespace QRCoderArt
             GetItemInfoForForm(obj, ((Type)obj).Name, (Type)obj, null, Params, nestingLevel, "");    //get parameter list
             return Params;
         }
+ 
         /// <summary>
         /// get list field propertys to create one control form constructor
-        /// input - constructor
-        /// returns an list parameter member for create winform panel payload.
         /// </summary>
+        /// <param name="obj">(ConstructorInfo) constructor</param>
+        /// <param name="parentName">(string) member parent name</param>
+        /// <param name="nestingLevel">(int) nesting level in tree</param>
+        /// <returns>list parameter member for create winform panel payload</returns>
         public IList GetParamsCtor(ConstructorInfo obj, string parentName, int nestingLevel)
         {
             List<FieldProperty> Params = new List<FieldProperty>();                                 //list of parameters
