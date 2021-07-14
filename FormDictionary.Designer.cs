@@ -49,10 +49,9 @@ namespace QRCoderArt
             this.dataGridViewProperty.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewProperty.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dataGridViewProperty.Location = new System.Drawing.Point(0, 0);
-            this.dataGridViewProperty.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewProperty.Name = "dataGridViewProperty";
             this.dataGridViewProperty.RowHeadersWidth = 51;
-            this.dataGridViewProperty.Size = new System.Drawing.Size(591, 266);
+            this.dataGridViewProperty.Size = new System.Drawing.Size(443, 216);
             this.dataGridViewProperty.TabIndex = 0;
             // 
             // plugin
@@ -75,27 +74,26 @@ namespace QRCoderArt
             // 
             this.button1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(0, 238);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Location = new System.Drawing.Point(0, 193);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(591, 28);
+            this.button1.Size = new System.Drawing.Size(443, 23);
             this.button1.TabIndex = 1;
             this.button1.Text = "Send data to parameter";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
-            // dictionaryForm
+            // FormDictionary
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(591, 266);
+            this.ClientSize = new System.Drawing.Size(443, 216);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.dataGridViewProperty);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "dictionaryForm";
+            this.Name = "FormDictionary";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Properties (for the dictionary type)";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProperty)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();

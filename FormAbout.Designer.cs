@@ -134,7 +134,7 @@ namespace QRCoderArt
             this.richTextBox1.TabIndex = 24;
             this.richTextBox1.Text = "";
             // 
-            // aboutForm
+            // FormAbout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -144,7 +144,7 @@ namespace QRCoderArt
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "aboutForm";
+            this.Name = "FormAbout";
             this.Padding = new System.Windows.Forms.Padding(9);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
