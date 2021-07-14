@@ -214,7 +214,7 @@ namespace QRCoderArt
                             Text = "...",
                             AccessibleName = "",// "Get";
                             FlatStyle = FlatStyle.System,
-                            AccessibleDescription = "setting a custom parameter (not currently used)"// prop.fType;
+                            AccessibleDescription = "setting a custom parameter"// prop.fType;
                         };
                         bt.MouseHover += new System.EventHandler(ToolTipMouseHover);
                         bt.Click += new EventHandler(GetPropretyForParameter);
