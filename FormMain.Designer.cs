@@ -1,7 +1,25 @@
-﻿
+﻿// ***********************************************************************
+// Assembly         : QRCoderArt
+// Author           : zaytsev
+// Created          : 07-13-2021
+//
+// Last Modified By : zaytsev
+// Last Modified On : 07-14-2021
+// ***********************************************************************
+// <copyright file="FormMain.Designer.cs" company="">
+//     MIT ©  2021
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+
 
 namespace QRCoderArt
 {
+    /// <summary>
+    /// Class FormMain.
+    /// Implements the <see cref="System.Windows.Forms.Form" />
+    /// </summary>
+    /// <seealso cref="System.Windows.Forms.Form" />
     partial class FormMain
     {
         /// <summary>
@@ -593,43 +611,157 @@ namespace QRCoderArt
         }
 
         #endregion
+        /// <summary>
+        /// The text box qr code
+        /// </summary>
         private System.Windows.Forms.TextBox textBoxQRCode;
+        /// <summary>
+        /// The picture box qr code
+        /// </summary>
         private System.Windows.Forms.PictureBox pictureBoxQRCode;
+        /// <summary>
+        /// The combo box ecc
+        /// </summary>
         private System.Windows.Forms.ComboBox comboBoxECC;
+        /// <summary>
+        /// The label ecc
+        /// </summary>
         private System.Windows.Forms.Label labelECC;
+        /// <summary>
+        /// The label iconsize
+        /// </summary>
         private System.Windows.Forms.Label labelIconsize;
+        /// <summary>
+        /// The icon size
+        /// </summary>
         private System.Windows.Forms.NumericUpDown iconSize;
+        /// <summary>
+        /// The button save
+        /// </summary>
         private System.Windows.Forms.Button buttonSave;
+        /// <summary>
+        /// The color dialog primary color
+        /// </summary>
         private System.Windows.Forms.ColorDialog colorDialogPrimaryColor;
+        /// <summary>
+        /// The panel preview primary color
+        /// </summary>
         private System.Windows.Forms.Panel panelPreviewPrimaryColor;
+        /// <summary>
+        /// The panel preview background color
+        /// </summary>
         private System.Windows.Forms.Panel panelPreviewBackgroundColor;
+        /// <summary>
+        /// The color dialog background color
+        /// </summary>
         private System.Windows.Forms.ColorDialog colorDialogBackgroundColor;
+        /// <summary>
+        /// The art path
+        /// </summary>
         private System.Windows.Forms.TextBox artPath;
+        /// <summary>
+        /// The select art BTN
+        /// </summary>
         private System.Windows.Forms.Button selectArtBtn;
+        /// <summary>
+        /// The label2
+        /// </summary>
         private System.Windows.Forms.Label label2;
+        /// <summary>
+        /// The dot size
+        /// </summary>
         private System.Windows.Forms.NumericUpDown dotSize;
+        /// <summary>
+        /// The label preview background color
+        /// </summary>
         private System.Windows.Forms.Label labelPreviewBackgroundColor;
+        /// <summary>
+        /// The label3
+        /// </summary>
         private System.Windows.Forms.Label label3;
+        /// <summary>
+        /// The select icon BTN
+        /// </summary>
         private System.Windows.Forms.Button selectIconBtn;
+        /// <summary>
+        /// The icon path
+        /// </summary>
         private System.Windows.Forms.TextBox iconPath;
+        /// <summary>
+        /// The label1
+        /// </summary>
         private System.Windows.Forms.Label label1;
+        /// <summary>
+        /// The pixel size
+        /// </summary>
         private System.Windows.Forms.NumericUpDown pixelSize;
+        /// <summary>
+        /// The view mode
+        /// </summary>
         private System.Windows.Forms.ComboBox viewMode;
+        /// <summary>
+        /// The label4
+        /// </summary>
         private System.Windows.Forms.Label label4;
+        /// <summary>
+        /// The cb payload
+        /// </summary>
         private System.Windows.Forms.ComboBox cbPayload;
+        /// <summary>
+        /// The tb constructor
+        /// </summary>
         private System.Windows.Forms.Label tbConstructor;
+        /// <summary>
+        /// The label6
+        /// </summary>
         private System.Windows.Forms.Label label6;
+        /// <summary>
+        /// The label5
+        /// </summary>
         private System.Windows.Forms.Label label5;
+        /// <summary>
+        /// The panel1
+        /// </summary>
         private System.Windows.Forms.Panel panel1;
+        /// <summary>
+        /// The label11
+        /// </summary>
         private System.Windows.Forms.Label label11;
+        /// <summary>
+        /// The label10
+        /// </summary>
         private System.Windows.Forms.Label label10;
+        /// <summary>
+        /// The label9
+        /// </summary>
         private System.Windows.Forms.Label label9;
+        /// <summary>
+        /// The label8
+        /// </summary>
         private System.Windows.Forms.Label label8;
+        /// <summary>
+        /// The tool tip1
+        /// </summary>
         private System.Windows.Forms.ToolTip toolTip1;
+        /// <summary>
+        /// The panel2
+        /// </summary>
         private System.Windows.Forms.Panel panel2;
+        /// <summary>
+        /// The out split container
+        /// </summary>
         private System.Windows.Forms.SplitContainer outSplitContainer;
+        /// <summary>
+        /// The panel3
+        /// </summary>
         private System.Windows.Forms.Panel panel3;
+        /// <summary>
+        /// The panel payload
+        /// </summary>
         private System.Windows.Forms.FlowLayoutPanel panelPayload;
+        /// <summary>
+        /// The q r code binding source
+        /// </summary>
         private System.Windows.Forms.BindingSource qRCodeBindingSource;
     }
 }

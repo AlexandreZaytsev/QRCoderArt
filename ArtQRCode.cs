@@ -1,4 +1,16 @@
-﻿//#if NETFRAMEWORK || NETSTANDARD2_0 || NET5_0
+﻿// ***********************************************************************
+// Assembly         : QRCoderArt
+// Author           : zaytsev
+// Created          : 07-09-2021
+//
+// Last Modified By : zaytsev
+// Last Modified On : 07-14-2021
+// ***********************************************************************
+// <copyright file="ArtQRCode.cs" company="">
+//     MIT ©  2021
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
 
 using System;
 using System.Drawing;
@@ -7,6 +19,13 @@ using System.Drawing.Drawing2D;
 // pull request raised to extend library used. 
 namespace QRCoder
 {
+    /// <summary>
+    /// Class ArtQRCode.
+    /// Implements the <see cref="QRCoder.AbstractQRCode" />
+    /// Implements the <see cref="System.IDisposable" />
+    /// </summary>
+    /// <seealso cref="QRCoder.AbstractQRCode" />
+    /// <seealso cref="System.IDisposable" />
     public class ArtQRCode : AbstractQRCode, IDisposable
     {
         /// <summary>
@@ -14,19 +33,47 @@ namespace QRCoder
         /// </summary>
         public ArtQRCode() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ArtQRCode" /> class.
+        /// </summary>
+        /// <param name="data">The data.</param>
         public ArtQRCode(QRCodeData data) : base(data) { }
 
+        /// <summary>
+        /// Gets the graphic.
+        /// </summary>
+        /// <param name="pixelsPerModule">The pixels per module.</param>
+        /// <returns>Bitmap.</returns>
         public Bitmap GetGraphic(int pixelsPerModule)
         {
             return this.GetGraphic(pixelsPerModule, (pixelsPerModule * 8) / 10, Color.Black, Color.White);
         }
 
+        /// <summary>
+        /// Gets the graphic.
+        /// </summary>
+        /// <param name="pixelSize">Size of the pixel.</param>
+        /// <param name="darkColor">Color of the dark.</param>
+        /// <param name="lightColor">Color of the light.</param>
+        /// <param name="backgroundImage">The background image.</param>
+        /// <returns>Bitmap.</returns>
         public Bitmap GetGraphic(int pixelSize, Color darkColor, Color lightColor, Bitmap backgroundImage = null)
         {
             //            return this.GetGraphic(10, 7, Color.Black, Color.White, backgroundImage: backgroundImage);
             return this.GetGraphic(10, pixelSize, darkColor, lightColor, backgroundImage: backgroundImage);
         }
 
+        /// <summary>
+        /// Gets the graphic.
+        /// </summary>
+        /// <param name="pixelsPerModule">The pixels per module.</param>
+        /// <param name="pixelSize">Size of the pixel.</param>
+        /// <param name="darkColor">Color of the dark.</param>
+        /// <param name="lightColor">Color of the light.</param>
+        /// <param name="drawQuietZones">if set to <c>true</c> [draw quiet zones].</param>
+        /// <param name="reticleImage">The reticle image.</param>
+        /// <param name="backgroundImage">The background image.</param>
+        /// <returns>Bitmap.</returns>
         public Bitmap GetGraphic(
             int pixelsPerModule,
             int pixelSize,
@@ -98,10 +145,10 @@ namespace QRCoder
         /// <summary>
         /// If the pixelSize is bigger than the pixelsPerModule or may end up filling the Module making a traditional QR code.
         /// </summary>
-        /// <param name="pixelsPerModule"></param>
-        /// <param name="pixelSize"></param>
-        /// <param name="brush"></param>
-        /// <returns></returns>
+        /// <param name="pixelsPerModule">The pixels per module.</param>
+        /// <param name="pixelSize">Size of the pixel.</param>
+        /// <param name="brush">The brush.</param>
+        /// <returns>Bitmap.</returns>
         private Bitmap MakeDotPixel(int pixelsPerModule, int pixelSize, SolidBrush brush)
         {
             // draw a dot
@@ -128,6 +175,14 @@ namespace QRCoder
             return cropped;
         }
 
+        /// <summary>
+        /// Determines whether [is part of reticle] [the specified x].
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="numModules">The number modules.</param>
+        /// <param name="offset">The offset.</param>
+        /// <returns><c>true</c> if [is part of reticle] [the specified x]; otherwise, <c>false</c>.</returns>
         private bool IsPartOfReticle(int x, int y, int numModules, int offset)
         {
             var cornerSize = 11 - offset;
@@ -140,10 +195,9 @@ namespace QRCoder
         /// <summary>
         /// Resize to a square bitmap, but maintain the aspect ratio by padding transparently.
         /// </summary>
-        /// 
-        /// <param name="image"></param>
-        /// <param name="newSize"></param>
-        /// <returns></returns>
+        /// <param name="image">The image.</param>
+        /// <param name="newSize">The new size.</param>
+        /// <returns>Bitmap.</returns>
         private Bitmap Resize(Bitmap image, int newSize)
         {
             float scale = Math.Min((float)newSize / image.Width, (float)newSize / image.Height);

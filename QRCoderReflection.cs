@@ -1,4 +1,17 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : QRCoderArt
+// Author           : zaytsev
+// Created          : 07-14-2021
+//
+// Last Modified By : zaytsev
+// Last Modified On : 07-14-2021
+// ***********************************************************************
+// <copyright file="QRCoderReflection.cs" company="">
+//     MIT ©  2021
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,30 +19,45 @@ using System.Reflection;
 
 namespace QRCoderArt
 {
-    //FieldProperty
+
     /// <summary>
-    /// Class FieldProperty
-    /// parameter structure for creating a form control
-    /// структура параметров для создания жлемента формы
+    /// Class FieldProperty.
+    /// структура (дерево) параметров для создания элемента формы
     /// </summary>
-    /// <value name="fLevel">(int) nesting level of the parameter</value>
-    /// <value name="fParentName">(string) parentName (parameter block name)</value>
-    /// <value name="fName">(string) name parameter</value>
-    /// <value name="fType">(string) data type name</value>
-    /// <value name="fForm">(string) name of the control type to display on the winform</value>
-    /// <value name="fList">(Dictionary) winform control data source (for combobox)</value>
-    /// <value name="fNull">(Boolean)presence of zero value (for checkbox)</value>
-    /// <value name="fDef">(object )default value</value>
-    public class FieldProperty                          //info to create Control WinForm
+    public class FieldProperty                          
     {
+        /// <summary>
+        /// уровень вложенности параметра в дереве
+        /// </summary>
         public int fLevel;
-        public string fParentName;                      //parentName (parameter block name) 
-        public string fName;                            //name parameter
-        public string fType;                            //parameter data type name 
-        public string fForm;                            //name of the control type to display on the winform
-        public Dictionary<string, object> fList;        //winform control data source (for combobox)
-        public Boolean fNull;                           //presence of zero value (for checkbox)
-        public object fDef;                             //default value    
+        /// <summary>
+        /// имя родителя параметра
+        /// </summary>
+        public string fParentName;                      
+        /// <summary>
+        /// имя параметра
+        /// </summary>
+        public string fName;                            
+        /// <summary>
+        /// наименование типа данных параметра (строка: 'String', 'Integer', и т.д.)
+        /// </summary>
+        public string fType;                             
+        /// <summary>
+        /// наименование типа элемента формы (строка: 'TextBox'; 'ConboBox', и т.д.)
+        /// </summary>
+        public string fForm;  
+        /// <summary>
+        /// расширенные данные (Словарь) - используется для для datasource ComboBox
+        /// </summary>
+        public Dictionary<string, object> fList;        
+        /// <summary>
+        /// признак наличия нулевого значения параметра - используется для CheckBox
+        /// </summary>
+        public Boolean fNull;                          
+        /// <summary>
+        /// значение параметра по умолчанию
+        /// </summary>
+        public object fDef;                    
     }
 
     //QRCoderReflection
@@ -39,23 +67,43 @@ namespace QRCoderArt
     /// </summary>
     public class QRCoderReflection : IDisposable
     {
+        /// <summary>
+        /// The t reference
+        /// </summary>
         private Type tRef;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QRCoderReflection" /> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
         public QRCoderReflection(string name)
         {
             tRef = Type.GetType(name);
         }
+        /// <summary>
+        /// Выполняет определяемые приложением задачи, связанные с удалением, высвобождением или сбросом неуправляемых ресурсов.
+        /// </summary>
         public void Dispose()
         {
             //         throw new NotImplementedException();
         }
 
         //get member by name
+        /// <summary>
+        /// Gets the name of the member by.
+        /// </summary>
+        /// <param name="baseName">Name of the base.</param>
+        /// <returns>Type.</returns>
         public Type GetMemberByName(string baseName)
         {
             return (Type)tRef.GetMember(baseName).First();
         }
 
         //get class names named (payload)
+        /// <summary>
+        /// Gets the name of the members class.
+        /// </summary>
+        /// <param name="cName">Name of the c.</param>
+        /// <returns>List&lt;System.String&gt;.</returns>
         public List<string> GetMembersClassName(string cName)
         {
             return (from t in tRef.GetMembers(BindingFlags.Public)
@@ -65,6 +113,11 @@ namespace QRCoderArt
         }
 
         //get constructor dictionary
+        /// <summary>
+        /// Gets the constructor.
+        /// </summary>
+        /// <param name="param">The parameter.</param>
+        /// <returns>Dictionary&lt;System.String, System.Object&gt;.</returns>
         public Dictionary<string, object> GetConstructor(Type param)
         {
             return (from ctor in param.GetConstructors()
@@ -75,15 +128,22 @@ namespace QRCoderArt
                     }).ToDictionary(k => k.name, v => (Object)v.ctor);
         }
 
-/*
-        //get enum dictionary
-        private IDictionary<string, object> GetItemEnum(ParameterInfo param)
-        {
-            return param.ParameterType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v); ;
-        }
-*/
+        /*
+                //get enum dictionary
+                private IDictionary<string, object> GetItemEnum(ParameterInfo param)
+                {
+                    return param.ParameterType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v); ;
+                }
+        */
 
         //get constructor parameters
+        /// <summary>
+        /// Gets the parameters constuctor.
+        /// </summary>
+        /// <param name="ctor">The ctor.</param>
+        /// <param name="Params">The parameters.</param>
+        /// <param name="nestingLevel">The nesting level.</param>
+        /// <param name="parentName">Name of the parent.</param>
         private void GetParamsConstuctor(ConstructorInfo ctor, List<FieldProperty> Params, int nestingLevel, string parentName)
         {
             //for pure (witout k__BackingField) names here we use GetProperties()  
@@ -107,6 +167,12 @@ namespace QRCoderArt
           EXECUTE MEMBER
         ************************************************************************************************************/
         //initialize the constructor and execute the default method
+        /// <summary>
+        /// Gets the payload string.
+        /// </summary>
+        /// <param name="ctor">The ctor.</param>
+        /// <param name="cntrlFromForm">The CNTRL from form.</param>
+        /// <returns>System.String.</returns>
         public string GetPayloadString(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm)
         {
             //https://metanit.com/sharp/tutorial/14.2.php
@@ -176,14 +242,14 @@ namespace QRCoderArt
             GetItemInfoForForm(obj, ((Type)obj).Name, (Type)obj, null, Params, nestingLevel, "");    //get parameter list
             return Params;
         }
- 
+
         /// <summary>
-        /// get list field propertys to create one control form constructor
+        /// Gets the parameters ctor.
         /// </summary>
-        /// <param name="obj">(ConstructorInfo) constructor</param>
-        /// <param name="parentName">(string) member parent name</param>
-        /// <param name="nestingLevel">(int) nesting level in tree</param>
-        /// <returns>list parameter member for create winform panel payload</returns>
+        /// <param name="obj">The object.</param>
+        /// <param name="parentName">Name of the parent.</param>
+        /// <param name="nestingLevel">The nesting level.</param>
+        /// <returns>IList.</returns>
         public IList GetParamsCtor(ConstructorInfo obj, string parentName, int nestingLevel)
         {
             List<FieldProperty> Params = new List<FieldProperty>();                                 //list of parameters
@@ -191,17 +257,18 @@ namespace QRCoderArt
             return Params;
         }
 
+
         /// <summary>
-        /// get field property to create control form
+        /// Gets the item information for form.
         /// </summary>
-        /// <param name="Param">(object) member (name payload) reflection</param>
-        /// <param name="paramName">(string) member name</param>
-        /// <param name="paramType">(Type) member type</param>
-        /// <param name="defValue">(object) default value </param>
-        /// <param name="Params">(List) FieldProperty</param>
-        /// <param name="nestingLevel">(int) nesting level in tree</param>
-        /// <param name="paramParent">(string) member parent name</param>
-        /// <returns>list parameter member for create winform panel payload</returns>
+        /// <param name="Param">The parameter.</param>
+        /// <param name="paramName">Name of the parameter.</param>
+        /// <param name="paramType">Type of the parameter.</param>
+        /// <param name="defValue">The definition value.</param>
+        /// <param name="Params">The parameters.</param>
+        /// <param name="nestingLevel">The nesting level.</param>
+        /// <param name="paramParent">The parameter parent.</param>
+        /// <returns>System.Int32.</returns>
         private int GetItemInfoForForm(object Param, string paramName, Type paramType, object defValue, List<FieldProperty> Params, int nestingLevel, string paramParent)
         {
             FieldProperty mParam = new FieldProperty();// { fName = paramName, fType = paramType.Name, fForm = "TextBox", fList = null, fNull = false, fDef = defValue, fLevel = nestingLevel };

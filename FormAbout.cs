@@ -1,12 +1,33 @@
-﻿using QRCoderArt.Properties;
+﻿// ***********************************************************************
+// Assembly         : QRCoderArt
+// Author           : zaytsev
+// Created          : 07-14-2021
+//
+// Last Modified By : zaytsev
+// Last Modified On : 07-14-2021
+// ***********************************************************************
+// <copyright file="FormAbout.cs" company="">
+//     MIT ©  2021
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using QRCoderArt.Properties;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
 
 namespace QRCoderArt
 {
+    /// <summary>
+    /// Class FormAbout.
+    /// Implements the <see cref="System.Windows.Forms.Form" />
+    /// </summary>
+    /// <seealso cref="System.Windows.Forms.Form" />
     partial class FormAbout : Form
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FormAbout" /> class.
+        /// </summary>
         public FormAbout()
         {
             InitializeComponent();
@@ -20,6 +41,10 @@ namespace QRCoderArt
 
         #region Методы доступа к атрибутам сборки
 
+        /// <summary>
+        /// Gets the assembly title.
+        /// </summary>
+        /// <value>The assembly title.</value>
         public string AssemblyTitle
         {
             get
@@ -37,6 +62,10 @@ namespace QRCoderArt
             }
         }
 
+        /// <summary>
+        /// Gets the assembly version.
+        /// </summary>
+        /// <value>The assembly version.</value>
         public string AssemblyVersion
         {
             get
@@ -45,6 +74,10 @@ namespace QRCoderArt
             }
         }
 
+        /// <summary>
+        /// Gets the assembly description.
+        /// </summary>
+        /// <value>The assembly description.</value>
         public string AssemblyDescription
         {
             get
@@ -58,6 +91,10 @@ namespace QRCoderArt
             }
         }
 
+        /// <summary>
+        /// Gets the assembly product.
+        /// </summary>
+        /// <value>The assembly product.</value>
         public string AssemblyProduct
         {
             get
@@ -71,6 +108,10 @@ namespace QRCoderArt
             }
         }
 
+        /// <summary>
+        /// Gets the assembly copyright.
+        /// </summary>
+        /// <value>The assembly copyright.</value>
         public string AssemblyCopyright
         {
             get
@@ -84,6 +125,10 @@ namespace QRCoderArt
             }
         }
 
+        /// <summary>
+        /// Gets the assembly company.
+        /// </summary>
+        /// <value>The assembly company.</value>
         public string AssemblyCompany
         {
             get

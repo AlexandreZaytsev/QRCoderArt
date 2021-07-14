@@ -1,3 +1,16 @@
+// ***********************************************************************
+// Assembly         : QRCoderArt
+// Author           : zaytsev
+// Created          : 07-14-2021
+//
+// Last Modified By : zaytsev
+// Last Modified On : 07-14-2021
+// ***********************************************************************
+// <copyright file="FormMain.cs" company="">
+//     MIT ©  2021
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
 using QRCoder;
 using System;
 using System.Collections;
@@ -12,13 +25,24 @@ using System.Windows.Forms;
 
 namespace QRCoderArt
 {
+    /// <summary>
+    /// Class FormMain.
+    /// Implements the <see cref="System.Windows.Forms.Form" />
+    /// </summary>
+    /// <seealso cref="System.Windows.Forms.Form" />
     public partial class FormMain : Form
     {
         //To fix errors (when controls have not yet been created) at the first
+        /// <summary>
+        /// The ready state
+        /// </summary>
         private bool[] readyState = {false,                 //Data preparation completed
                                      false,                 //MainForm is Load
                                      false };               //Mainform is Show    
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FormMain" /> class.
+        /// </summary>
         public FormMain()
         {
             CallBack_SetParam.callbackEventHandler = new CallBack_SetParam.callbackEvent(this.CallbackReload);    //subscribe (listen) to the general notification
@@ -41,12 +65,22 @@ namespace QRCoderArt
             this.viewMode.SelectedIndex = 4;
         }
 
+        /// <summary>
+        /// Handles the Load event of the FormMain control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void FormMain_Load(object sender, EventArgs e)
         {
             comboBoxECC.SelectedIndex = 0; //Pre-select ECC level "L"
             textBoxQRCode.Text = "enter your text or select payload + constructor + fill in the parameters";
             readyState[1] = true;           //MainForm is Load
         }
+        /// <summary>
+        /// Handles the Shown event of the FormMain control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void FormMain_Shown(object sender, EventArgs e)
         {
             readyState[2] = true;           //Mainform is Show
@@ -56,6 +90,10 @@ namespace QRCoderArt
                      REFLECTION
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
         //clear payload panel
+        /// <summary>
+        /// Removes the control playload panel.
+        /// </summary>
+        /// <param name="panel">The panel.</param>
         private void RemoveControlPlayloadPanel(Control panel)
         {
             if (panel.HasChildren)
@@ -71,6 +109,11 @@ namespace QRCoderArt
         }
 
         //create payload panel from constructor parameters
+        /// <summary>
+        /// Creates the control playload panel.
+        /// </summary>
+        /// <param name="controlsList">The controls list.</param>
+        /// <param name="panel">The panel.</param>
         private void CreateControlPlayloadPanel(IList controlsList, Control panel)
         {
             int labelWidth = 135;// 122;// 135;
@@ -302,12 +345,22 @@ namespace QRCoderArt
                      EVENTS
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
         //show tooltip from AccessibleDescription
+        /// <summary>
+        /// Tools the tip mouse hover.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void ToolTipMouseHover(object sender, EventArgs e)
         {
             toolTip1.SetToolTip((System.Windows.Forms.Control)sender,
                                ((System.Windows.Forms.Control)sender).AccessibleDescription);
         }
         //check numeric wiht system separator 
+        /// <summary>
+        /// Filters the only real.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="KeyPressEventArgs" /> instance containing the event data.</param>
         private void FilterOnlyReal(object sender, KeyPressEventArgs e)
         {
             string sep = ((float)1 / 2).ToString().Substring(1, 1);  // system sparator
@@ -320,6 +373,11 @@ namespace QRCoderArt
             }
         }
         //edit property generic collection
+        /// <summary>
+        /// Gets the proprety for parameter.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void GetPropretyForParameter(object sender, EventArgs e)
         {
             Button bt = sender as Button;
@@ -335,6 +393,11 @@ namespace QRCoderArt
 
 
         //update Payload control panel
+        /// <summary>
+        /// Rebuildings the panel upload.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void RebuildingPanelUpload(object sender, EventArgs e)
         {
             ComboBox combo = sender as ComboBox;
@@ -367,6 +430,11 @@ namespace QRCoderArt
 
 
         //get param from panel control
+        /// <summary>
+        /// Gets the parameter from panel.
+        /// </summary>
+        /// <param name="panel">The panel.</param>
+        /// <returns>Dictionary&lt;System.String, System.Object&gt;.</returns>
         private Dictionary<string, object> GetParamFromPanel(FlowLayoutPanel panel)
         {
             object ret = null;
@@ -423,6 +491,11 @@ namespace QRCoderArt
         }
 
         //get string (invoke ToString() execute) Payload from panel control
+        /// <summary>
+        /// Gets the payload string from form.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void GetPayloadStringFromForm(object sender, EventArgs e)
         {
             if (readyState[0] && readyState[1] && readyState[2])            //full ready:= Data preparation completed && form load && form show
@@ -459,11 +532,19 @@ namespace QRCoderArt
             }
         }
         //change parameters panel Payload
+        /// <summary>
+        /// Handles the Changed event of the Setting control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void Setting_Changed(object sender, EventArgs e)
         {
             RenderQrCode();     //create QR image
         }
         //create QR image
+        /// <summary>
+        /// Renders the qr code.
+        /// </summary>
         private void RenderQrCode()
         {
             if (textBoxQRCode.Text.IndexOf("Error:") >= 0)
@@ -512,6 +593,10 @@ namespace QRCoderArt
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
                      INTERFACE
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
+        /// <summary>
+        /// Gets the icon bitmap.
+        /// </summary>
+        /// <returns>Bitmap.</returns>
         private Bitmap GetIconBitmap()
         {
             if (iconPath.Text.Length == 0)
@@ -528,6 +613,10 @@ namespace QRCoderArt
             }
         }
 
+        /// <summary>
+        /// Gets the art bitmap.
+        /// </summary>
+        /// <returns>Bitmap.</returns>
         private Bitmap GetArtBitmap()
         {
             if (artPath.Text.Length == 0)
@@ -544,6 +633,11 @@ namespace QRCoderArt
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the SelectIconBtn control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void SelectIconBtn_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDlg = new OpenFileDialog
@@ -567,6 +661,12 @@ namespace QRCoderArt
         }
 
 
+        /// <summary>
+        /// Handles the Click event of the Btn_save control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
+        /// <exception cref="System.NotSupportedException">File extension is not supported</exception>
         private void Btn_save_Click(object sender, EventArgs e)
         {
 
@@ -612,6 +712,11 @@ namespace QRCoderArt
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the PanelPreviewPrimaryColor control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void PanelPreviewPrimaryColor_Click(object sender, EventArgs e)
         {
             if (colorDialogPrimaryColor.ShowDialog() == DialogResult.OK)
@@ -621,6 +726,11 @@ namespace QRCoderArt
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the PanelPreviewBackgroundColor control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void PanelPreviewBackgroundColor_Click(object sender, EventArgs e)
         {
             if (colorDialogBackgroundColor.ShowDialog() == DialogResult.OK)
@@ -630,16 +740,29 @@ namespace QRCoderArt
             }
         }
 
+        /// <summary>
+        /// Gets the color of the primary.
+        /// </summary>
+        /// <returns>Color.</returns>
         private Color GetPrimaryColor()
         {
             return panelPreviewPrimaryColor.BackColor;
         }
 
+        /// <summary>
+        /// Gets the color of the background.
+        /// </summary>
+        /// <returns>Color.</returns>
         private Color GetBackgroundColor()
         {
             return panelPreviewBackgroundColor.BackColor;
         }
 
+        /// <summary>
+        /// Handles the Click event of the SelectArtBtn control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void SelectArtBtn_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDlg = new OpenFileDialog
@@ -663,11 +786,21 @@ namespace QRCoderArt
         }
 
         //position image from frame 
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the ViewMode control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void ViewMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             pictureBoxQRCode.BackgroundImageLayout = (ImageLayout)Enum.Parse(typeof(ImageLayout), viewMode.Text);// Enum.GetName(typeof(ImageLayout), "2"); //Enum.Parse(typeof(ImageLayout), sender.ToString());
         }
 
+        /// <summary>
+        /// Handles the HelpButtonClicked event of the Form1 control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="CancelEventArgs" /> instance containing the event data.</param>
         private void Form1_HelpButtonClicked(object sender, CancelEventArgs e)
         {
             FormAbout a = new FormAbout();
@@ -677,6 +810,12 @@ namespace QRCoderArt
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
                 CALLBACK return
         ------------------------------------------------------------------------------------------------------------------------------------------------*/
+        /// <summary>
+        /// Callbacks the reload.
+        /// </summary>
+        /// <param name="controlName">Name of the control.</param>
+        /// <param name="controlParentName">Name of the control parent.</param>
+        /// <param name="param">The parameter.</param>
         private void CallbackReload(string controlName, string controlParentName, Dictionary<String, String> param)
         {
             if (param.Count() != 0)
@@ -689,12 +828,18 @@ namespace QRCoderArt
     /*-----------------------------------------------------------------------------------------------------------------------------------------------
                  EXTENSION
      ------------------------------------------------------------------------------------------------------------------------------------------------*/
+    /// <summary>
+    /// Class ControlExtensions.
+    /// </summary>
     static public class ControlExtensions
     {
         /// <summary>
         /// Recurses through all controls, starting at given control,
         /// and returns an array of those matching the given criteria.
         /// </summary>
+        /// <param name="start">The start.</param>
+        /// <param name="isMatch">The is match.</param>
+        /// <returns>Control[].</returns>
         static public Control[] FilterControls(this Control start, Func<Control, bool> isMatch)
         {
             var matches = new List<Control>();
@@ -713,6 +858,11 @@ namespace QRCoderArt
             return matches.ToArray();
         }
 
+        /// <summary>
+        /// Gets the control path.
+        /// </summary>
+        /// <param name="c">The c.</param>
+        /// <returns>IEnumerable&lt;System.String&gt;.</returns>
         public static IEnumerable<string> GetControlPath(this Control c)
         {
             yield return c.Name;
@@ -727,6 +877,12 @@ namespace QRCoderArt
             }
         }
 
+        /// <summary>
+        /// Gets the nestle level.
+        /// </summary>
+        /// <param name="c">The c.</param>
+        /// <param name="parentName">Name of the parent.</param>
+        /// <returns>System.Int32.</returns>
         public static int GetNestleLevel(this Control c, string parentName)
         {
             int l = 1;
@@ -748,9 +904,21 @@ namespace QRCoderArt
              CALLBACK
      ------------------------------------------------------------------------------------------------------------------------------------------------*/
     //general notification
+    /// <summary>
+    /// Class CallBack_GetParam.
+    /// </summary>
     public static class CallBack_GetParam
     {
+        /// <summary>
+        /// Delegate callbackEvent
+        /// </summary>
+        /// <param name="controlName">Name of the control.</param>
+        /// <param name="controlParentName">Name of the control parent.</param>
+        /// <param name="par">The par.</param>
         public delegate void callbackEvent(string controlName, string controlParentName, Dictionary<String, String> par);
+        /// <summary>
+        /// The callback event handler
+        /// </summary>
         public static callbackEvent callbackEventHandler;
     }
 

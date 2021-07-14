@@ -1,9 +1,25 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : QRCoderArt
+// Author           : zaytsev
+// Created          : 07-14-2021
+//
+// Last Modified By : zaytsev
+// Last Modified On : 07-14-2021
+// ***********************************************************************
+// <copyright file="Program.cs" company="">
+//     MIT ©  2021
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using System;
 using System.Windows.Forms;
 
 
 namespace QRCoderArt
 {
+    /// <summary>
+    /// Class Program.
+    /// </summary>
     static class Program
     {
         /// <summary>
@@ -20,6 +36,12 @@ namespace QRCoderArt
 
 
         // Display a formatted string indented by the specified amount.
+        /// <summary>
+        /// Displays the specified indent.
+        /// </summary>
+        /// <param name="indent">The indent.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="param">The parameter.</param>
         public static void Display(Int32 indent, string format, params object[] param)
 
         {

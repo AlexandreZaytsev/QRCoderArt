@@ -1,6 +1,24 @@
-﻿
+﻿// ***********************************************************************
+// Assembly         : QRCoderArt
+// Author           : zaytsev
+// Created          : 07-09-2021
+//
+// Last Modified By : zaytsev
+// Last Modified On : 07-14-2021
+// ***********************************************************************
+// <copyright file="FormAbout.Designer.cs" company="">
+//     MIT ©  2021
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+
 namespace QRCoderArt
 {
+    /// <summary>
+    /// Class FormAbout.
+    /// Implements the <see cref="System.Windows.Forms.Form" />
+    /// </summary>
+    /// <seealso cref="System.Windows.Forms.Form" />
     partial class FormAbout
     {
         /// <summary>
@@ -11,6 +29,7 @@ namespace QRCoderArt
         /// <summary>
         /// Освободить все используемые ресурсы.
         /// </summary>
+        /// <param name="disposing">Значение <see langword="true" /> позволяет освободить управляемые и неуправляемые ресурсы; значение <see langword="false" /> позволяет освободить только неуправляемые ресурсы.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -23,7 +42,7 @@ namespace QRCoderArt
         #region Код, автоматически созданный конструктором форм Windows
 
         /// <summary>
-        /// Требуемый метод для поддержки конструктора — не изменяйте 
+        /// Требуемый метод для поддержки конструктора — не изменяйте
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
         private void InitializeComponent()
@@ -158,12 +177,33 @@ namespace QRCoderArt
 
         #endregion
 
+        /// <summary>
+        /// The table layout panel
+        /// </summary>
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
+        /// <summary>
+        /// The logo PictureBox
+        /// </summary>
         private System.Windows.Forms.PictureBox logoPictureBox;
+        /// <summary>
+        /// The label product name
+        /// </summary>
         private System.Windows.Forms.Label labelProductName;
+        /// <summary>
+        /// The label version
+        /// </summary>
         private System.Windows.Forms.Label labelVersion;
+        /// <summary>
+        /// The label copyright
+        /// </summary>
         private System.Windows.Forms.Label labelCopyright;
+        /// <summary>
+        /// The label company name
+        /// </summary>
         private System.Windows.Forms.Label labelCompanyName;
+        /// <summary>
+        /// The rich text box1
+        /// </summary>
         private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
