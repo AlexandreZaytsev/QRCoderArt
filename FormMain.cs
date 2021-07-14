@@ -21,7 +21,7 @@ namespace QRCoderArt
 
         public FormMain()
         {
-            CallBack_SetParam.callbackEventHandler = new CallBack_SetParam.callbackEvent(this.callbackReload);    //subscribe (listen) to the general notification
+            CallBack_SetParam.callbackEventHandler = new CallBack_SetParam.callbackEvent(this.CallbackReload);    //subscribe (listen) to the general notification
 
 
             InitializeComponent();
@@ -41,14 +41,13 @@ namespace QRCoderArt
             this.viewMode.SelectedIndex = 4;
         }
 
-
-        private void Form1_Load(object sender, EventArgs e)
+        private void FormMain_Load(object sender, EventArgs e)
         {
             comboBoxECC.SelectedIndex = 0; //Pre-select ECC level "L"
             textBoxQRCode.Text = "enter your text or select payload + constructor + fill in the parameters";
             readyState[1] = true;           //MainForm is Load
         }
-        private void mainForm_Shown(object sender, EventArgs e)
+        private void FormMain_Shown(object sender, EventArgs e)
         {
             readyState[2] = true;           //Mainform is Show
         }
@@ -57,7 +56,7 @@ namespace QRCoderArt
                      REFLECTION
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
         //clear payload panel
-        private void removeControlPlayloadPanel(Control panel)
+        private void RemoveControlPlayloadPanel(Control panel)
         {
             if (panel.HasChildren)
             {
@@ -72,7 +71,7 @@ namespace QRCoderArt
         }
 
         //create payload panel from constructor parameters
-        private void createControlPlayloadPanel(IList controlsList, Control panel)
+        private void CreateControlPlayloadPanel(IList controlsList, Control panel)
         {
             int labelWidth = 135;// 122;// 135;
             int sizeWidth = 263;
@@ -156,7 +155,7 @@ namespace QRCoderArt
                             case "Decimal":
                             case "Double":
                                 tb.BackColor = Color.GhostWhite;//.OldLace;// LightBlue;
-                                tb.KeyPress += new KeyPressEventHandler(filterOnlyReal);
+                                tb.KeyPress += new KeyPressEventHandler(FilterOnlyReal);
                                 tb.Text = prop.fDef == null ? "" : Convert.ToString(prop.fDef);
                                 break;
                             default:
@@ -309,7 +308,7 @@ namespace QRCoderArt
                                ((System.Windows.Forms.Control)sender).AccessibleDescription);
         }
         //check numeric wiht system separator 
-        private void filterOnlyReal(object sender, KeyPressEventArgs e)
+        private void FilterOnlyReal(object sender, KeyPressEventArgs e)
         {
             string sep = ((float)1 / 2).ToString().Substring(1, 1);  // system sparator
             if (!(Char.IsDigit(e.KeyChar)) && !((e.KeyChar == Convert.ToChar(sep)) && (((TextBox)sender).Text.IndexOf(sep) == -1) && (((TextBox)sender).Text.Length != 0)))
@@ -346,7 +345,7 @@ namespace QRCoderArt
             if (combo.SelectedItem != null)
             {
                 readyState[0] = false;                                      //full ready:= Data preparation not completed
-                removeControlPlayloadPanel(panel.First());                  //clear payload panel
+                RemoveControlPlayloadPanel(panel.First());                  //clear payload panel
                 IList propToCntrl = null;
                 using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
                 {
@@ -359,7 +358,7 @@ namespace QRCoderArt
                         propToCntrl = qqRef.GetParamsCtor(((ConstructorInfo)((KeyValuePair<string, object>)combo.SelectedItem).Value), combo.Name, panel[0].GetNestleLevel("panelPayload"));
                     }
                 }
-                createControlPlayloadPanel(propToCntrl, panel.First());    //create payload panel from constructor parameters
+                CreateControlPlayloadPanel(propToCntrl, panel.First());    //create payload panel from constructor parameters
                                                                            //                this.Refresh();
                 readyState[0] = true;                                      //full ready:= Data preparation completed
                 GetPayloadStringFromForm(null, null);
@@ -460,7 +459,7 @@ namespace QRCoderArt
             }
         }
         //change parameters panel Payload
-        private void setting_Changed(object sender, EventArgs e)
+        private void Setting_Changed(object sender, EventArgs e)
         {
             RenderQrCode();     //create QR image
         }
@@ -545,7 +544,7 @@ namespace QRCoderArt
             }
         }
 
-        private void selectIconBtn_Click(object sender, EventArgs e)
+        private void SelectIconBtn_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDlg = new OpenFileDialog
             {
@@ -568,7 +567,7 @@ namespace QRCoderArt
         }
 
 
-        private void btn_save_Click(object sender, EventArgs e)
+        private void Btn_save_Click(object sender, EventArgs e)
         {
 
             // Displays a SaveFileDialog so the user can save the Image
@@ -613,7 +612,7 @@ namespace QRCoderArt
             }
         }
 
-        private void panelPreviewPrimaryColor_Click(object sender, EventArgs e)
+        private void PanelPreviewPrimaryColor_Click(object sender, EventArgs e)
         {
             if (colorDialogPrimaryColor.ShowDialog() == DialogResult.OK)
             {
@@ -622,7 +621,7 @@ namespace QRCoderArt
             }
         }
 
-        private void panelPreviewBackgroundColor_Click(object sender, EventArgs e)
+        private void PanelPreviewBackgroundColor_Click(object sender, EventArgs e)
         {
             if (colorDialogBackgroundColor.ShowDialog() == DialogResult.OK)
             {
@@ -641,7 +640,7 @@ namespace QRCoderArt
             return panelPreviewBackgroundColor.BackColor;
         }
 
-        private void selectArtBtn_Click(object sender, EventArgs e)
+        private void SelectArtBtn_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDlg = new OpenFileDialog
             {
@@ -664,7 +663,7 @@ namespace QRCoderArt
         }
 
         //position image from frame 
-        private void viewMode_SelectedIndexChanged(object sender, EventArgs e)
+        private void ViewMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             pictureBoxQRCode.BackgroundImageLayout = (ImageLayout)Enum.Parse(typeof(ImageLayout), viewMode.Text);// Enum.GetName(typeof(ImageLayout), "2"); //Enum.Parse(typeof(ImageLayout), sender.ToString());
         }
@@ -678,7 +677,7 @@ namespace QRCoderArt
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
                 CALLBACK return
         ------------------------------------------------------------------------------------------------------------------------------------------------*/
-        private void callbackReload(string controlName, string controlParentName, Dictionary<String, String> param)
+        private void CallbackReload(string controlName, string controlParentName, Dictionary<String, String> param)
         {
             if (param.Count() != 0)
             {

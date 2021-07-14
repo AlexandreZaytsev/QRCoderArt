@@ -14,11 +14,11 @@ namespace QRCoderArt
 
         public FormDictionary()
         {
-            CallBack_GetParam.callbackEventHandler = new CallBack_GetParam.callbackEvent(this.callbackReload);    //subscribe (listen) to the general notification
+            CallBack_GetParam.callbackEventHandler = new CallBack_GetParam.callbackEvent(this.CallbackReload);    //subscribe (listen) to the general notification
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             Dictionary<String, String> property = new Dictionary<String, String>();
             property.Clear();
@@ -38,7 +38,7 @@ namespace QRCoderArt
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
                 CALLBACK return
         ------------------------------------------------------------------------------------------------------------------------------------------------*/
-        private void callbackReload(string controlName, string cotrolParentName, Dictionary<String, String> param)
+        private void CallbackReload(string controlName, string cotrolParentName, Dictionary<String, String> param)
         {
             cntrlName = controlName;
             cntrlParentName = cotrolParentName;

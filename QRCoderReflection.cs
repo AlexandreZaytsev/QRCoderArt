@@ -10,6 +10,7 @@ namespace QRCoderArt
     /// <summary>
     /// Class FieldProperty
     /// parameter structure for creating a form control
+    /// структура параметров для создания жлемента формы
     /// </summary>
     /// <value name="fLevel">(int) nesting level of the parameter</value>
     /// <value name="fParentName">(string) parentName (parameter block name)</value>
@@ -33,8 +34,8 @@ namespace QRCoderArt
 
     //QRCoderReflection
     /// <summary>
-    /// Class FieldProperty
-    /// to work with reflection
+    /// Class FieldProperty to work with reflection
+    /// просто вынесено в отдельный модуль
     /// </summary>
     public class QRCoderReflection : IDisposable
     {
@@ -74,11 +75,13 @@ namespace QRCoderArt
                     }).ToDictionary(k => k.name, v => (Object)v.ctor);
         }
 
+/*
         //get enum dictionary
         private IDictionary<string, object> GetItemEnum(ParameterInfo param)
         {
             return param.ParameterType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v); ;
         }
+*/
 
         //get constructor parameters
         private void GetParamsConstuctor(ConstructorInfo ctor, List<FieldProperty> Params, int nestingLevel, string parentName)
