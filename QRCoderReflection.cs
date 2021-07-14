@@ -21,10 +21,10 @@ namespace QRCoderArt
 {
 
     /// <summary>
-    /// Class FieldProperty.
-    /// структура (дерево) параметров для создания элемента формы
+    /// Class GUIFieldProperty.
+    /// структура (дерево) параметров GUI для создания элемента формы (GUI Control)
     /// </summary>
-    public class FieldProperty                          
+    public class GUIFieldProperty                          
     {
         /// <summary>
         /// уровень вложенности параметра в дереве
@@ -62,25 +62,24 @@ namespace QRCoderArt
 
     //QRCoderReflection
     /// <summary>
-    /// Class FieldProperty to work with reflection
-    /// просто вынесено в отдельный модуль
+    /// Класс дя работы с Reflection
     /// </summary>
     public class QRCoderReflection : IDisposable
     {
         /// <summary>
-        /// The t reference
+        /// узел (точка входа) в Reflection
         /// </summary>
         private Type tRef;
         /// <summary>
-        /// Initializes a new instance of the <see cref="QRCoderReflection" /> class.
+        /// инициализация узла в Reflection по имени<see cref="QRCoderReflection" /> class.
         /// </summary>
-        /// <param name="name">The name.</param>
+        /// <param name="name">имя узла Reflection от которого читается структура</param>
         public QRCoderReflection(string name)
         {
             tRef = Type.GetType(name);
         }
         /// <summary>
-        /// Выполняет определяемые приложением задачи, связанные с удалением, высвобождением или сбросом неуправляемых ресурсов.
+        /// выполняет определяемые приложением задачи, связанные с удалением, высвобождением или сбросом неуправляемых ресурсов.
         /// </summary>
         public void Dispose()
         {
@@ -89,10 +88,10 @@ namespace QRCoderArt
 
         //get member by name
         /// <summary>
-        /// Gets the name of the member by.
+        /// вернуть узел по имени 
         /// </summary>
-        /// <param name="baseName">Name of the base.</param>
-        /// <returns>Type.</returns>
+        /// <param name="baseName">имя узла Reflection</param>
+        /// <returns>первый найденный узел</returns>
         public Type GetMemberByName(string baseName)
         {
             return (Type)tRef.GetMember(baseName).First();
@@ -100,10 +99,10 @@ namespace QRCoderArt
 
         //get class names named (payload)
         /// <summary>
-        /// Gets the name of the members class.
+        /// вернуть все имена публичных, актуальных классов узла. Для отображения всех интерфейсов payload qrcoder.dll
         /// </summary>
-        /// <param name="cName">Name of the c.</param>
-        /// <returns>List&lt;System.String&gt;.</returns>
+        /// <param name="cName">имя узла Reflection</param>
+        /// <returns>список имен payload &lt;System.String&gt;</returns>
         public List<string> GetMembersClassName(string cName)
         {
             return (from t in tRef.GetMembers(BindingFlags.Public)
@@ -114,10 +113,10 @@ namespace QRCoderArt
 
         //get constructor dictionary
         /// <summary>
-        /// Gets the constructor.
+        /// вернуть конструкторы узла
         /// </summary>
-        /// <param name="param">The parameter.</param>
-        /// <returns>Dictionary&lt;System.String, System.Object&gt;.</returns>
+        /// <param name="param">узел Reflection</param>
+        /// <returns>словарь с конструкторами (имя значение) &lt;System.String, System.Object&gt;.</returns>
         public Dictionary<string, object> GetConstructor(Type param)
         {
             return (from ctor in param.GetConstructors()
@@ -138,13 +137,14 @@ namespace QRCoderArt
 
         //get constructor parameters
         /// <summary>
-        /// Gets the parameters constuctor.
+        /// дополнить общий список параметров дерева GUI - параметрами конструктора
+        /// (если конструктор не объявлен (нет параметров) - читаем свойства )
         /// </summary>
-        /// <param name="ctor">The ctor.</param>
-        /// <param name="Params">The parameters.</param>
-        /// <param name="nestingLevel">The nesting level.</param>
-        /// <param name="parentName">Name of the parent.</param>
-        private void GetParamsConstuctor(ConstructorInfo ctor, List<FieldProperty> Params, int nestingLevel, string parentName)
+        /// <param name="ctor">конструктор</param>
+        /// <param name="Params">текущее дерево GIU</param>
+        /// <param name="nestingLevel">текущий уровень вложенности параметра</param>
+        /// <param name="parentName">текущее имя родителя параметра</param>
+        private void GetParamsConstuctor(ConstructorInfo ctor, List<GUIFieldProperty> Params, int nestingLevel, string parentName)
         {
             //for pure (witout k__BackingField) names here we use GetProperties()  
             //from t in ctor.ReflectedType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) select t
@@ -152,12 +152,12 @@ namespace QRCoderArt
             //constrictor without parameters = there is 'no constructor'
             IEnumerable queryProp = from t in ctor.ReflectedType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
                                     where !t.IsDefined(typeof(ObsoleteAttribute), true)
-                                    select GetItemInfoForForm(t, t.Name, t.PropertyType, null, Params, nestingLevel, parentName);
+                                    select GetItemInfoForForm(t.Name, t.PropertyType, null, Params, nestingLevel, parentName);
 
             //constrictor with parameters = there is 'constructor'
             IEnumerable queryParam = from t in ctor.GetParameters()
                                      where !t.IsDefined(typeof(ObsoleteAttribute), true)
-                                     select GetItemInfoForForm(t, t.Name, t.ParameterType, t.DefaultValue, Params, nestingLevel, parentName);
+                                     select GetItemInfoForForm(t.Name, t.ParameterType, t.DefaultValue, Params, nestingLevel, parentName);
 
             //Deferred Execution
             foreach (object Param in ctor.GetParameters().Length == 0 ? queryProp : queryParam) { }  //run function from query
@@ -168,11 +168,11 @@ namespace QRCoderArt
         ************************************************************************************************************/
         //initialize the constructor and execute the default method
         /// <summary>
-        /// Gets the payload string.
+        /// Выполнить базовый метод генерации строки для QR кода для выбранного payload - ToString.
         /// </summary>
-        /// <param name="ctor">The ctor.</param>
-        /// <param name="cntrlFromForm">The CNTRL from form.</param>
-        /// <returns>System.String.</returns>
+        /// <param name="ctor">конструктор</param>
+        /// <param name="cntrlFromForm">параметры конструктора в виде словаря имя-значение</param>
+        /// <returns>форматированная строка payload System.String.</returns>
         public string GetPayloadString(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm)
         {
             //https://metanit.com/sharp/tutorial/14.2.php
@@ -230,48 +230,47 @@ namespace QRCoderArt
           START
         ************************************************************************************************************/
         /// <summary>
-        /// get list field propertys to create All control form member
+        /// вернуть все дерево GUI от узла Reflection payload
         /// </summary>
-        /// <param name="obj">(object) member (name payload) reflection</param>
-        /// <returns>list parameter member for create winform panel payload</returns>
+        /// <param name="obj">payload узел Reflection</param>
+        /// <returns>payload дерево GUI &lt;System.String&gt;</returns>
         public IList GetParamsObject(Object obj)
         {
-            List<FieldProperty> Params = new List<FieldProperty>();                                 //list of parameters
+            List<GUIFieldProperty> Params = new List<GUIFieldProperty>();                           //list of parameters
             int nestingLevel = 0;                                                                   //nesting level of the parameter
 
-            GetItemInfoForForm(obj, ((Type)obj).Name, (Type)obj, null, Params, nestingLevel, "");    //get parameter list
+            GetItemInfoForForm(((Type)obj).Name, (Type)obj, null, Params, nestingLevel, "");    //get parameter list
             return Params;
         }
 
         /// <summary>
-        /// Gets the parameters ctor.
+        /// вернуть фрагмент дерева GUI от конкретного конструктора
         /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <param name="parentName">Name of the parent.</param>
-        /// <param name="nestingLevel">The nesting level.</param>
+        /// <param name="obj">узел конструктора Reflection</param>
+        /// <param name="parentName">текущее имя родителя в дереве GUI</param>
+        /// <param name="nestingLevel">текущий уровень вложенности в дереве GUI</param>
         /// <returns>IList.</returns>
         public IList GetParamsCtor(ConstructorInfo obj, string parentName, int nestingLevel)
         {
-            List<FieldProperty> Params = new List<FieldProperty>();                                 //list of parameters
+            List<GUIFieldProperty> Params = new List<GUIFieldProperty>();                                 //list of parameters
             GetParamsConstuctor(obj, Params, nestingLevel, parentName);   //!!! attention - recursion
             return Params;
         }
 
 
         /// <summary>
-        /// Gets the item information for form.
+        /// вернуть узел дерева GUI с параметрами
         /// </summary>
-        /// <param name="Param">The parameter.</param>
-        /// <param name="paramName">Name of the parameter.</param>
-        /// <param name="paramType">Type of the parameter.</param>
-        /// <param name="defValue">The definition value.</param>
-        /// <param name="Params">The parameters.</param>
-        /// <param name="nestingLevel">The nesting level.</param>
-        /// <param name="paramParent">The parameter parent.</param>
+        /// <param name="paramName">имя параметра</param>
+        /// <param name="paramType">параметр (приведен к типу Type)</param>
+        /// <param name="defValue">значение по умолчанию</param>
+        /// <param name="Params">текущее дерево GUI</param>
+        /// <param name="nestingLevel">текущий уровень вложенности в дереве GUI<</param>
+        /// <param name="paramParent">текущее имя родителя в дереве GUI</param>
         /// <returns>System.Int32.</returns>
-        private int GetItemInfoForForm(object Param, string paramName, Type paramType, object defValue, List<FieldProperty> Params, int nestingLevel, string paramParent)
+        private int GetItemInfoForForm(string paramName, Type paramType, object defValue, List<GUIFieldProperty> Params, int nestingLevel, string paramParent)
         {
-            FieldProperty mParam = new FieldProperty();// { fName = paramName, fType = paramType.Name, fForm = "TextBox", fList = null, fNull = false, fDef = defValue, fLevel = nestingLevel };
+            GUIFieldProperty mParam = new GUIFieldProperty();// { fName = paramName, fType = paramType.Name, fForm = "TextBox", fList = null, fNull = false, fDef = defValue, fLevel = nestingLevel };
             if (paramType.IsClass && paramType.Namespace != "System" && !paramType.IsGenericType)
             {
                 if (nestingLevel > 1)
