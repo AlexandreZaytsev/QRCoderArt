@@ -240,10 +240,10 @@ namespace QRCoderArt
         /// <returns>payload дерево GUI &lt;System.String&gt;</returns>
         public IList GetGUITree(Object obj)
         {
-            List<GUITreeNode> GUITree = new List<GUITreeNode>();                           //list of parameters
-            int nestingLevel = 0;                                                                   //nesting level of the parameter
+            List<GUITreeNode> GUITree = new List<GUITreeNode>();                                //list of parameters
+            int nodeNestingLevel = 0;                                                           //nesting level of the parameter
 
-            GetGUITreeNode(((Type)obj).Name, (Type)obj, null, GUITree, nestingLevel, "");    //get parameter list
+            GetGUITreeNode(((Type)obj).Name, (Type)obj, null, GUITree, nodeNestingLevel, "");   //get parameter list
             return GUITree;
         }
 
@@ -253,13 +253,13 @@ namespace QRCoderArt
         /// для пересоздания фрагмента панели payload
         /// </summary>
         /// <param name="obj">узел конструктора Reflection</param>
-        /// <param name="parentName">текущее имя родителя в дереве GUI</param>
-        /// <param name="nestingLevel">текущий уровень вложенности в дереве GUI</param>
-        /// <returns>IList.</returns>
-        public IList GetGUITreeNodes(ConstructorInfo obj, string parentName, int nestingLevel)
+        /// <param name="nodeParentName">имя узла родителя</param>
+        /// <param name="nodeNestingLevel">текущий уровень вложенности узла в дереве GUI</param>
+        /// <returns>фрагмент дерева GUI IList.</returns>
+        public IList GetGUITreeNodes(ConstructorInfo obj, string nodeParentName, int nodeNestingLevel)
         {
-            List<GUITreeNode> GUITreeNodes = new List<GUITreeNode>();           //list of parameters
-            GetParamsConstuctor(obj, GUITreeNodes, nestingLevel, parentName);   //!!! attention - recursion
+            List<GUITreeNode> GUITreeNodes = new List<GUITreeNode>();                   //list of parameters
+            GetParamsConstuctor(obj, GUITreeNodes, nodeNestingLevel, nodeParentName);   //!!! attention - recursion
             return GUITreeNodes;
         }
 
@@ -267,36 +267,34 @@ namespace QRCoderArt
         /// GetGUITreeNode
         /// вернуть узел дерева GUI с параметрами
         /// </summary>
-        /// <param name="paramName">имя параметра</param>
-        /// <param name="paramType">параметр (приведен к типу Type)</param>
-        /// <param name="defValue">значение по умолчанию</param>
-        /// <param name="Params">текущее дерево GUI</param>
-        /// <param name="nestingLevel">текущий уровень вложенности в дереве GUI</param>
-        /// <param name="paramParent">текущее имя родителя в дереве GUI</param>
-        /// <returns>System.Int32.</returns>
-        private int GetGUITreeNode(string paramName, Type paramType, object defValue, List<GUITreeNode> Params, int nestingLevel, string paramParent)
+        /// <param name="nodeName">имя параметра</param>
+        /// <param name="nodeType">параметр (приведен к типу Type)</param>
+        /// <param name="nodeDefValue">значение по умолчанию</param>
+        /// <param name="guiTree">текущее дерево GUI</param>
+        /// <param name="nodeNestingLevel">текущий уровень вложенности в дереве GUI</param>
+        /// <param name="nodeParentName">текущее имя родителя в дереве GUI</param>
+        /// <returns>количество добавленных узлов в дерево GUI System.Int32.</returns>
+        private int GetGUITreeNode(string nodeName, Type nodeType, object nodeDefValue, List<GUITreeNode> guiTree, int nodeNestingLevel, string nodeParentName)
         {
-            GUITreeNode mParam = new GUITreeNode();// { fName = paramName, fType = paramType.Name, fForm = "TextBox", fList = null, fNull = false, fDef = defValue, fLevel = nestingLevel };
-            if (paramType.IsClass && paramType.Namespace != "System" && !paramType.IsGenericType)
+            GUITreeNode Node = new GUITreeNode();// { fName = paramName, fType = paramType.Name, fForm = "TextBox", fList = null, fNull = false, fDef = defValue, fLevel = nestingLevel };
+            if (nodeType.IsClass && nodeType.Namespace != "System" && !nodeType.IsGenericType)
             {
-                if (nestingLevel > 1)
-                    nestingLevel--;
+                if (nodeNestingLevel > 1)
+                    nodeNestingLevel--;
 
-                mParam.fParentName = nestingLevel == 0 ? "" : paramParent;// paramName; ;
-                mParam.fName = paramName; //"ctor_" +paramName;
-                mParam.fType = "Constructor";
-                mParam.fForm = "ComboBox";
-                mParam.fList = GetConstructors(paramType);// (((Type)Param));
-                                                         //                mParam.fNull
-                                                         //                mParam.fDef
+                Node.fParentName = nodeNestingLevel == 0 ? "" : nodeParentName;// paramName; ;
+                Node.fName = nodeName; //"ctor_" +paramName;
+                Node.fType = "Constructor";
+                Node.fForm = "ComboBox";
+                Node.fList = GetConstructors(nodeType);// (((Type)Param));
+                //mParam.fNull
+                //mParam.fDef
+                Node.fLevel = nodeNestingLevel;
 
-                //               nestingLevel++;
-                mParam.fLevel = nestingLevel;
+                guiTree.Add(Node);
+                nodeNestingLevel++;
 
-                Params.Add(mParam);
-                nestingLevel++;
-
-                GetParamsConstuctor((ConstructorInfo)mParam.fList.Values.First(), Params, nestingLevel, mParam.fName);   //!!! attention - recursion
+                GetParamsConstuctor((ConstructorInfo)Node.fList.Values.First(), guiTree, nodeNestingLevel, Node.fName);   //!!! attention - recursion
                 /*
                 foreach (var ctor in mParam.fList.Values)
                 {
@@ -306,60 +304,60 @@ namespace QRCoderArt
             }
             else
             {
-                mParam.fParentName = paramParent;
-                mParam.fName = paramName;
-                mParam.fType = paramType.Name;
-                //                mParam.fForm 
-                //                mParam.fList 
-                //                mParam.fNull 
-                mParam.fDef = defValue;
-                mParam.fLevel = nestingLevel;
+                Node.fParentName = nodeParentName;
+                Node.fName = nodeName;
+                Node.fType = nodeType.Name;
+                //mParam.fForm 
+                //mParam.fList 
+                //mParam.fNull 
+                Node.fDef = nodeDefValue;
+                Node.fLevel = nodeNestingLevel;
 
-                switch (paramType.Name)
+                switch (nodeType.Name)
                 {
                     case "String":
                     case "Double":
                     case "Single":
                     case "Int32":
                     case "Decimal":
-                        mParam.fForm = "TextBox";
+                        Node.fForm = "TextBox";
                         break;
                     case "DateTime":
-                        mParam.fForm = "DateTime";
+                        Node.fForm = "DateTime";
                         break;
                     case "Nullable`1":
-                        mParam.fType = paramType.GenericTypeArguments.First().Name;
-                        mParam.fNull = true;
-                        switch (mParam.fType)
+                        Node.fType = nodeType.GenericTypeArguments.First().Name;
+                        Node.fNull = true;
+                        switch (Node.fType)
                         {
                             case "DateTime":
-                                mParam.fForm = "DateTime";
+                                Node.fForm = "DateTime";
                                 break;
                             default:
-                                mParam.fForm = "TextBox";
+                                Node.fForm = "TextBox";
                                 break;
                         }
                         break;
                     //                    case "Dictionary`2":
                     //                        break:
                     case "Boolean":
-                        mParam.fForm = "CheckBox";
+                        Node.fForm = "CheckBox";
                         break;
                     default:
-                        if (paramType.IsEnum)
+                        if (nodeType.IsEnum)
                         {
-                            mParam.fForm = "ComboBox";
-                            mParam.fList = paramType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
+                            Node.fForm = "ComboBox";
+                            Node.fList = nodeType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
                         }
-                        else if (paramType.IsGenericType)
+                        else if (nodeType.IsGenericType)
                         {
                             //!!! Exception
                             //https://stackoverflow.com/questions/577092/c-sharp-gui-control-for-editing-a-dictionary
-                            if (paramParent == "ShadowSocksConfig" && paramName == "parameters")
+                            if (nodeParentName == "ShadowSocksConfig" && nodeName == "parameters")
                             {
                                 //mParam.fForm = "Button"; //"Dictionary`2"
                                 //mParam.fList = (new Dictionary<string, string> {["plugin"] = "plugin" + (string.IsNullOrEmpty("pluginOption") ? "" : $";" + $"{"pluginOption"}")}).Values.Cast<object>().ToDictionary(k => k.ToString(), v => v); ;
-                                mParam.fForm = "dataGridView";
+                                Node.fForm = "dataGridView";
                             }
                         }
                         else
@@ -367,9 +365,9 @@ namespace QRCoderArt
                         }
                         break;
                 }
-                Params.Add(mParam);
+                guiTree.Add(Node);
             }
-            return Params.Count;
+            return guiTree.Count;
         }
     }
 }
