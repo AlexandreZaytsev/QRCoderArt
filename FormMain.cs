@@ -87,7 +87,7 @@ namespace QRCoderArt
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            readyState[2] = true;           //Mainform is Show
+            readyState[2] = true;           //Main form is Show
         }
 
         /*-----------------------------------------------------------------------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ namespace QRCoderArt
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
         /// <summary>
         /// ClearGUITreePanel
-        /// очистить все CTRL из плавающей панели playload
+        /// очистить все CTRL из плавающей панели payload
         /// </summary>
         /// <param name="panelGUITree">плавающая панель CTRL из GUITree</param>
         private void ClearGUITreePanel(Control panelGUITree)
@@ -105,7 +105,7 @@ namespace QRCoderArt
                 for (int i = panelGUITree.Controls.Count - 1; i >= 0; i--) //not foreach use...
                 {
                     Control cn = panelGUITree.Controls[0];
-                    //     cn -= new System.EventHandler(cn, playload_Changed);
+                    //     cn -= new System.EventHandler(cn, payload_Changed);
                     panelGUITree.Controls.Remove(cn);
                     cn.Dispose();
                 }
