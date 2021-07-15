@@ -50,7 +50,6 @@ namespace QRCoderArt
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            this.textBoxQRCode = new System.Windows.Forms.TextBox();
             this.pictureBoxQRCode = new System.Windows.Forms.PictureBox();
             this.comboBoxECC = new System.Windows.Forms.ComboBox();
             this.labelECC = new System.Windows.Forms.Label();
@@ -86,8 +85,10 @@ namespace QRCoderArt
             this.panel2 = new System.Windows.Forms.Panel();
             this.panelPayload = new System.Windows.Forms.FlowLayoutPanel();
             this.outSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.QRCodeString = new System.Windows.Forms.RichTextBox();
             this.qRCodeBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel3 = new System.Windows.Forms.Panel();
+            this.ErrorMessage = new System.Windows.Forms.WebBrowser();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxQRCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dotSize)).BeginInit();
@@ -102,19 +103,6 @@ namespace QRCoderArt
             this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // textBoxQRCode
-            // 
-            this.textBoxQRCode.BackColor = System.Drawing.SystemColors.Window;
-            this.textBoxQRCode.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxQRCode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxQRCode.Location = new System.Drawing.Point(0, 0);
-            this.textBoxQRCode.Multiline = true;
-            this.textBoxQRCode.Name = "textBoxQRCode";
-            this.textBoxQRCode.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxQRCode.Size = new System.Drawing.Size(400, 182);
-            this.textBoxQRCode.TabIndex = 1;
-            this.textBoxQRCode.TextChanged += new System.EventHandler(this.Setting_Changed);
-            // 
             // pictureBoxQRCode
             // 
             this.pictureBoxQRCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -125,8 +113,8 @@ namespace QRCoderArt
             this.pictureBoxQRCode.InitialImage = global::QRCoderArt.Properties.Resources.qr1;
             this.pictureBoxQRCode.Location = new System.Drawing.Point(3, 3);
             this.pictureBoxQRCode.Name = "pictureBoxQRCode";
-            this.pictureBoxQRCode.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.pictureBoxQRCode.Size = new System.Drawing.Size(394, 325);
+            this.pictureBoxQRCode.Padding = new System.Windows.Forms.Padding(3);
+            this.pictureBoxQRCode.Size = new System.Drawing.Size(394, 327);
             this.pictureBoxQRCode.TabIndex = 2;
             this.pictureBoxQRCode.TabStop = false;
             // 
@@ -310,7 +298,7 @@ namespace QRCoderArt
             | System.Windows.Forms.AnchorStyles.Left)));
             this.pixelSize.BackColor = System.Drawing.SystemColors.Window;
             this.pixelSize.Location = new System.Drawing.Point(87, 28);
-            this.pixelSize.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pixelSize.Margin = new System.Windows.Forms.Padding(2);
             this.pixelSize.Minimum = new decimal(new int[] {
             1,
             0,
@@ -515,7 +503,7 @@ namespace QRCoderArt
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.panelPayload);
             this.panel2.Location = new System.Drawing.Point(410, 128);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(296, 431);
             this.panel2.TabIndex = 33;
@@ -537,13 +525,14 @@ namespace QRCoderArt
             | System.Windows.Forms.AnchorStyles.Right)));
             this.outSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.outSplitContainer.Location = new System.Drawing.Point(3, 7);
-            this.outSplitContainer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.outSplitContainer.Margin = new System.Windows.Forms.Padding(2);
             this.outSplitContainer.Name = "outSplitContainer";
             this.outSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // outSplitContainer.Panel1
             // 
-            this.outSplitContainer.Panel1.Controls.Add(this.textBoxQRCode);
+            this.outSplitContainer.Panel1.Controls.Add(this.ErrorMessage);
+            this.outSplitContainer.Panel1.Controls.Add(this.QRCodeString);
             // 
             // outSplitContainer.Panel2
             // 
@@ -552,6 +541,17 @@ namespace QRCoderArt
             this.outSplitContainer.SplitterDistance = 184;
             this.outSplitContainer.SplitterWidth = 3;
             this.outSplitContainer.TabIndex = 34;
+            // 
+            // QRCodeString
+            // 
+            this.QRCodeString.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.QRCodeString.Location = new System.Drawing.Point(0, 0);
+            this.QRCodeString.Name = "QRCodeString";
+            this.QRCodeString.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.QRCodeString.Size = new System.Drawing.Size(232, 64);
+            this.QRCodeString.TabIndex = 2;
+            this.QRCodeString.Text = "";
+            this.QRCodeString.TextChanged += new System.EventHandler(this.Setting_Changed);
             // 
             // qRCodeBindingSource
             // 
@@ -567,10 +567,18 @@ namespace QRCoderArt
             this.panel3.Controls.Add(this.buttonSave);
             this.panel3.Controls.Add(this.label4);
             this.panel3.Location = new System.Drawing.Point(3, 526);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(402, 33);
             this.panel3.TabIndex = 3;
+            // 
+            // ErrorMessage
+            // 
+            this.ErrorMessage.Location = new System.Drawing.Point(135, 92);
+            this.ErrorMessage.MinimumSize = new System.Drawing.Size(20, 20);
+            this.ErrorMessage.Name = "ErrorMessage";
+            this.ErrorMessage.Size = new System.Drawing.Size(233, 75);
+            this.ErrorMessage.TabIndex = 3;
             // 
             // FormMain
             // 
@@ -599,7 +607,6 @@ namespace QRCoderArt
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.outSplitContainer.Panel1.ResumeLayout(false);
-            this.outSplitContainer.Panel1.PerformLayout();
             this.outSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.outSplitContainer)).EndInit();
             this.outSplitContainer.ResumeLayout(false);
@@ -611,10 +618,6 @@ namespace QRCoderArt
         }
 
         #endregion
-        /// <summary>
-        /// The text box qr code
-        /// </summary>
-        private System.Windows.Forms.TextBox textBoxQRCode;
         /// <summary>
         /// The picture box qr code
         /// </summary>
@@ -763,6 +766,8 @@ namespace QRCoderArt
         /// The q r code binding source
         /// </summary>
         private System.Windows.Forms.BindingSource qRCodeBindingSource;
+        private System.Windows.Forms.RichTextBox QRCodeString;
+        private System.Windows.Forms.WebBrowser ErrorMessage;
     }
 }
 

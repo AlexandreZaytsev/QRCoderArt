@@ -175,10 +175,11 @@ namespace QRCoderArt
         /// <param name="ctor">конструктор</param>
         /// <param name="cntrlFromForm">параметры конструктора в виде словаря имя-значение</param>
         /// <returns>форматированная строка payload System.String.</returns>
-        public string GetPayloadString(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm)
+        public List<string> GetPayloadString(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm)
         {
             //https://metanit.com/sharp/tutorial/14.2.php
-            string ret = "";
+            //https://stackoverflow.com/questions/9314172/getting-all-messages-from-innerexceptions
+            var messages = new List<string>();
 
             if (ctor.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
             {
@@ -191,19 +192,18 @@ namespace QRCoderArt
 
                 try
                 {
-                    ret = ctor.ReflectedType.GetMethod("ToString").Invoke(ctorObj, new object[] { }).ToString();
+                    messages.Add(ctor.ReflectedType.GetMethod("ToString").Invoke(ctorObj, new object[] { }).ToString());
                 }
                 catch (Exception e)
                 {
-                    var messages = new List<string>();
+                    messages.Add("init Constructot Error:\r\n");
                     do
                     {
-                        messages.Add(e.Message + "\r\n\r\n");
+                        messages.Add(e.Message);
                         e = e.InnerException;
                     }
                     while (e != null);
-                    ret = "\r\ninit Constructot Error:\r\n" + string.Join(" - ", messages) +
-                          "Try filling in the parameters...";
+                    messages.Add("Try filling in the parameters...");
                 }
                 finally
                 {
@@ -219,26 +219,26 @@ namespace QRCoderArt
                     try
                     {
                         object ctorObj = ctor.Invoke(propFromForm);
-                        ret = ctor.ReflectedType.GetMethod("ToString").Invoke(ctorObj, null).ToString();
+                        messages.Add(ctor.ReflectedType.GetMethod("ToString").Invoke(ctorObj, null).ToString());
                     }
                     catch (Exception e)
                     {
-                        var messages = new List<string>();
+                        messages.Add("init Constructot Error:\r\n");
                         do
                         {
-                            messages.Add(e.Message+"\r\n\r\n");
+                            messages.Add(e.Message);
                             e = e.InnerException;
                         }
                         while (e != null);
-                        ret = "\r\ninit Constructot Error:\r\n" + string.Join(" - ", messages) +
-                              "Try filling in the parameters...";
+
+                        messages.Add("Try filling in the parameters...");
                     }
                     finally
                     {
                     }
                 }
             }
-            return ret;
+            return messages;
         }
 
         /**********************************************************************************************************
