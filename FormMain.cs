@@ -558,20 +558,20 @@ namespace QRCoderArt
                          //   "</style>" +
                          "<style>"+
                          "table {" +
-                         "border: 1px solid black; "+
+                       //  "border: 1px solid black; "+
                          "width:100%;" +
                          "border - collapse: collapse;}" +
                          "</style>"+
                          "<body>"+// bgcolor='#FFEFD5'>" +
-                         "<h4>&#128270;&nbsp;" + msg[0].ToString() + "</h4>" +
-                            "<table><tbody>";
+                         "<strong>&#128270;&nbsp;" + msg[0].ToString() + "</strong>" +
+                            "<hr><table><tbody>";
 
                 for (int i = 1; i < msg.Count()-1; i++)
                 {
                     strMsg += "<tr><td class='first'>&#10008;</td><td class='last'>" + msg[i].ToString() + "</td></tr>";
                 }
                 strMsg += "</tbody></table>";
-                strMsg += "<hr>&#128736;&nbsp;<i>" + msg.Last().ToString() + "</i>"+
+                strMsg += "<hr>&#128736;&nbsp;<i><small>" + msg.Last().ToString() + "</small></i>" +
                           "</body>";
 
                 ErrorMessage.DocumentText = strMsg;
