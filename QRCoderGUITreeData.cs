@@ -196,7 +196,7 @@ namespace QRCoderArt
                 }
                 catch (Exception e)
                 {
-                    messages.Add("init Constructot Error:\r\n");
+                    messages.Add("init Constructot Error:");
                     do
                     {
                         messages.Add(e.Message);
@@ -223,7 +223,7 @@ namespace QRCoderArt
                     }
                     catch (Exception e)
                     {
-                        messages.Add("init Constructot Error:\r\n");
+                        messages.Add("init Constructot Error:");
                         do
                         {
                             messages.Add(e.Message);

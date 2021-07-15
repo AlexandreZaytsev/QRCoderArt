@@ -550,20 +550,29 @@ namespace QRCoderArt
                 QRCodeString.Dock = DockStyle.None;
 
                 strMsg = //"<style type='text/css'>" +
-                           //   "body {font-family:'Times New Roman', 'Sans-Serif', 'Lucida Sans Unicode', 'Lucida Grande';; font-weight: normal;} " +
-                          //    "table {font-size: 14px; background: white; width: 100 %; border: 1px solid black; border-collapse: collapse;} " +
-                          //    "td.first {width: 80px;} " +
-                          //    "td.last {text-align: left; width: 13px;} " +
-                          //    ".colortext {color: #006400; font-weight: 500;}" +
-                          //   "</style>" +
-                            "<strong>" + msg[0].ToString() + "</strong></br>" +
+                         //   "body {font-family:'Times New Roman', 'Sans-Serif', 'Lucida Sans Unicode', 'Lucida Grande';; font-weight: normal;} " +
+                         //    "table {font-size: 14px; background: white; width: 100 %; border: 1px solid black; border-collapse: collapse;} " +
+                         //    "td.first {width: 80px;} " +
+                         //    "td.last {text-align: left; width: 13px;} " +
+                         //    ".colortext {color: #006400; font-weight: 500;}" +
+                         //   "</style>" +
+                         "<style>"+
+                         "table {" +
+                         "border: 1px solid black; "+
+                         "width:100%;" +
+                         "border - collapse: collapse;}" +
+                         "</style>"+
+                         "<body>"+// bgcolor='#FFEFD5'>" +
+                         "<h4>&#128270;&nbsp;" + msg[0].ToString() + "</h4>" +
                             "<table><tbody>";
 
-                for (int i = 1; i < msg.Count() - 1; i++)
+                for (int i = 1; i < msg.Count()-1; i++)
                 {
                     strMsg += "<tr><td class='first'>&#10008;</td><td class='last'>" + msg[i].ToString() + "</td></tr>";
                 }
                 strMsg += "</tbody></table>";
+                strMsg += "<hr>&#128736;&nbsp;<i>" + msg.Last().ToString() + "</i>"+
+                          "</body>";
 
                 ErrorMessage.DocumentText = strMsg;
                 ErrorMessage.Dock = DockStyle.Fill;
