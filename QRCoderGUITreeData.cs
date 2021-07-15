@@ -183,20 +183,27 @@ namespace QRCoderArt
             if (ctor.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
             {
                 object ctorObj = ctor.Invoke(new object[] { });
+                //сопоставить параметры по имени
                 foreach (KeyValuePair<string, object> entry in cntrlFromForm)
                 {
                     ctorObj.GetType().GetProperty(entry.Key).SetValue(ctorObj, entry.Value);
                 }
+
                 try
                 {
                     ret = ctor.ReflectedType.GetMethod("ToString").Invoke(ctorObj, new object[] { }).ToString();
                 }
                 catch (Exception e)
                 {
-                    ret = "\r\nInvoke Error:\r\n" + e.Message + "\r\n\r\n" +
-                        "Error creating string for QR code generation:\r\n" +
-                        " - no default parameters specified(QRCoder.dll)(not documented).\r\n\r\n" +
-                        "Please: -initialize the required fields";
+                    var messages = new List<string>();
+                    do
+                    {
+                        messages.Add(e.Message + "\r\n\r\n");
+                        e = e.InnerException;
+                    }
+                    while (e != null);
+                    ret = "\r\ninit Constructot Error:\r\n" + string.Join(" - ", messages) +
+                          "Try filling in the parameters...";
                 }
                 finally
                 {
@@ -216,9 +223,15 @@ namespace QRCoderArt
                     }
                     catch (Exception e)
                     {
-                        ret = "\r\nInvoke Error:\r\n" + e.Message + "\r\n\r\n" +
-                                "init Constructot\r\nTry filling in the parameters...\r\n\r\n" +
-                                "I haven't figured it out yet... in progress";
+                        var messages = new List<string>();
+                        do
+                        {
+                            messages.Add(e.Message+"\r\n\r\n");
+                            e = e.InnerException;
+                        }
+                        while (e != null);
+                        ret = "\r\ninit Constructot Error:\r\n" + string.Join(" - ", messages) +
+                              "Try filling in the parameters...";
                     }
                     finally
                     {
