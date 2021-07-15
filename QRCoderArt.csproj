@@ -88,7 +88,7 @@
     <Compile Include="FormDictionary.Designer.cs">
       <DependentUpon>FormDictionary.cs</DependentUpon>
     </Compile>
-    <Compile Include="QRCoderReflection.cs" />
+    <Compile Include="QRCoderGUITreeData.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -24,7 +24,7 @@ namespace QRCoderArt
     /// Class GUITreeNode
     /// узел дерева параметров GUI для создания элемента формы (GUI Control)
     /// </summary>
-    public class GUITreeNode                          
+    public class GUITreeNode
     {
         /// <summary>
         /// уровень вложенности параметра в дереве
@@ -33,31 +33,31 @@ namespace QRCoderArt
         /// <summary>
         /// имя родителя параметра
         /// </summary>
-        public string fParentName;                      
+        public string fParentName;
         /// <summary>
         /// имя параметра
         /// </summary>
-        public string fName;                            
+        public string fName;
         /// <summary>
         /// наименование типа данных параметра (строка: 'String', 'Integer', и т.д.)
         /// </summary>
-        public string fType;                             
+        public string fType;
         /// <summary>
         /// наименование типа элемента формы (строка: 'TextBox'; 'ConboBox', и т.д.)
         /// </summary>
-        public string fForm;  
+        public string fForm;
         /// <summary>
         /// расширенные данные (Словарь) - используется для для datasource ComboBox
         /// </summary>
-        public Dictionary<string, object> fList;        
+        public Dictionary<string, object> fList;
         /// <summary>
         /// признак наличия нулевого значения параметра - используется для CheckBox
         /// </summary>
-        public Boolean fNull;                          
+        public Boolean fNull;
         /// <summary>
         /// значение параметра по умолчанию
         /// </summary>
-        public object fDef;                    
+        public object fDef;
     }
 
     /// <summary>
@@ -77,7 +77,7 @@ namespace QRCoderArt
         /// <param name="name">имя узла Reflection от которого читается структура</param>
         public GUITree(string name)
         {
-             tRef = Type.GetType(name);
+            tRef = Type.GetType(name);
         }
 
         /// <summary>
