@@ -11,7 +11,6 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
-using System.Resources;
 // ***********************************************************************
 // Assembly         : QRCoderArt
 // Author           : zaytsev
@@ -26,6 +25,7 @@ using System.Resources;
 // <summary></summary>
 // ***********************************************************************
 using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 
 // Общие сведения об этой сборке предоставляются следующим набором
