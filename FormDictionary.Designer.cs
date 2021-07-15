@@ -14,11 +14,6 @@
 
 namespace QRCoderArt
 {
-    /// <summary>
-    /// Class FormDictionary.
-    /// Implements the <see cref="System.Windows.Forms.Form" />
-    /// </summary>
-    /// <seealso cref="System.Windows.Forms.Form" />
     partial class FormDictionary
     {
         /// <summary>
@@ -121,25 +116,10 @@ namespace QRCoderArt
 
         #endregion
 
-        /// <summary>
-        /// The data grid view property
-        /// </summary>
         private System.Windows.Forms.DataGridView dataGridViewProperty;
-        /// <summary>
-        /// The button1
-        /// </summary>
         private System.Windows.Forms.Button button1;
-        /// <summary>
-        /// The binding source1
-        /// </summary>
         private System.Windows.Forms.BindingSource bindingSource1;
-        /// <summary>
-        /// The plugin
-        /// </summary>
         private System.Windows.Forms.DataGridViewTextBoxColumn plugin;
-        /// <summary>
-        /// The plugin option
-        /// </summary>
         private System.Windows.Forms.DataGridViewTextBoxColumn pluginOption;
     }
 }

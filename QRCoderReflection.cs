@@ -61,23 +61,23 @@ namespace QRCoderArt
     }
 
     /// <summary>
-    /// QRCoderReflection
-    /// Класс дя работы с Reflection
+    /// GUITree
+    /// Класс ддя работы с Reflection crqoder.dll
     /// </summary>
-    public class QRCoderReflection : IDisposable
+    public class GUITree : IDisposable
     {
         /// <summary>
         /// узел (точка входа) в Reflection
         /// </summary>
-        private Type tRef;
+        private readonly Type tRef;
 
         /// <summary>
-        /// инициализация узла в Reflection по имени<see cref="QRCoderReflection" /> class.
+        /// инициализация узла в Reflection по имени<see cref="GUITree" /> class.
         /// </summary>
         /// <param name="name">имя узла Reflection от которого читается структура</param>
-        public QRCoderReflection(string name)
+        public GUITree(string name)
         {
-            tRef = Type.GetType(name);
+             tRef = Type.GetType(name);
         }
 
         /// <summary>

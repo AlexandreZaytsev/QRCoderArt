@@ -37,9 +37,9 @@ namespace QRCoderArt
         /// readyState
         /// структура для фиксации ошибки (при пересоздании CTRL из GUITree) при первом запуске функции payload
         /// </summary>
-        private bool[] readyState = {false,                 //Data preparation completed
-                                     false,                 //MainForm is Load
-                                     false };               //Mainform is Show    
+        private readonly bool[] readyState = {false,                 //Data preparation completed
+                                                false,                 //MainForm is Load
+                                                false };               //Mainform is Show    
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FormMain" /> class.
@@ -50,7 +50,7 @@ namespace QRCoderArt
 
 
             InitializeComponent();
-            using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
+            using (GUITree qqRef = new GUITree(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
             {
                 //find abstract class (payload)
                 /*
@@ -416,7 +416,7 @@ namespace QRCoderArt
                 readyState[0] = false;                             //full ready:= Data preparation not completed
                 ClearGUITreePanel(panel.First());                  //clear payload panel
                 IList propToCntrl = null;
-                using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
+                using (GUITree qqRef = new GUITree(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
                 {
                     if (combo.Name == "cbPayload")
                     {
@@ -443,7 +443,7 @@ namespace QRCoderArt
         /// <returns>Dictionary&lt;System.String, System.Object&gt;.</returns>
         private Dictionary<string, object> GetParamFromGUITreePanel(FlowLayoutPanel panelGUITree)
         {
-            object ret = null;
+            object ret;// = null;
             Dictionary<string, object> ParamFromControl = new Dictionary<string, object>();
             if (panelPayload.HasChildren)
             {
@@ -529,7 +529,7 @@ namespace QRCoderArt
                 Control[] panel = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is FlowLayoutPanel);
                 ParamFromControl = GetParamFromGUITreePanel((FlowLayoutPanel)panel[0]);
 
-                using (QRCoderReflection qqRef = new QRCoderReflection(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
+                using (GUITree qqRef = new GUITree(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
                 {
                     Control[] cmb = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is ComboBox);
                     ConstructorInfo ctrm = (ConstructorInfo)((System.Collections.Generic.KeyValuePair<string, object>)((ComboBox)cmb[0]).SelectedItem).Value;
