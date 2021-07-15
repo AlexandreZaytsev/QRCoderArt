@@ -1,6 +1,6 @@
 ﻿// ***********************************************************************
 // Assembly         : QRCoderArt
-// Author           : zaytsev
+// Author           : NigelThorne
 // Created          : 07-09-2021
 //
 // Last Modified By : zaytsev
