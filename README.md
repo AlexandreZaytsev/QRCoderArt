@@ -63,31 +63,31 @@ current state 07.07.2021 ([+] ok; [ ] trying to implement)
 ***still in operation (several nested classes)***
 - [x] Girocode
   - (string iban, string bic, string name, decimal amount, string remittanceInformation = "", TypeOfRemittance typeOfRemittance = TypeOfRemittance.Unstructured, string purposeOfCreditTransfer = "", string messageToGirocodeUser = "", GirocodeVersion version = GirocodeVersion.Version1, GirocodeEncoding encoding = GirocodeEncoding.ISO_8859_1)   
-  ***you must set the payload parameter values (see the html error window)***
+  ***it is necessary to set the values of the payload parameters (see the html error message window)***
 - [x] BezahlCode
   - (AuthorityType authority, string name, string account = "", string bnc = "", string iban = "", string bic = "", string reason = "") : this(authority, name, account, bnc, iban, bic, 0, string.Empty, 0, null, null, string.Empty, string.Empty, null, reason, 0, string.Empty, Currency.EUR, null, 1)     
-  ***you must set the payload parameter values (see the html error window)***
+  ***it is necessary to set the values of the payload parameters (see the html error message window)***
   - (AuthorityType authority, string name, string account, string bnc, decimal amount, string periodicTimeunit = "", int periodicTimeunitRotation = 0, DateTime? periodicFirstExecutionDate = null, DateTime? periodicLastExecutionDate = null, string reason = "", int postingKey = 0, Currency currency = Currency.EUR, DateTime? executionDate = null) : this(authority, name, account, bnc, string.Empty, string.Empty, amount, periodicTimeunit, periodicTimeunitRotation, periodicFirstExecutionDate, periodicLastExecutionDate, string.Empty, string.Empty, null, reason, postingKey, string.Empty, currency, executionDate, 2)     
-***you must set the payload parameter values (see the html error window)***
+***it is necessary to set the values of the payload parameters (see the html error message window)***
   - (AuthorityType authority, string name, string iban, string bic, decimal amount, string periodicTimeunit = "", int periodicTimeunitRotation = 0, DateTime? periodicFirstExecutionDate = null, DateTime? periodicLastExecutionDate = null, string creditorId = "", string mandateId = "", DateTime? dateOfSignature = null, string reason = "", string sepaReference = "", Currency currency = Currency.EUR, DateTime? executionDate = null) : this(authority, name, string.Empty, string.Empty, iban, bic, amount, periodicTimeunit, periodicTimeunitRotation, periodicFirstExecutionDate, periodicLastExecutionDate, creditorId, mandateId, dateOfSignature, reason, 0, sepaReference, currency, executionDate, 3)   
-  ***you must set the payload parameter values (see the html error window)***
+  ***it is necessary to set the values of the payload parameters (see the html error message window)***
   - (AuthorityType authority, string name, string account, string bnc, string iban, string bic, decimal amount, string periodicTimeunit = "", int periodicTimeunitRotation = 0, DateTime? periodicFirstExecutionDate = null, DateTime? periodicLastExecutionDate = null, string creditorId = "", string mandateId = "", DateTime? dateOfSignature = null, string reason = "", int postingKey = 0, string sepaReference = "", Currency currency = Currency.EUR, DateTime? executionDate = null, int internalMode = 0)     
-***you must set the payload parameter values (see the html error window)***
+***it is necessary to set the values of the payload parameters (see the html error message window)***
 - [x] CalendarEvent
   - (string subject, string description, string location, DateTime start, DateTime end, bool allDayEvent, EventEncoding encoding = EventEncoding.Universal)
 - [x] OneTimePassword
   - the constructor is not used here     
-***you must set the payload parameter values (see the html error window)***
+***it is necessary to set the values of the payload parameters (see the html error message window)***
 - [x] ShadowSocksConfig
   - (string hostname, int port, string password, Method method, string tag = null)      
-***you must set the payload parameter values (see the html error window)***
+***it is necessary to set the values of the payload parameters (see the html error message window)***
   - (string hostname, int port, string password, Method method, string plugin, string pluginOption, string tag = null)  
-***you must set the payload parameter values (see the html error window)***
+***it is necessary to set the values of the payload parameters (see the html error message window)***
   - (string hostname, int port, string password, Method method, Dictionary<string, string> parameters, string tag = null)  
-***you must set the payload parameter values (see the html error window)***
+***it is necessary to set the values of the payload parameters (see the html error message window)***
 - [x] MoneroTransaction
   - (string address, float? txAmount = null, string txPaymentId = null, string recipientName = null, string txDescription = null)  
-***you must set the payload parameter values (see the html error window)***
+***it is necessary to set the values of the payload parameters (see the html error message window)***
 - [X] SlovenianUpnQr
   - (string payerName, string payerAddress, string payerPlace, string recipientName, string recipientAddress, string recipientPlace, string recipientIban, string description, double amount, string recipientSiModel = "SI00", string recipientSiReference = "", string code = "OTHR") 
 
