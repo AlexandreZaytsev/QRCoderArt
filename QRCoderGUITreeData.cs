@@ -162,12 +162,13 @@ namespace QRCoderArt
                                      select GetGUITreeNode(t.Name, t.ParameterType, t.DefaultValue, Params, nestingLevel, parentName);
 
             //Deferred Execution
-            foreach (object Param in ctor.GetParameters().Length == 0 ? queryProp : queryParam) { }  //run function from query
+            foreach (object Param in ctor.GetParameters().Length == 0 ? queryProp : queryParam) {}  //run function from query
         }
 
         /**********************************************************************************************************
           EXECUTE MEMBER
         ************************************************************************************************************/
+
         /// <summary>
         /// GetPayloadString
         /// Выполнить базовый метод генерации строки для QR кода для выбранного payload - ToString.

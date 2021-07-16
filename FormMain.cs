@@ -25,6 +25,7 @@ using System.Windows.Forms;
 
 namespace QRCoderArt
 {
+
     /// <summary>
     /// Class FormMain.
     /// Форма использующая динамический интерфейс на плавающих панелях для работы с payload на базе GUITree 
@@ -437,6 +438,72 @@ namespace QRCoderArt
             }
         }
 
+        /*-----------------------------------------------------------------------------------------------------------------------------------------*/
+        public object GetInvokeCtor(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm, string payloadName, List<InvokeError> errorList)
+        {
+            object ctorObj = null;
+            if (ctor.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
+            {
+                ctorObj = ctor.Invoke(new object[] { });
+                //сопоставить параметры по имени
+                foreach (KeyValuePair<string, object> entry in cntrlFromForm)
+                {
+                    ctorObj.GetType().GetProperty(entry.Key).SetValue(ctorObj, entry.Value);
+                }
+
+                try
+                {
+                    object instance = ctor.Invoke(ctorObj, new object[] { });
+                }
+                catch (Exception e)
+                {
+                    InvokeError err = new InvokeError();
+                    err.ConstructorName = payloadName;
+                    do
+                    {
+                        err.addMsg(e.Message);
+                        e = e.InnerException;
+                    }
+                    while (e != null);
+
+                    errorList.Add(err);
+                }
+                finally
+                {
+                }
+            }
+            else
+            {
+                if (cntrlFromForm.Count != 0)
+                {
+                    //                    object[] propFromForm = cntrlFromForm.Cast<object>().ToArray();
+                    object[] propFromForm = cntrlFromForm.Select(z => z.Value).ToArray();
+
+                    try
+                    {
+                        ctorObj = ctor.Invoke(propFromForm);
+                    }
+                    catch (Exception e)
+                    {
+                        InvokeError err = new InvokeError();
+                        err.ConstructorName = payloadName;
+                        do
+                        {
+                            err.addMsg(e.Message);
+                            e = e.InnerException;
+                        }
+                        while (e != null);
+
+                        errorList.Add(err);
+                    }
+                    finally
+                    {
+                    }
+                }
+            }
+            return ctorObj;
+
+        }
 
         /// <summary>
         /// ReadGUITreePanel
@@ -444,7 +511,7 @@ namespace QRCoderArt
         /// </summary>
         /// <param name="panelGUITree">The panel.</param>
         /// <returns>Dictionary&lt;System.String, System.Object&gt;.</returns>
-        private Dictionary<string, object> GetParamFromGUITreePanel(FlowLayoutPanel panelGUITree)
+        private Dictionary<string, object> GetParamFromGUITreePanel(FlowLayoutPanel panelGUITree, List<InvokeError> errorList)
         {
             object ret;// = null;
             Dictionary<string, object> ParamFromControl = new Dictionary<string, object>();
@@ -452,13 +519,20 @@ namespace QRCoderArt
             {
                 foreach (Control cntrl in panelGUITree.Controls)
                 {
-                    if (cntrl.Created && cntrl.AccessibleName == "Get")
+                    if (cntrl.Created && cntrl.AccessibleName == "Get" && cntrl.Parent.Name== panelGUITree.Name)
                     {
                         ret = null;
                         if (cntrl.Enabled)
                         {
                             switch (cntrl.AccessibleDescription)
                             {
+                                case "Constructor":
+                                    ConstructorInfo ctor = (ConstructorInfo)((KeyValuePair<string, object>)((ComboBox)cntrl).SelectedItem).Value;
+                                    Control[] pan = panelPayload.FilterControls(c => c.Name != null
+                                                                                && c.Name == cntrl.Name && c is FlowLayoutPanel);
+//                                    ParamFromControl =        //!!! recursion
+                                    ret = GetInvokeCtor(ctor, GetParamFromGUITreePanel((FlowLayoutPanel)pan[0], errorList), cntrl.Name, errorList);
+                                    break;
                                 case "String":
                                     ret = ((TextBox)cntrl).Text;
                                     break;
@@ -507,30 +581,14 @@ namespace QRCoderArt
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void GetPayloadStringFromGUITreePanel(object sender, EventArgs e)
         {
+            List<InvokeError> errorList = new List<InvokeError>();
+
             if (readyState[0] && readyState[1] && readyState[2])            //full ready:= Data preparation completed && form load && form show
             {
                 Dictionary<string, object> ParamFromControl = null;// = new Dictionary<string, object>();
 
-                /*
-                                //collect all current payload constructors
-                                Control[] ctrls = panelPayload.FilterControls(c => c.Name != null
-                                                                        && c.AccessibleDescription != null
-                                                                        && c.AccessibleDescription == "Constructor"
-                                                                        && c is ComboBox);
-                                //init all ctor from panel controls         
-                                for (int i = 0; i < ctrls.Count(); i++)
-                                 {
-                                    ComboBox cb = (ComboBox)ctrls[i];
-                                    ConstructorInfo ctor = (ConstructorInfo)((KeyValuePair<string, object>)cb.SelectedItem).Value;
-                                    Control[] pan = panelPayload.FilterControls(c => c.Name != null
-                                                                            && c.Name == cb.Name && c is FlowLayoutPanel);
-
-                                }
-                */
-
-                //init single ctor from panel controls (delete later)
                 Control[] panel = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is FlowLayoutPanel);
-                ParamFromControl = GetParamFromGUITreePanel((FlowLayoutPanel)panel[0]);
+                ParamFromControl = GetParamFromGUITreePanel((FlowLayoutPanel)panel[0], errorList);
 
                 using (GUITree qqRef = new GUITree(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
                 {
@@ -964,6 +1022,17 @@ namespace QRCoderArt
             return l;
         }
 
+    }
+
+    public class InvokeError
+    {
+        public string ConstructorName { get; set; }
+
+        public List<string> Errors { get; set; } = new List<string>();
+        public void addMsg(string val)
+        {
+            Errors.Add(val);
+        }
     }
 
 }
