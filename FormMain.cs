@@ -461,7 +461,7 @@ namespace QRCoderArt
                     err.ConstructorName = payloadName;
                     do
                     {
-                        err.addMsg(e.Message);
+                        err.AddMsg(e.Message);
                         e = e.InnerException;
                     }
                     while (e != null);
@@ -489,7 +489,7 @@ namespace QRCoderArt
                         err.ConstructorName = payloadName;
                         do
                         {
-                            err.addMsg(e.Message);
+                            err.AddMsg(e.Message);
                             e = e.InnerException;
                         }
                         while (e != null);
@@ -510,6 +510,7 @@ namespace QRCoderArt
         /// прочитать текущие значения CTRL панели GUITree 
         /// </summary>
         /// <param name="panelGUITree">The panel.</param>
+        /// <param name="errorList">error List</param>
         /// <returns>Dictionary&lt;System.String, System.Object&gt;.</returns>
         private Dictionary<string, object> GetParamFromGUITreePanel(FlowLayoutPanel panelGUITree, List<InvokeError> errorList)
         {
@@ -1029,7 +1030,7 @@ namespace QRCoderArt
         public string ConstructorName { get; set; }
 
         public List<string> Errors { get; set; } = new List<string>();
-        public void addMsg(string val)
+        public void AddMsg(string val)
         {
             Errors.Add(val);
         }
