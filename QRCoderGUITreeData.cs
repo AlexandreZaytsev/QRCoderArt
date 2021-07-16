@@ -22,8 +22,14 @@ namespace QRCoderArt
     /// <summary>Class InvokeError.</summary>
     public class InvokeError
     {
+        /// <summary>Gets or sets the name of the constructor.</summary>
+        /// <value>The name of the constructor.</value>
         public string ConstructorName { get; set; }
+        /// <summary>Gets or sets the errors.</summary>
+        /// <value>The errors.</value>
         public List<string> Errors { get; set; } = new List<string>();
+        /// <summary>Adds the MSG.</summary>
+        /// <param name="val">The value.</param>
         public void AddMsg(string val)
         {
             Errors.Add(val);
