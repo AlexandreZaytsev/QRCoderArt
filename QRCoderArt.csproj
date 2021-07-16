@@ -137,9 +137,9 @@
   <ItemGroup>
     <None Include="Resources\qr.png" />
     <None Include="Resources\qr.ico" />
+    <None Include="about.png" />
     <Content Include="qr.ico" />
     <None Include="qr.png" />
-    <None Include="Resources\smart.png" />
     <Content Include="ric_.ico" />
   </ItemGroup>
   <ItemGroup>

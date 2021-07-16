@@ -65,6 +65,7 @@ namespace QRCoderArt
             this.viewMode.DataSource = Enum.GetValues(typeof(ImageLayout));
             this.viewMode.SelectedIndex = 4;
             this.QRCodeString.Dock = DockStyle.Fill;
+            this.QRCodeError.Dock = DockStyle.Fill;
             this.QRCodeString.Visible = true;
         }
 
@@ -536,27 +537,18 @@ namespace QRCoderArt
                     Control[] cmb = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is ComboBox);
                     ConstructorInfo ctrm = (ConstructorInfo)((System.Collections.Generic.KeyValuePair<string, object>)((ComboBox)cmb[0]).SelectedItem).Value;
 
-                    CheckError(qqRef.GetPayloadString(ctrm, ParamFromControl));
+                    CheckResult(qqRef.GetPayloadString(ctrm, ParamFromControl, cmb[0].Name));
                 }
             }
         }
 
-        private void CheckError(List<string> msg) 
+        private void CheckResult(List<string> msg) 
         {
-            if (msg[0].ToString().IndexOf("Error:") >= 0)
+            if (msg[0].ToString().IndexOf("-error") >= 0)
             {
                 string strMsg;    
                 QRCodeString.Visible = false;
-                QRCodeString.Dock = DockStyle.None;
-
-                strMsg = //"<style type='text/css'>" +
-                         //   "body {font-family:'Times New Roman', 'Sans-Serif', 'Lucida Sans Unicode', 'Lucida Grande';; font-weight: normal;} " +
-                         //    "table {font-size: 14px; background: white; width: 100 %; border: 1px solid black; border-collapse: collapse;} " +
-                         //    "td.first {width: 80px;} " +
-                         //    "td.last {text-align: left; width: 13px;} " +
-                         //    ".colortext {color: #006400; font-weight: 500;}" +
-                         //   "</style>" +
-                         "<style>"+
+                strMsg = "<style>"+
                          "table {" +
                        //  "border: 1px solid black; "+
                          "width:100%;" +
@@ -564,7 +556,7 @@ namespace QRCoderArt
                          "</style>"+
                          "<body>"+// bgcolor='#FFEFD5'>" +
                          "<strong>&#128270;&nbsp;" + msg[0].ToString() + "</strong>" +
-                            "<hr><table><tbody>";
+                         "<hr><table><tbody>";
 
                 for (int i = 1; i < msg.Count()-1; i++)
                 {
@@ -574,21 +566,16 @@ namespace QRCoderArt
                 strMsg += "<hr>&#128736;&nbsp;<i><small>" + msg.Last().ToString() + "</small></i>" +
                           "</body>";
 
-                ErrorMessage.DocumentText = strMsg;
-                ErrorMessage.Dock = DockStyle.Fill;
-                ErrorMessage.Visible = true;
-                pictureBoxQRCode.BackgroundImage = global::QRCoderArt.Properties.Resources.qr1;
+                QRCodeError.DocumentText = strMsg;
+                QRCodeString.Visible = false;
+                QRCodeError.Visible = true;
+                pictureBoxQRCode.BackgroundImage = global::QRCoderArt.Properties.Resources.qr_no;
             }
             else 
             {
-                ErrorMessage.Visible = false;
-                ErrorMessage.Dock = DockStyle.None;
-
                 QRCodeString.Text = msg[0].ToString();
-
-                QRCodeString.Dock = DockStyle.Fill;
+                QRCodeError.Visible = false;
                 QRCodeString.Visible = true;
-
             }
         }
 

@@ -61,6 +61,16 @@ namespace QRCoderArt.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap about {
+            get {
+                object obj = ResourceManager.GetObject("about", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Demo project WinForm application
         ///creating a file with a picture of a QR code based on QRCoder (1.4.1).
         ///  - the ability to create a label (top layer)
@@ -86,74 +96,6 @@ namespace QRCoderArt.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на |	&lt;/body&gt;
-        ///			|&lt;/html&gt;.
-        /// </summary>
-        internal static string ErrorHTMLFooter {
-            get {
-                return ResourceManager.GetString("ErrorHTMLFooter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на &lt;html&gt;
-        ///			|	&lt;head&gt; 
-        ///			|		&lt;meta charset=&apos;utf-8&apos;&gt;
-        ///			|		&lt;title&gt;Гороскоп Виджет&lt;/title&gt;
-        ///			|		&lt;style type=&apos;text/css&apos;&gt;
-        ///			|			body {
-        ///			|				font-family:&apos;Times New Roman&apos;, &apos;Sans-Serif&apos;, &apos;Lucida Sans Unicode&apos;, &apos;Lucida Grande&apos;;;
-        ///			|				font-weight: normal;
-        ///			|			}
-        ///			|			table {
-        ///			|				font-size: 14px;
-        ///			|  				background: white;
-        ///			|				width: 100%;
-        ///			|				border-collapse: collapse;
-        ///			|				}
-        ///			|			td.first {
-        ///			|				width: 80px;
-        ///			|				}
-        ///			|			td.last {
-        ///			|				text-align: right;
-        ///		 [остаток строки не уместился]&quot;;.
-        /// </summary>
-        internal static string ErrorHTMLHeader {
-            get {
-                return ResourceManager.GetString("ErrorHTMLHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на &lt;table&gt;  
-        ///			|		&lt;tr&gt;.
-        /// </summary>
-        internal static string ErrorHTMLTableBegin {
-            get {
-                return ResourceManager.GetString("ErrorHTMLTableBegin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на &lt;/tr&gt;
-        ///			|	&lt;/table&gt;.
-        /// </summary>
-        internal static string ErrorHTMLTableEnd {
-            get {
-                return ResourceManager.GetString("ErrorHTMLTableEnd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на .
-        /// </summary>
-        internal static string ErrorHTMLTableRow {
-            get {
-                return ResourceManager.GetString("ErrorHTMLTableRow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
         /// </summary>
         internal static System.Drawing.Icon qr {
@@ -166,9 +108,9 @@ namespace QRCoderArt.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap qr1 {
+        internal static System.Drawing.Bitmap qr_no {
             get {
-                object obj = ResourceManager.GetObject("qr1", resourceCulture);
+                object obj = ResourceManager.GetObject("qr_no", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -180,16 +122,6 @@ namespace QRCoderArt.Properties {
             get {
                 object obj = ResourceManager.GetObject("ric_", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap smart {
-            get {
-                object obj = ResourceManager.GetObject("smart", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

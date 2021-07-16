@@ -174,8 +174,9 @@ namespace QRCoderArt
         /// </summary>
         /// <param name="ctor">конструктор</param>
         /// <param name="cntrlFromForm">параметры конструктора в виде словаря имя-значение</param>
+        /// <param name="payloadName">имя payload</param>
         /// <returns>форматированная строка payload System.String.</returns>
-        public List<string> GetPayloadString(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm)
+        public List<string> GetPayloadString(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm, string payloadName)
         {
             //https://metanit.com/sharp/tutorial/14.2.php
             //https://stackoverflow.com/questions/9314172/getting-all-messages-from-innerexceptions
@@ -196,7 +197,7 @@ namespace QRCoderArt
                 }
                 catch (Exception e)
                 {
-                    messages.Add("init Constructot Error:");
+                    messages.Add("get " + payloadName + " payload string -error");
                     do
                     {
                         messages.Add(e.Message);
@@ -223,7 +224,7 @@ namespace QRCoderArt
                     }
                     catch (Exception e)
                     {
-                        messages.Add("init Constructot Error:");
+                        messages.Add("get " + payloadName + " payload string -error");
                         do
                         {
                             messages.Add(e.Message);
