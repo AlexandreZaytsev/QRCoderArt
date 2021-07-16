@@ -286,7 +286,15 @@ namespace QRCoderArt
                                 Node.fForm = "DateTime";
                                 break;
                             default:
-                                Node.fForm = "TextBox";
+  //                              if (nodeType.IsGenericType)
+  //                              {
+  //                                  Node.fForm = "ComboBox";
+ //                                   Node.fList = nodeType.GenericTypeArguments[0].GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
+   //                             }
+   //                             else 
+   //                             {
+                                    Node.fForm = "TextBox";
+   //                             }
                                 break;
                         }
                         break;
