@@ -19,7 +19,16 @@ using System.Reflection;
 
 namespace QRCoderArt
 {
-
+    /// <summary>Class InvokeError.</summary>
+    public class InvokeError
+    {
+        public string ConstructorName { get; set; }
+        public List<string> Errors { get; set; } = new List<string>();
+        public void AddMsg(string val)
+        {
+            Errors.Add(val);
+        }
+    }
     /// <summary>
     /// Class GUITreeNode
     /// узел дерева параметров GUI для создания элемента формы (GUI Control)
@@ -163,84 +172,6 @@ namespace QRCoderArt
 
             //Deferred Execution
             foreach (object Param in ctor.GetParameters().Length == 0 ? queryProp : queryParam) {}  //run function from query
-        }
-
-        /**********************************************************************************************************
-          EXECUTE MEMBER
-        ************************************************************************************************************/
-
-        /// <summary>
-        /// GetPayloadString
-        /// Выполнить базовый метод генерации строки для QR кода для выбранного payload - ToString.
-        /// </summary>
-        /// <param name="ctor">конструктор</param>
-        /// <param name="cntrlFromForm">параметры конструктора в виде словаря имя-значение</param>
-        /// <param name="payloadName">имя payload</param>
-        /// <returns>форматированная строка payload System.String.</returns>
-        public List<string> GetPayloadString(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm, string payloadName)
-        {
-            //https://metanit.com/sharp/tutorial/14.2.php
-            //https://stackoverflow.com/questions/9314172/getting-all-messages-from-innerexceptions
-            var messages = new List<string>();
-
-            if (ctor.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
-            {
-                object ctorObj = ctor.Invoke(new object[] { });
-                //сопоставить параметры по имени
-                foreach (KeyValuePair<string, object> entry in cntrlFromForm)
-                {
-                    ctorObj.GetType().GetProperty(entry.Key).SetValue(ctorObj, entry.Value);
-                }
-
-                try
-                {
-                    messages.Add(ctor.ReflectedType.GetMethod("ToString").Invoke(ctorObj, new object[] { }).ToString());
-                }
-                catch (Exception e)
-                {
-                    messages.Add("get " + payloadName + " payload string -error");
-                    do
-                    {
-                        messages.Add(e.Message);
-                        e = e.InnerException;
-                    }
-                    while (e != null);
-                    messages.Add("Try filling in the parameters...");
-                }
-                finally
-                {
-                }
-            }
-            else
-            {
-                if (cntrlFromForm.Count != 0)
-                {
-                    //                    object[] propFromForm = cntrlFromForm.Cast<object>().ToArray();
-                    object[] propFromForm = cntrlFromForm.Select(z => z.Value).ToArray();
-
-                    try
-                    {
-                        object ctorObj = ctor.Invoke(propFromForm);
-                        messages.Add(ctor.ReflectedType.GetMethod("ToString").Invoke(ctorObj, null).ToString());
-                    }
-                    catch (Exception e)
-                    {
-                        messages.Add("get " + payloadName + " payload string -error");
-                        do
-                        {
-                            messages.Add(e.Message);
-                            e = e.InnerException;
-                        }
-                        while (e != null);
-
-                        messages.Add("Try filling in the parameters...");
-                    }
-                    finally
-                    {
-                    }
-                }
-            }
-            return messages;
         }
 
         /**********************************************************************************************************

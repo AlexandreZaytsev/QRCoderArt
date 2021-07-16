@@ -439,9 +439,16 @@ namespace QRCoderArt
         }
 
         /*-----------------------------------------------------------------------------------------------------------------------------------------*/
+        /// <summary>Gets the invoke ctor.</summary>
+        /// <param name="ctor">The constructor object.</param>
+        /// <param name="cntrlFromForm">The CNTRL from form.</param>
+        /// <param name="payloadName">Name of the payload.</param>
+        /// <param name="errorList">The error list.</param>
+        /// <returns>Invoke Constructor object.</returns>
         public object GetInvokeCtor(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm, string payloadName, List<InvokeError> errorList)
         {
             object ctorObj = null;
+
             if (ctor.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
             {
                 ctorObj = ctor.Invoke(new object[] { });
@@ -461,7 +468,8 @@ namespace QRCoderArt
                     err.ConstructorName = payloadName;
                     do
                     {
-                        err.AddMsg(e.Message);
+                        if (e.HResult != -2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
+                            err.AddMsg(e.Message);
                         e = e.InnerException;
                     }
                     while (e != null);
@@ -479,8 +487,18 @@ namespace QRCoderArt
                     //                    object[] propFromForm = cntrlFromForm.Cast<object>().ToArray();
                     object[] propFromForm = cntrlFromForm.Select(z => z.Value).ToArray();
 
+                    /*
+                    var jObject = stuff["symbol"] as JObject;
+                    И проверять этот объект на null:
+                        if (jObject)
+                    {
+                        return; //Выход из метода или обработка ошибки
+                    }
+                    */
+
                     try
                     {
+                        var tObject= ctor.Invoke(propFromForm) as Object;
                         ctorObj = ctor.Invoke(propFromForm);
                     }
                     catch (Exception e)
@@ -489,7 +507,8 @@ namespace QRCoderArt
                         err.ConstructorName = payloadName;
                         do
                         {
-                            err.AddMsg(e.Message);
+                            if (e.HResult != - 2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
+                                err.AddMsg(e.Message);
                             e = e.InnerException;
                         }
                         while (e != null);
@@ -502,12 +521,12 @@ namespace QRCoderArt
                 }
             }
             return ctorObj;
-
         }
 
         /// <summary>
         /// ReadGUITreePanel
-        /// прочитать текущие значения CTRL панели GUITree 
+        /// прочитать текущие значения CTRL панели GUITree и 
+        /// собрать массив параметров для инициализации конструктора
         /// </summary>
         /// <param name="panelGUITree">The panel.</param>
         /// <param name="errorList">error List</param>
@@ -531,7 +550,7 @@ namespace QRCoderArt
                                     ConstructorInfo ctor = (ConstructorInfo)((KeyValuePair<string, object>)((ComboBox)cntrl).SelectedItem).Value;
                                     Control[] pan = panelPayload.FilterControls(c => c.Name != null
                                                                                 && c.Name == cntrl.Name && c is FlowLayoutPanel);
-//                                    ParamFromControl =        //!!! recursion
+//                                  //!!! recursion
                                     ret = GetInvokeCtor(ctor, GetParamFromGUITreePanel((FlowLayoutPanel)pan[0], errorList), cntrl.Name, errorList);
                                     break;
                                 case "String":
@@ -586,55 +605,58 @@ namespace QRCoderArt
 
             if (readyState[0] && readyState[1] && readyState[2])            //full ready:= Data preparation completed && form load && form show
             {
-                Dictionary<string, object> ParamFromControl = null;// = new Dictionary<string, object>();
+                Dictionary<string, object> ParamFromControl = null;
 
                 Control[] panel = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is FlowLayoutPanel);
+                //собрать массив параметров для инициализации конструктора
                 ParamFromControl = GetParamFromGUITreePanel((FlowLayoutPanel)panel[0], errorList);
 
-                using (GUITree qqRef = new GUITree(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
+                //инициализировать конструктор payload
+                Control[] cmb = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is ComboBox);
+                ConstructorInfo ctrm = (ConstructorInfo)((System.Collections.Generic.KeyValuePair<string, object>)((ComboBox)cmb[0]).SelectedItem).Value;
+                object ctorObj = GetInvokeCtor(ctrm, ParamFromControl, cmb[0].Name, errorList);
+                if (ctorObj != null && errorList.Count()==0) 
                 {
-                    Control[] cmb = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is ComboBox);
-                    ConstructorInfo ctrm = (ConstructorInfo)((System.Collections.Generic.KeyValuePair<string, object>)((ComboBox)cmb[0]).SelectedItem).Value;
-
-                    CheckResult(qqRef.GetPayloadString(ctrm, ParamFromControl, cmb[0].Name));
+                    QRCodeString.Text = ctrm.ReflectedType.GetMethod("ToString").Invoke(ctorObj, null).ToString();
+                    QRCodeError.Visible = false;
+                    QRCodeString.Visible = true;
                 }
-            }
-        }
-
-        private void CheckResult(List<string> msg) 
-        {
-            if (msg[0].ToString().IndexOf("-error") >= 0)
-            {
-                string strMsg;    
-                QRCodeString.Visible = false;
-                strMsg = "<style>"+
-                         "table {" +
-                       //  "border: 1px solid black; "+
-                         "width:100%;" +
-                         "border - collapse: collapse;}" +
-                         "</style>"+
-                         "<body>"+// bgcolor='#FFEFD5'>" +
-                         "<strong>&#128270;&nbsp;" + msg[0].ToString() + "</strong>" +
-                         "<hr><table><tbody>";
-
-                for (int i = 1; i < msg.Count()-1; i++)
+                else
                 {
-                    strMsg += "<tr><td class='first'>&#10008;</td><td class='last'>" + msg[i].ToString() + "</td></tr>";
-                }
-                strMsg += "</tbody></table>";
-                strMsg += "<hr>&#128736;&nbsp;<i><small>" + msg.Last().ToString() + "</small></i>" +
-                          "</body>";
+                    string strMsg;
+                    QRCodeString.Visible = false;
+                    strMsg = "<style>" +
+                             "table {" +
+                             //  "border: 1px solid black; "+
+                             "width:100%;" +
+                             "border - collapse: collapse;}" +
+                             "th {" +
+                             "text-align: left; " +
+                        //     "font-size: 11pt; " +
+                             "font-weight:normal; "+
+                             "background-color: rgb(240, 240, 240);}" +
+                             "</style>" +
+                             "<body>" +// bgcolor='#FFEFD5'>" +
+                             "<strong>&#128270;&nbsp;" + "Create " + cmb[0].Name + " payload string error" + "</strong>" +
+                             "<hr><table><tbody>";
 
-                QRCodeError.DocumentText = strMsg;
-                QRCodeString.Visible = false;
-                QRCodeError.Visible = true;
-                pictureBoxQRCode.BackgroundImage = global::QRCoderArt.Properties.Resources.qr_no;
-            }
-            else 
-            {
-                QRCodeString.Text = msg[0].ToString();
-                QRCodeError.Visible = false;
-                QRCodeString.Visible = true;
+                    foreach (var err in errorList)
+                    {
+                        strMsg += "<tr><th colspan='2'>" + err.ConstructorName + "</th></tr>";
+                        foreach (var msg in err.Errors)
+                        {
+                            strMsg += "<tr><td class='first'>&#10008;</td><td class='last'>" + msg + "</td></tr>";
+                        }
+                    }
+                    strMsg += "</tbody></table>";
+                    strMsg += "<hr>&#128736;&nbsp;<i><small>" + "try setting the parameters..." + "</small></i>" +
+                              "</body>";
+
+                    QRCodeError.DocumentText = strMsg;
+                    QRCodeString.Visible = false;
+                    QRCodeError.Visible = true;
+                    pictureBoxQRCode.BackgroundImage = global::QRCoderArt.Properties.Resources.qr_no;
+                }
             }
         }
 
@@ -1024,16 +1046,4 @@ namespace QRCoderArt
         }
 
     }
-
-    public class InvokeError
-    {
-        public string ConstructorName { get; set; }
-
-        public List<string> Errors { get; set; } = new List<string>();
-        public void AddMsg(string val)
-        {
-            Errors.Add(val);
-        }
-    }
-
 }

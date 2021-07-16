@@ -143,14 +143,16 @@ ArtQRCode.cs file background image
 https://github.com/codebude/QRCoder/pull/295
 https://github.com/codebude/QRCoder/tree/91839cfe9c445832a61a993893eccfab9e264ee8/QRCoder</value>
     <comment>/*just links to study the question reflection
+
  https://blog.rc21net.ru/рефлексия-отражение-reflection-в-c-sharp/
  https://johnlnelson.com/tag/assembly-gettypes/
  https://johnlnelson.com/2014/06/17/system-reflection-working-with-the-type-class/
  https://forum.unity.com/threads/c-reflection-refuses-to-give-me-private-fields.587506/
  https://docs.microsoft.com/en-us/dotnet/api/system.type.getfields?view=netframework-4.7.2
  https://metanit.com/sharp/tutorial/14.2.php
- https://www.nookery.ru/understand-with-reflection/
- https://www.thebestcsharpprogrammerintheworld.com/2017/01/29/using-linq-with-reflection-in-c/
+ https://www.nookery.ru/understand-with-reflection
+ https://metanit.com/sharp/tutorial/14.2.php
+ https://stackoverflow.com/questions/9314172/getting-all-messages-from-innerexceptionshttps://www.thebestcsharpprogrammerintheworld.com/2017/01/29/using-linq-with-reflection-in-c/
  https://question-it.com/questions/848396/preobrazovanie-fieldinfo-v-propertyinfo-ili-naoborot
  https://fooobar.com/questions/273903/how-to-get-both-fields-and-properties-in-single-call-via-reflection
  */</comment>
