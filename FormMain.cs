@@ -466,13 +466,66 @@ namespace QRCoderArt
         }
 
         /*-----------------------------------------------------------------------------------------------------------------------------------------*/
-        /// <summary>Gets the invoke ctor.</summary>
-        /// <param name="ctor">The constructor object.</param>
-        /// <param name="cntrlFromForm">The CNTRL from form.</param>
+        /// <summary>Gets the invoke member.</summary>
+        /// <param name="initСtor">The initialize сtor.</param>
+        /// <param name="ctor">The ctor.</param>
         /// <param name="payloadName">Name of the payload.</param>
         /// <param name="errorList">The error list.</param>
-        /// <returns>Invoke Constructor object.</returns>
-        public object GetInvokeCtor(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm, string payloadName, List<InvokeError> errorList)
+        /// <returns>System.String.</returns>
+        public string GetInvokeMember(object initСtor, ConstructorInfo ctor, string payloadName, List<InvokeError> errorList)
+        {
+            string payloadStr="";
+            if (ctor.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
+            {
+                try
+                {
+                    payloadStr = ctor.ReflectedType.GetMethod("ToString").Invoke(initСtor, new object[] { }).ToString();
+                }
+                catch (Exception e)
+                {
+                    InvokeError err = new InvokeError();
+                    err.ConstructorName = payloadName;
+                    do
+                    {
+                        if (e.HResult != -2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
+                            err.AddMsg(e.Message);
+                        e = e.InnerException;
+                    }
+                    while (e != null);
+
+                    errorList.Add(err);
+                }
+            }
+            else 
+            {
+                try
+                {
+                    payloadStr = ctor.ReflectedType.GetMethod("ToString").Invoke(initСtor, null).ToString();
+                }
+                catch (Exception e)
+                {
+                InvokeError err = new InvokeError();
+                err.ConstructorName = payloadName;
+                do
+                {
+                    if (e.HResult != -2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
+                        err.AddMsg(e.Message);
+                    e = e.InnerException;
+                }
+                while (e != null);
+
+                errorList.Add(err);
+            }
+        }
+            return payloadStr;
+        }
+            /// <summary>Gets the invoke ctor.</summary>
+            /// <param name="ctor">The constructor object.</param>
+            /// <param name="cntrlFromForm">The CNTRL from form.</param>
+            /// <param name="payloadName">Name of the payload.</param>
+            /// <param name="errorList">The error list.</param>
+            /// <returns>Invoke Constructor object.</returns>
+            public object GetInvokeCtor(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm, string payloadName, List<InvokeError> errorList)
         {
             object ctorObj = null;
 
@@ -503,9 +556,6 @@ namespace QRCoderArt
 
                     errorList.Add(err);
                 }
-                finally
-                {
-                }
             }
             else
             {
@@ -524,7 +574,7 @@ namespace QRCoderArt
                     {
                         InvokeError err = new InvokeError();
                         err.ConstructorName = payloadName;
-                        err.AddMsg("Not all class constructors are initialized");
+                        err.AddMsg("&#128711;&nbsp;Not all class constructors are initialized");
                         errorList.Add(err);
                     }
                     else 
@@ -546,9 +596,6 @@ namespace QRCoderArt
                             while (e != null);
 
                             errorList.Add(err);
-                        }
-                        finally
-                        {
                         }
                     }
                 }
@@ -649,9 +696,17 @@ namespace QRCoderArt
                 Control[] cmb = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is ComboBox);
                 ConstructorInfo ctrm = (ConstructorInfo)((System.Collections.Generic.KeyValuePair<string, object>)((ComboBox)cmb[0]).SelectedItem).Value;
                 object ctorObj = GetInvokeCtor(ctrm, ParamFromControl, cmb[0].Name, errorList);
+                //выполнить главный метод
+                string payloadStr = GetInvokeMember(ctorObj, ctrm, cmb[0].Name, errorList);
                 if (ctorObj != null && errorList.Count()==0) 
                 {
-                    QRCodeString.Text = ctrm.ReflectedType.GetMethod("ToString").Invoke(ctorObj, null).ToString();
+                    if (ctrm.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
+                    {
+                        QRCodeString.Text = ctrm.ReflectedType.GetMethod("ToString").Invoke(ctorObj, new object[] { }).ToString();
+                    }
+                    else
+                        QRCodeString.Text = ctrm.ReflectedType.GetMethod("ToString").Invoke(ctorObj, null).ToString();
+
                     QRCodeError.Visible = false;
                     QRCodeString.Visible = true;
                 }
