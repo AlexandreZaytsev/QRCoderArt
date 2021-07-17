@@ -512,7 +512,7 @@ namespace QRCoderArt
 
                     try
                     {
-                        var tObject= ctor.Invoke(propFromForm) as Object;
+//                        var tObject= ctor.Invoke(propFromForm) as Object;
                         ctorObj = ctor.Invoke(propFromForm);
                     }
                     catch (Exception e)
@@ -590,6 +590,7 @@ namespace QRCoderArt
                                     break;
                                 case "Dictionary`2":
                                     if (cntrl.Parent.Name == "ShadowSocksConfig" && cntrl.Name == "parameters")
+                                    //get param pairs
                                     {
                                         ret = ((DataGridView)cntrl).DataSource;
                                     }
