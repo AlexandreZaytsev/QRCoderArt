@@ -246,6 +246,7 @@ namespace QRCoderArt
                 guiTree.Add(Node);
                 nodeNestingLevel++;
 
+                //!!! recursion
                 GetParamsConstuctor((ConstructorInfo)Node.fList.Values.First(), guiTree, nodeNestingLevel, Node.fName);   //!!! attention - recursion
                 /*
                 foreach (var ctor in mParam.fList.Values)
@@ -282,18 +283,25 @@ namespace QRCoderArt
                         Node.fNull = true;
                         switch (Node.fType)
                         {
+                            case "String":
+                            case "Double":
+                            case "Single":
+                            case "Int32":
+                            case "Decimal":
+                                Node.fForm = "TextBox";
+                                break;
                             case "DateTime":
                                 Node.fForm = "DateTime";
                                 break;
                             default:
-  //                              if (nodeType.IsGenericType)
-  //                              {
-  //                                  Node.fForm = "ComboBox";
- //                                   Node.fList = nodeType.GenericTypeArguments[0].GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
-   //                             }
+                                if (nodeType.GenericTypeArguments.First().IsEnum)
+                                {
+                                    Node.fForm = "ComboBox";
+                                    Node.fList = nodeType.GenericTypeArguments[0].GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
+                                }
    //                             else 
    //                             {
-                                    Node.fForm = "TextBox";
+//                                    Node.fForm = "TextBox";
    //                             }
                                 break;
                         }

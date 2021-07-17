@@ -341,6 +341,20 @@ namespace QRCoderArt
                             cmb.Size = new Size(controlWidth, 20);
                             cmb.Margin = padding;
                             panels.Peek().Controls.Add(cmb);
+                            if (prop.fNull)
+                            {
+                                CheckBox chcmb = new CheckBox
+                                {
+                                    Size = new Size(13, 20),
+                                    Margin = padding,
+                                    Name = "" + prop.fName,
+                                    AccessibleDescription = "Nullable"                          //type in tooltype
+                                };
+                                chcmb.MouseHover += new System.EventHandler(ToolTipMouseHover);
+                                chcmb.CheckedChanged += (sender, e) => cmb.Enabled = (chcmb.CheckState == CheckState.Checked);// GeyPayLoadStringFromForm(null, null);
+                                panels.Peek().Controls.Add(chcmb);
+                                cmb.Enabled = false;// chdtp.Checked;
+                            }
                         }
                         //                      cmb.EndUpdate();
                         break;
