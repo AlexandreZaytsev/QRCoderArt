@@ -511,39 +511,45 @@ namespace QRCoderArt
             {
                 if (cntrlFromForm.Count != 0)
                 {
-                    //                    object[] propFromForm = cntrlFromForm.Cast<object>().ToArray();
                     object[] propFromForm = cntrlFromForm.Select(z => z.Value).ToArray();
-
-                    /*
-                    var jObject = stuff["symbol"] as JObject;
-                    И проверять этот объект на null:
-                        if (jObject)
+                    Boolean check = false;
+                    //if parameter is a constructor - check that it is not zero
+                    for (int i= 0; i < propFromForm.Count(); i++) 
                     {
-                        return; //Выход из метода или обработка ошибки
+                        Type item = ctor.GetParameters()[i].ParameterType;
+                        if ((item.IsClass && item.Namespace != "System" && !item.IsGenericType) && propFromForm[i]==null) 
+                            check = check | true;
                     }
-                    */
-
-                    try
-                    {
-//                        var tObject= ctor.Invoke(propFromForm) as Object;
-                        ctorObj = ctor.Invoke(propFromForm);
-                    }
-                    catch (Exception e)
+                    if (check) 
                     {
                         InvokeError err = new InvokeError();
                         err.ConstructorName = payloadName;
-                        do
-                        {
-                            if (e.HResult != - 2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
-                                err.AddMsg(e.Message);
-                            e = e.InnerException;
-                        }
-                        while (e != null);
-
+                        err.AddMsg("Not all class constructors are initialized");
                         errorList.Add(err);
                     }
-                    finally
+                    else 
                     {
+                        try
+                        {
+                            ctorObj = ctor.Invoke(propFromForm);
+                        }
+                        catch (Exception e)
+                        {
+                            InvokeError err = new InvokeError();
+                            err.ConstructorName = payloadName;
+                            do
+                            {
+                                if (e.HResult != -2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
+                                    err.AddMsg(e.Message);
+                                e = e.InnerException;
+                            }
+                            while (e != null);
+
+                            errorList.Add(err);
+                        }
+                        finally
+                        {
+                        }
                     }
                 }
             }
