@@ -315,6 +315,8 @@ namespace QRCoderArt
                         if (nodeType.IsEnum)
                         {
                             Node.fForm = "ComboBox";
+                         var tt  = (from t in nodeType.GetFields(BindingFlags.Static | BindingFlags.Public) 
+                                     where !t.IsDefined(typeof(ObsoleteAttribute), true) select t).ToDictionary(k => k.Name, v => v);
                             Node.fList = nodeType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
                         }
                         else if (nodeType.IsGenericType)
