@@ -1,4 +1,4 @@
-// ***********************************************************************
+п»ї// ***********************************************************************
 // Assembly         : QRCoderArt
 // Author           : zaytsev
 // Created          : 07-14-2021
@@ -7,7 +7,7 @@
 // Last Modified On : 07-14-2021
 // ***********************************************************************
 // <copyright file="FormMain.cs" company="">
-//     MIT ©  2021
+//     MIT В©  2021
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
@@ -28,7 +28,7 @@ namespace QRCoderArt
 
     /// <summary>
     /// Class FormMain.
-    /// Форма использующая динамический интерфейс на плавающих панелях для работы с payload на базе GUITree 
+    /// Р¤РѕСЂРјР° РёСЃРїРѕР»СЊР·СѓСЋС‰Р°СЏ РґРёРЅР°РјРёС‡РµСЃРєРёР№ РёРЅС‚РµСЂС„РµР№СЃ РЅР° РїР»Р°РІР°СЋС‰РёС… РїР°РЅРµР»СЏС… РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ payload РЅР° Р±Р°Р·Рµ GUITree 
     /// Implements the <see cref="System.Windows.Forms.Form" />
     /// </summary>
     /// <seealso cref="System.Windows.Forms.Form" />
@@ -36,7 +36,7 @@ namespace QRCoderArt
     {
         /// <summary>
         /// readyState
-        /// структура для фиксации ошибки (при пересоздании CTRL из GUITree) при первом запуске функции payload
+        /// СЃС‚СЂСѓРєС‚СѓСЂР° РґР»СЏ С„РёРєСЃР°С†РёРё РѕС€РёР±РєРё (РїСЂРё РїРµСЂРµСЃРѕР·РґР°РЅРёРё CTRL РёР· GUITree) РїСЂРё РїРµСЂРІРѕРј Р·Р°РїСѓСЃРєРµ С„СѓРЅРєС†РёРё payload
         /// </summary>
         private readonly bool[] readyState = {false,                 //Data preparation completed
                                                 false,                 //MainForm is Load
@@ -59,7 +59,7 @@ namespace QRCoderArt
                                                where ((System.Type)t).IsAbstract
                                                select t.Name).First();
                 */
-                string baseName = "Payload";                                        //проще сразу указать имя
+                string baseName = "Payload";                                        //РїСЂРѕС‰Рµ СЃСЂР°Р·Сѓ СѓРєР°Р·Р°С‚СЊ РёРјСЏ
                 this.cbPayload.DataSource = qqRef.GetMembersClassName(baseName);    //get list names classes members QRCoder.PayloadGenerator
             }
 
@@ -68,11 +68,24 @@ namespace QRCoderArt
             this.QRCodeString.Dock = DockStyle.Fill;
             this.QRCodeError.Dock = DockStyle.Fill;
             this.QRCodeString.Visible = true;
+
+            /*//-test--------
+            PayloadGenerator.SwissQrCode.Contact contactGeneral = new PayloadGenerator.SwissQrCode.Contact("John Doe", "3003", "Bern", "CH", "ParlamentsgebГ¤ude", "1");
+//            PayloadGenerator.SwissQrCode.Iban iban = new PayloadGenerator.SwissQrCode.Iban("CH2609000000857666015", PayloadGenerator.SwissQrCode.Iban.IbanType.QrIban);
+            PayloadGenerator.SwissQrCode.Reference reference = new PayloadGenerator.SwissQrCode.Reference(PayloadGenerator.SwissQrCode.Reference.ReferenceType.QRR, "990005000000000320071012303", PayloadGenerator.SwissQrCode.Reference.ReferenceTextType.QrReference);
+  //          PayloadGenerator.SwissQrCode.Reference reference = new PayloadGenerator.SwissQrCode.Reference(PayloadGenerator.SwissQrCode.Reference.ReferenceType.QRR, "1", PayloadGenerator.SwissQrCode.Reference.ReferenceTextType.QrReference);
+            PayloadGenerator.SwissQrCode.AdditionalInformation additionalInformation = new PayloadGenerator.SwissQrCode.AdditionalInformation("This is my unstructured message.", "Some bill information here...");
+            PayloadGenerator.SwissQrCode.Currency currency = PayloadGenerator.SwissQrCode.Currency.CHF;
+            decimal amount = 100.25m;
+
+ //           PayloadGenerator.SwissQrCode generator = new PayloadGenerator.SwissQrCode(iban, currency, contactGeneral, additionalInformation, reference, null, amount, null, null);
+ //           string payload = generator.ToString();
+ */
         }
 
         /// <summary>
         /// Handles the Load event of the FormMain control.
-        /// устанавливает флаг readyState[1] для первого корректного вызова payload
+        /// СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ С„Р»Р°Рі readyState[1] РґР»СЏ РїРµСЂРІРѕРіРѕ РєРѕСЂСЂРµРєС‚РЅРѕРіРѕ РІС‹Р·РѕРІР° payload
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
@@ -85,7 +98,7 @@ namespace QRCoderArt
 
         /// <summary>
         /// Handles the Shown event of the FormMain control.
-        /// устанавливает флаг readyState[2] для первого корректного вызова payload
+        /// СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ С„Р»Р°Рі readyState[2] РґР»СЏ РїРµСЂРІРѕРіРѕ РєРѕСЂСЂРµРєС‚РЅРѕРіРѕ РІС‹Р·РѕРІР° payload
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
@@ -99,9 +112,9 @@ namespace QRCoderArt
          ------------------------------------------------------------------------------------------------------------------------------------------------*/
         /// <summary>
         /// ClearGUITreePanel
-        /// очистить все CTRL из плавающей панели payload
+        /// РѕС‡РёСЃС‚РёС‚СЊ РІСЃРµ CTRL РёР· РїР»Р°РІР°СЋС‰РµР№ РїР°РЅРµР»Рё payload
         /// </summary>
-        /// <param name="panelGUITree">плавающая панель CTRL из GUITree</param>
+        /// <param name="panelGUITree">РїР»Р°РІР°СЋС‰Р°СЏ РїР°РЅРµР»СЊ CTRL РёР· GUITree</param>
         private void ClearGUITreePanel(Control panelGUITree)
         {
             if (panelGUITree.HasChildren)
@@ -118,10 +131,10 @@ namespace QRCoderArt
 
         /// <summary>
         /// CreateControlPlayloadPanel
-        /// создать CTRL panel из GUITree
+        /// СЃРѕР·РґР°С‚СЊ CTRL panel РёР· GUITree
         /// </summary>
         /// <param name="sourceGUITree">GUITree</param>
-        /// <param name="panelGUITree">плавающая панель CTRL из GUITree</param>
+        /// <param name="panelGUITree">РїР»Р°РІР°СЋС‰Р°СЏ РїР°РЅРµР»СЊ CTRL РёР· GUITree</param>
         private void CreateGUITreePanel(IList sourceGUITree, Control panelGUITree)
         {
             int labelWidth = 135;// 122;// 135;
@@ -307,9 +320,9 @@ namespace QRCoderArt
                             Name = "" + prop.fName,
                             AccessibleName = "Get",
                             //cmb.AccessibleDescription = prop.fType;
-                            DataSource = new BindingSource(prop.fList, null),   //получить конструкторы member
-                            DisplayMember = "Key",                                            //Имя    
-                            ValueMember = "Value",                                            //значение  
+                            DataSource = new BindingSource(prop.fList, null),   //РїРѕР»СѓС‡РёС‚СЊ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ member
+                            DisplayMember = "Key",                                            //РРјСЏ    
+                            ValueMember = "Value",                                            //Р·РЅР°С‡РµРЅРёРµ  
                             SelectedItem = 0,
                             DropDownStyle = ComboBoxStyle.DropDownList
                         };
@@ -369,7 +382,7 @@ namespace QRCoderArt
 
         /// <summary>
         /// ToolTipMouseHover
-        /// отобразить всплывающую подсказку из AccessibleDescription
+        /// РѕС‚РѕР±СЂР°Р·РёС‚СЊ РІСЃРїР»С‹РІР°СЋС‰СѓСЋ РїРѕРґСЃРєР°Р·РєСѓ РёР· AccessibleDescription
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
@@ -381,7 +394,7 @@ namespace QRCoderArt
 
         /// <summary>
         /// FilterOnlyReal
-        /// проверка ввода на числа с плавающей точкой (контролируя системный разделитель)
+        /// РїСЂРѕРІРµСЂРєР° РІРІРѕРґР° РЅР° С‡РёСЃР»Р° СЃ РїР»Р°РІР°СЋС‰РµР№ С‚РѕС‡РєРѕР№ (РєРѕРЅС‚СЂРѕР»РёСЂСѓСЏ СЃРёСЃС‚РµРјРЅС‹Р№ СЂР°Р·РґРµР»РёС‚РµР»СЊ)
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="KeyPressEventArgs" /> instance containing the event data.</param>
@@ -399,7 +412,7 @@ namespace QRCoderArt
 
         /// <summary>
         /// SetPropretyPairs
-        /// передать через асинхронное сообщение (callback) пары параметров ключ-значение во внешнюю форму на редактирование
+        /// РїРµСЂРµРґР°С‚СЊ С‡РµСЂРµР· Р°СЃРёРЅС…СЂРѕРЅРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ (callback) РїР°СЂС‹ РїР°СЂР°РјРµС‚СЂРѕРІ РєР»СЋС‡-Р·РЅР°С‡РµРЅРёРµ РІРѕ РІРЅРµС€РЅСЋСЋ С„РѕСЂРјСѓ РЅР° СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
@@ -418,7 +431,7 @@ namespace QRCoderArt
 
         /// <summary>
         /// RebuildingGUITreePanel
-        /// обновить GUITree панель или ее фрагмент GUITreeNodes
+        /// РѕР±РЅРѕРІРёС‚СЊ GUITree РїР°РЅРµР»СЊ РёР»Рё РµРµ С„СЂР°РіРјРµРЅС‚ GUITreeNodes
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
@@ -466,7 +479,7 @@ namespace QRCoderArt
             if (ctor.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
             {
                 ctorObj = ctor.Invoke(new object[] { });
-                //сопоставить параметры по имени
+                //СЃРѕРїРѕСЃС‚Р°РІРёС‚СЊ РїР°СЂР°РјРµС‚СЂС‹ РїРѕ РёРјРµРЅРё
                 foreach (KeyValuePair<string, object> entry in cntrlFromForm)
                 {
                     ctorObj.GetType().GetProperty(entry.Key).SetValue(ctorObj, entry.Value);
@@ -482,7 +495,7 @@ namespace QRCoderArt
                     err.ConstructorName = payloadName;
                     do
                     {
-                        if (e.HResult != -2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
+                        if (e.HResult != -2146232828)  //"РђРґСЂРµСЃР°С‚ РІС‹Р·РѕРІР° СЃРѕР·РґР°Р» РёСЃРєР»СЋС‡РµРЅРёРµ."}	System.Exception {System.Reflection.TargetInvocationException}
                             err.AddMsg(e.Message);
                         e = e.InnerException;
                     }
@@ -503,10 +516,10 @@ namespace QRCoderArt
 
                     /*
                     var jObject = stuff["symbol"] as JObject;
-                    И проверять этот объект на null:
+                    Р РїСЂРѕРІРµСЂСЏС‚СЊ СЌС‚РѕС‚ РѕР±СЉРµРєС‚ РЅР° null:
                         if (jObject)
                     {
-                        return; //Выход из метода или обработка ошибки
+                        return; //Р’С‹С…РѕРґ РёР· РјРµС‚РѕРґР° РёР»Рё РѕР±СЂР°Р±РѕС‚РєР° РѕС€РёР±РєРё
                     }
                     */
 
@@ -521,7 +534,7 @@ namespace QRCoderArt
                         err.ConstructorName = payloadName;
                         do
                         {
-                            if (e.HResult != - 2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
+                            if (e.HResult != - 2146232828)  //"РђРґСЂРµСЃР°С‚ РІС‹Р·РѕРІР° СЃРѕР·РґР°Р» РёСЃРєР»СЋС‡РµРЅРёРµ."}	System.Exception {System.Reflection.TargetInvocationException}
                                 err.AddMsg(e.Message);
                             e = e.InnerException;
                         }
@@ -539,8 +552,8 @@ namespace QRCoderArt
 
         /// <summary>
         /// ReadGUITreePanel
-        /// прочитать текущие значения CTRL панели GUITree и 
-        /// собрать массив параметров для инициализации конструктора
+        /// РїСЂРѕС‡РёС‚Р°С‚СЊ С‚РµРєСѓС‰РёРµ Р·РЅР°С‡РµРЅРёСЏ CTRL РїР°РЅРµР»Рё GUITree Рё 
+        /// СЃРѕР±СЂР°С‚СЊ РјР°СЃСЃРёРІ РїР°СЂР°РјРµС‚СЂРѕРІ РґР»СЏ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР°
         /// </summary>
         /// <param name="panelGUITree">The panel.</param>
         /// <param name="errorList">error List</param>
@@ -610,7 +623,7 @@ namespace QRCoderArt
 
         /// <summary>
         /// GetPayloadStringFromGUITreePanel
-        /// прочитать параметры панели GUITree и вызвать базовый метод payload ((invoke ToString() execute))
+        /// РїСЂРѕС‡РёС‚Р°С‚СЊ РїР°СЂР°РјРµС‚СЂС‹ РїР°РЅРµР»Рё GUITree Рё РІС‹Р·РІР°С‚СЊ Р±Р°Р·РѕРІС‹Р№ РјРµС‚РѕРґ payload ((invoke ToString() execute))
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
@@ -623,10 +636,10 @@ namespace QRCoderArt
                 Dictionary<string, object> ParamFromControl = null;
 
                 Control[] panel = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is FlowLayoutPanel);
-                //собрать массив параметров для инициализации конструктора
+                //СЃРѕР±СЂР°С‚СЊ РјР°СЃСЃРёРІ РїР°СЂР°РјРµС‚СЂРѕРІ РґР»СЏ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР°
                 ParamFromControl = GetParamFromGUITreePanel((FlowLayoutPanel)panel[0], errorList);
 
-                //инициализировать конструктор payload
+                //РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ payload
                 Control[] cmb = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is ComboBox);
                 ConstructorInfo ctrm = (ConstructorInfo)((System.Collections.Generic.KeyValuePair<string, object>)((ComboBox)cmb[0]).SelectedItem).Value;
                 object ctorObj = GetInvokeCtor(ctrm, ParamFromControl, cmb[0].Name, errorList);
@@ -677,7 +690,7 @@ namespace QRCoderArt
 
         /// <summary>
         /// Setting_Changed
-        /// общеия обработчик события изменения параметров панели GUITree 
+        /// РѕР±С‰РµРёСЏ РѕР±СЂР°Р±РѕС‚С‡РёРє СЃРѕР±С‹С‚РёСЏ РёР·РјРµРЅРµРЅРёСЏ РїР°СЂР°РјРµС‚СЂРѕРІ РїР°РЅРµР»Рё GUITree 
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
@@ -688,7 +701,7 @@ namespace QRCoderArt
 
         /// <summary>
         /// RenderQrCode
-        /// создать картинку QR кода
+        /// СЃРѕР·РґР°С‚СЊ РєР°СЂС‚РёРЅРєСѓ QR РєРѕРґР°
         /// </summary>
         private void RenderQrCode()
         {
@@ -942,15 +955,15 @@ namespace QRCoderArt
         }
 
         /*--------------------------------------------------------------------------------------------  
-            CALLBACK InPut (подписка на внешние сообщения)
+            CALLBACK InPut (РїРѕРґРїРёСЃРєР° РЅР° РІРЅРµС€РЅРёРµ СЃРѕРѕР±С‰РµРЅРёСЏ)
         --------------------------------------------------------------------------------------------*/
         /// <summary>
         /// Callbacks the reload.
-        /// входящее асинхронное сообщение для подписанных слушателей с передачей текущих параметров
+        /// РІС…РѕРґСЏС‰РµРµ Р°СЃРёРЅС…СЂРѕРЅРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РґР»СЏ РїРѕРґРїРёСЃР°РЅРЅС‹С… СЃР»СѓС€Р°С‚РµР»РµР№ СЃ РїРµСЂРµРґР°С‡РµР№ С‚РµРєСѓС‰РёС… РїР°СЂР°РјРµС‚СЂРѕРІ
         /// </summary>
-        /// <param name="controlName">имя CTRL</param>
-        /// <param name="controlParentName">имя родителя CNTRL</param>
-        /// <param name="param">параметры ключ-значение.</param>
+        /// <param name="controlName">РёРјСЏ CTRL</param>
+        /// <param name="controlParentName">РёРјСЏ СЂРѕРґРёС‚РµР»СЏ CNTRL</param>
+        /// <param name="param">РїР°СЂР°РјРµС‚СЂС‹ РєР»СЋС‡-Р·РЅР°С‡РµРЅРёРµ.</param>
         private void CallbackReload(string controlName, string controlParentName, Dictionary<String, String> param)
         {
             if (param.Count() != 0)
@@ -962,21 +975,21 @@ namespace QRCoderArt
     }
 
     /*--------------------------------------------------------------------------------------------  
-        CALLBACK OutPut (собственные сообщения)
+        CALLBACK OutPut (СЃРѕР±СЃС‚РІРµРЅРЅС‹Рµ СЃРѕРѕР±С‰РµРЅРёСЏ)
     --------------------------------------------------------------------------------------------*/
     //general notification
     /// <summary>
     /// CallBack_GetParam
-    /// исходящее асинхронное сообщение для подписанных слушателей с передачей текущих параметров 
+    /// РёСЃС…РѕРґСЏС‰РµРµ Р°СЃРёРЅС…СЂРѕРЅРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РґР»СЏ РїРѕРґРїРёСЃР°РЅРЅС‹С… СЃР»СѓС€Р°С‚РµР»РµР№ СЃ РїРµСЂРµРґР°С‡РµР№ С‚РµРєСѓС‰РёС… РїР°СЂР°РјРµС‚СЂРѕРІ 
     /// </summary>
     public static class CallBack_GetParam
     {
         /// <summary>
         /// Delegate callbackEvent
         /// </summary>
-        /// <param name="controlName">имя CTRL</param>
-        /// <param name="controlParentName">имя родителя CNTRL</param>
-        /// <param name="parameterPairs">параметры ключ-значение</param>
+        /// <param name="controlName">РёРјСЏ CTRL</param>
+        /// <param name="controlParentName">РёРјСЏ СЂРѕРґРёС‚РµР»СЏ CNTRL</param>
+        /// <param name="parameterPairs">РїР°СЂР°РјРµС‚СЂС‹ РєР»СЋС‡-Р·РЅР°С‡РµРЅРёРµ</param>
         public delegate void callbackEvent(string controlName, string controlParentName, Dictionary<String, String> parameterPairs);
         /// <summary>
         /// The callback event handler
@@ -990,7 +1003,7 @@ namespace QRCoderArt
 
     /// <summary>
     /// Class ControlExtensions.
-    /// мега супер пуппер расширение по поиску CTRL - используется здесь везде!!!
+    /// РјРµРіР° СЃСѓРїРµСЂ РїСѓРїРїРµСЂ СЂР°СЃС€РёСЂРµРЅРёРµ РїРѕ РїРѕРёСЃРєСѓ CTRL - РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ Р·РґРµСЃСЊ РІРµР·РґРµ!!!
     /// </summary>
     static public class ControlExtensions
     {
@@ -1000,7 +1013,7 @@ namespace QRCoderArt
         /// </summary>
         /// <param name="start">The start.</param>
         /// <param name="isMatch">The is match.</param>
-        /// <returns>массив найденных CTRL Control[].</returns>
+        /// <returns>РјР°СЃСЃРёРІ РЅР°Р№РґРµРЅРЅС‹С… CTRL Control[].</returns>
         static public Control[] FilterControls(this Control start, Func<Control, bool> isMatch)
         {
             var matches = new List<Control>();
@@ -1040,11 +1053,11 @@ namespace QRCoderArt
 
         /// <summary>
         /// Gets the nestle level.
-        /// получить уровень вложенности по отношению к родителю
+        /// РїРѕР»СѓС‡РёС‚СЊ СѓСЂРѕРІРµРЅСЊ РІР»РѕР¶РµРЅРЅРѕСЃС‚Рё РїРѕ РѕС‚РЅРѕС€РµРЅРёСЋ Рє СЂРѕРґРёС‚РµР»СЋ
         /// </summary>
-        /// <param name="controlName">имя CTRL</param>
-        /// <param name="parentName">имя CTRL родителя</param>
-        /// <returns>глубина System.Int32.</returns>
+        /// <param name="controlName">РёРјСЏ CTRL</param>
+        /// <param name="parentName">РёРјСЏ CTRL СЂРѕРґРёС‚РµР»СЏ</param>
+        /// <returns>РіР»СѓР±РёРЅР° System.Int32.</returns>
         public static int GetNestleLevel(this Control controlName, string parentName)
         {
             int l = 1;
