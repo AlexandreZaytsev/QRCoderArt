@@ -137,6 +137,7 @@ namespace QRCoderArt
         public Dictionary<string, object> GetConstructors(Type param)
         {
             return (from ctor in param.GetConstructors()
+            //        where !ctor.IsDefined(typeof(ObsoleteAttribute), true)
                     select new
                     {
                         name = ctor.GetParameters().Count() == 0 ? "the constructor is not used here" : string.Join(", ", ctor.GetParameters().Select(pr => pr.Name)),
@@ -173,11 +174,17 @@ namespace QRCoderArt
 
             //constrictor with parameters = there is 'constructor'
             IEnumerable queryParam = from t in ctor.GetParameters()
-                                     where !t.IsDefined(typeof(ObsoleteAttribute), true)
+//                                     where !t.IsDefined(typeof(ObsoleteAttribute), true)
                                      select GetGUITreeNode(t.Name, t.ParameterType, t.DefaultValue, Params, nestingLevel, parentName);
 
+            //constrictor with parameters = there is 'constructor'
+            IEnumerable queryField = from t in ctor.DeclaringType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
+                                     where !t.IsDefined(typeof(ObsoleteAttribute), true)
+                                     select GetGUITreeNode(t.Name, t.FieldType, null, Params, nestingLevel, parentName);
             //Deferred Execution
             foreach (object Param in ctor.GetParameters().Length == 0 ? queryProp : queryParam) {}  //run function from query
+//            foreach (object Param in ctor.GetParameters().Length == 0 ? queryProp : queryField) { }  //run function from query
+//            foreach (object Param in queryProp) { }  //run function from query
         }
 
         /**********************************************************************************************************
