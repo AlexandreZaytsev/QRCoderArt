@@ -297,12 +297,16 @@ namespace QRCoderArt
                                 if (nodeType.GenericTypeArguments.First().IsEnum)
                                 {
                                     Node.fForm = "ComboBox";
-                                    Node.fList = nodeType.GenericTypeArguments[0].GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
+                                    //Node.fList = nodeType.GenericTypeArguments[0].GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
+                                    Node.fList = (from t in nodeType.GetFields(BindingFlags.Static | BindingFlags.Public)
+                                                 where !t.IsDefined(typeof(ObsoleteAttribute), true)
+                                                select new { v = t.Name, k = t.GetValue(new object()) }).ToDictionary(k => k.v, v => v.k);
+
                                 }
-   //                             else 
-   //                             {
-//                                    Node.fForm = "TextBox";
-   //                             }
+                                //                             else 
+                                //                             {
+                                //                                    Node.fForm = "TextBox";
+                                //                             }
                                 break;
                         }
                         break;
@@ -315,9 +319,10 @@ namespace QRCoderArt
                         if (nodeType.IsEnum)
                         {
                             Node.fForm = "ComboBox";
-                         var tt  = (from t in nodeType.GetFields(BindingFlags.Static | BindingFlags.Public) 
-                                     where !t.IsDefined(typeof(ObsoleteAttribute), true) select t).ToDictionary(k => k.Name, v => v);
-                            Node.fList = nodeType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
+//                            Node.fList = nodeType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
+                            Node.fList = (from t in nodeType.GetFields(BindingFlags.Static | BindingFlags.Public) 
+                                         where !t.IsDefined(typeof(ObsoleteAttribute), true) 
+                                        select new { v = t.Name, k = t.GetValue(new object())}).ToDictionary(k => k.v, v => v.k);
                         }
                         else if (nodeType.IsGenericType)
                         {
