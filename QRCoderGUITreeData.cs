@@ -539,7 +539,7 @@ namespace QRCoderArt
                              "  }" +
                              "</style>" +
                              "<body>" +// bgcolor='#FFEFD5'>" +
-                             "<span class='descr'>&#128270;&nbsp;" + "Create " + payloadName + " payload string error(s)" + "</span>" +
+                             "<span class='descr'>&#128270;&nbsp;" + "Create " + payloadName + " payload string ERROR(s)" + "</span>" +
                              "<hr><table><tbody>";
 
             foreach (var err in errorList)
