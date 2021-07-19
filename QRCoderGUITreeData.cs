@@ -157,13 +157,14 @@ namespace QRCoderArt
 */
         }
 
-        /*
-                //get enum dictionary
-                private IDictionary<string, object> GetItemEnum(ParameterInfo param)
-                {
-                    return param.ParameterType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v); ;
-                }
-        */
+        //get enum dictionary
+         private IDictionary<string, object> GetParamEnum(Type param)
+         {
+//            return param.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
+            return (from t in param.GetFields(BindingFlags.Static | BindingFlags.Public)
+                          where !t.IsDefined(typeof(ObsoleteAttribute), true)
+                          select new { v = t.Name, k = t.GetValue(new object()) }).ToDictionary(k => k.v, v => v.k);
+        }
 
         /// <summary>
         /// GetParamsConstuctor
@@ -309,10 +310,7 @@ namespace QRCoderArt
                                 if (nodeType.GenericTypeArguments.First().IsEnum)
                                 {
                                     Node.fForm = "ComboBox";
-                                    //Node.fList = nodeType.GenericTypeArguments[0].GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
-                                    Node.fList = (from t in nodeType.GetFields(BindingFlags.Static | BindingFlags.Public)
-                                                 where !t.IsDefined(typeof(ObsoleteAttribute), true)
-                                                select new { v = t.Name, k = t.GetValue(new object()) }).ToDictionary(k => k.v, v => v.k);
+                                    Node.fList = (Dictionary<string, object>)GetParamEnum(nodeType);
 
                                 }
                                 //                             else 
@@ -331,10 +329,7 @@ namespace QRCoderArt
                         if (nodeType.IsEnum)
                         {
                             Node.fForm = "ComboBox";
-//                            Node.fList = nodeType.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
-                            Node.fList = (from t in nodeType.GetFields(BindingFlags.Static | BindingFlags.Public) 
-                                         where !t.IsDefined(typeof(ObsoleteAttribute), true) 
-                                        select new { v = t.Name, k = t.GetValue(new object())}).ToDictionary(k => k.v, v => v.k);
+                            Node.fList = (Dictionary<string, object>)GetParamEnum(nodeType);
                         }
                         else if (nodeType.IsGenericType)
                         {
