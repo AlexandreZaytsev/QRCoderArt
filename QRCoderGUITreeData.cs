@@ -310,7 +310,7 @@ namespace QRCoderArt
                                 if (nodeType.GenericTypeArguments.First().IsEnum)
                                 {
                                     Node.fForm = "ComboBox";
-                                    Node.fList = (Dictionary<string, object>)GetParamEnum(nodeType);
+                                    Node.fList = (Dictionary<string, object>)GetParamEnum(nodeType.GenericTypeArguments.First());
 
                                 }
                                 //                             else 
