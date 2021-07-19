@@ -22,6 +22,10 @@ namespace QRCoderArt
     /// <summary>Class InvokeError.</summary>
     public class InvokeError
     {
+        public InvokeError(string name)
+        {
+            ConstructorName = name;
+        }
         /// <summary>Gets or sets the name of the constructor.</summary>
         /// <value>The name of the constructor.</value>
         public string ConstructorName { get; set; }
@@ -372,11 +376,10 @@ namespace QRCoderArt
                 }
                 catch (Exception e)
                 {
-                    InvokeError err = new InvokeError();
-                    err.ConstructorName = "Method. " + payloadName + ".ToString()";// payloadName;
+                    InvokeError err = new InvokeError("Method. " + payloadName + ".ToString()");
                     do
                     {
-                        if (e.HResult != -2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
+                        if (e.HResult != -2146232828)       //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
                             err.AddMsg(e.Message);
                         e = e.InnerException;
                     }
@@ -385,7 +388,7 @@ namespace QRCoderArt
                     errorList.Add(err);
                 }
             }
-            else
+            else                                            //constrictor with parameters = there is 'constructor'
             {
                 try
                 {
@@ -393,8 +396,7 @@ namespace QRCoderArt
                 }
                 catch (Exception e)
                 {
-                    InvokeError err = new InvokeError();
-                    err.ConstructorName = "Method. " + payloadName + ".ToString()";// payloadName;
+                    InvokeError err = new InvokeError("Method. " + payloadName + ".ToString()");
                     do
                     {
                         if (e.HResult != -2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
@@ -433,11 +435,10 @@ namespace QRCoderArt
                 }
                 catch (Exception e)
                 {
-                    InvokeError err = new InvokeError();
-                    err.ConstructorName = "Constructor. " + ctor.DeclaringType.Name;// payloadName;
+                    InvokeError err = new InvokeError("Constructor. " + ctor.DeclaringType.Name);
                     do
                     {
-                        if (e.HResult != -2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
+                        if (e.HResult != -2146232828)       //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
                             err.AddMsg(e.Message);
                         e = e.InnerException;
                     }
@@ -446,7 +447,7 @@ namespace QRCoderArt
                     errorList.Add(err);
                 }
             }
-            else
+            else                                            //constrictor with parameters = there is 'constructor'
             {
                 if (cntrlFromForm.Count != 0)
                 {
@@ -457,12 +458,11 @@ namespace QRCoderArt
                     {
                         Type item = ctor.GetParameters()[i].ParameterType;
                         if ((item.IsClass && item.Namespace != "System" && !item.IsGenericType) && propFromForm[i] == null)
-                            check = check | true;
+                            check |= true;
                     }
                     if (check)
                     {
-                        InvokeError err = new InvokeError();
-                        err.ConstructorName = "Constructor. " + ctor.DeclaringType.Name;// payloadName;
+                        InvokeError err = new InvokeError("Constructor. " + ctor.DeclaringType.Name);
                         err.AddMsg("Not all class constructors are initialized");
                         errorList.Add(err);
                     }
@@ -474,8 +474,7 @@ namespace QRCoderArt
                         }
                         catch (Exception e)
                         {
-                            InvokeError err = new InvokeError();
-                            err.ConstructorName = "Constructor. " + ctor.DeclaringType.Name;// payloadName;
+                            InvokeError err = new InvokeError("Constructor. " + ctor.DeclaringType.Name);
                             do
                             {
                                 if (e.HResult != -2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
