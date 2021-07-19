@@ -576,36 +576,8 @@ namespace QRCoderArt
                 }
                 else
                 {
-                    string strMsg;
                     QRCodeString.Visible = false;
-                    strMsg = "<style>" +
-                             "table {" +
-                             //  "border: 1px solid black; "+
-                             "width:100%;" +
-                             "border - collapse: collapse;}" +
-                             "th {" +
-                             "text-align: left; " +
-                        //     "font-size: 11pt; " +
-                             "font-weight:normal; "+
-                             "background-color: rgb(240, 240, 240);}" +
-                             "</style>" +
-                             "<body>" +// bgcolor='#FFEFD5'>" +
-                             "<strong>&#128270;&nbsp;" + "Create " + cmb[0].Name + " payload string error" + "</strong>" +
-                             "<hr><table><tbody>";
-
-                    foreach (var err in errorList)
-                    {
-                        strMsg += "<tr><th colspan='2'>" + err.ConstructorName + "</th></tr>";
-                        foreach (var msg in err.Errors)
-                        {
-                            strMsg += "<tr><td class='first'>&#10008;</td><td class='last'>" + msg + "</td></tr>";
-                        }
-                    }
-                    strMsg += "</tbody></table>";
-                    strMsg += "<hr>&#128736;&nbsp;<i><small>" + "try setting the parameters..." + "</small></i>" +
-                              "</body>";
-
-                    QRCodeError.DocumentText = strMsg;
+                    QRCodeError.DocumentText = new GUIInvoke().GetFormattedErrorDescription(cmb[0].Name, errorList);
                     QRCodeString.Visible = false;
                     QRCodeError.Visible = true;
                     pictureBoxQRCode.BackgroundImage = global::QRCoderArt.Properties.Resources.qr_no;

@@ -490,6 +490,37 @@ namespace QRCoderArt
             }
             return ctorObj;
         }
+
+        public string GetFormattedErrorDescription(string payloadName, List<InvokeError> errorList)
+        {
+            string  strMsg = "<style>" +
+                             "table {" +
+                             //  "border: 1px solid black; "+
+                             "width:100%;" +
+                             "border - collapse: collapse;}" +
+                             "th {" +
+                             "text-align: left; " +
+                             //     "font-size: 11pt; " +
+                             "font-weight:normal; " +
+                             "background-color: rgb(240, 240, 240);}" +
+                             "</style>" +
+                             "<body>" +// bgcolor='#FFEFD5'>" +
+                             "<strong>&#128270;&nbsp;" + "Create " + payloadName + " payload string error" + "</strong>" +
+                             "<hr><table><tbody>";
+
+            foreach (var err in errorList)
+            {
+                strMsg += "<tr><th colspan='2'>" + err.ConstructorName + "</th></tr>";
+                foreach (var msg in err.Errors)
+                {
+                    strMsg += "<tr><td class='first'>&#10008;</td><td class='last'>" + msg + "</td></tr>";
+                }
+            }
+            strMsg += "</tbody></table>";
+            strMsg += "<hr>&#128736;&nbsp;<i><small>" + "try setting the parameters..." + "</small></i>" +
+                      "</body>";
+            return strMsg;
+        }
     }
 }
 
