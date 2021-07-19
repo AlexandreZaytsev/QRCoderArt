@@ -58,9 +58,9 @@ current state 07.07.2021 ([+] ok; [ ] trying to implement)
   - (ContactOutputType outputType, string firstname, string lastname, string nickname = null, string phone = null, string mobilePhone = null, string workPhone = null, string email = null, DateTime? birthday = null, string website = null, string street = null, string houseNumber = null, string city = null, string zipCode = null, string country = null, string note = null, string stateRegion = null, AddressOrder addressOrder = AddressOrder.Default, string org = null)
 - [x] BitcoinLikeCryptoCurrencyAddress
   - (BitcoinLikeCryptoCurrencyType currencyType, string address, double? amount, string label = null, string message = null)
-- [ ] SwissQrCode 
+- [x] SwissQrCode 
   - (Iban iban, Currency currency, Contact creditor, Reference reference, AdditionalInformation additionalInformation = null, Contact debitor = null, decimal? amount = null, DateTime? requestedDateOfPayment = null, Contact ultimateCreditor = null, string alternativeProcedure1 = null, string alternativeProcedure2 = null)  
-***still in operation (several nested classes)***
+***it is necessary to set the values of the payload parameters (see the html error message window)***
 - [x] Girocode
   - (string iban, string bic, string name, decimal amount, string remittanceInformation = "", TypeOfRemittance typeOfRemittance = TypeOfRemittance.Unstructured, string purposeOfCreditTransfer = "", string messageToGirocodeUser = "", GirocodeVersion version = GirocodeVersion.Version1, GirocodeEncoding encoding = GirocodeEncoding.ISO_8859_1)   
   ***it is necessary to set the values of the payload parameters (see the html error message window)***
