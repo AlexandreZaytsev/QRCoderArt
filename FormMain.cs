@@ -466,142 +466,6 @@ namespace QRCoderArt
         }
 
         /*-----------------------------------------------------------------------------------------------------------------------------------------*/
-        /// <summary>Gets the invoke member.</summary>
-        /// <param name="initСtor">The initialize сtor.</param>
-        /// <param name="ctor">The ctor.</param>
-        /// <param name="payloadName">Name of the payload.</param>
-        /// <param name="errorList">The error list.</param>
-        /// <returns>System.String.</returns>
-        public string GetInvokeMember(object initСtor, ConstructorInfo ctor, string payloadName, List<InvokeError> errorList)
-        {
-            string payloadStr="";
-            if (ctor.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
-            {
-                try
-                {
-                    payloadStr = ctor.ReflectedType.GetMethod("ToString").Invoke(initСtor, new object[] { }).ToString();
-                }
-                catch (Exception e)
-                {
-                    InvokeError err = new InvokeError();
-                    err.ConstructorName = "Method. " + payloadName + ".ToString()";// payloadName;
-                    do
-                    {
-                        if (e.HResult != -2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
-                            err.AddMsg(e.Message);
-                        e = e.InnerException;
-                    }
-                    while (e != null);
-
-                    errorList.Add(err);
-                }
-            }
-            else 
-            {
-                try
-                {
-                    payloadStr = ctor.ReflectedType.GetMethod("ToString").Invoke(initСtor, null).ToString();
-                }
-                catch (Exception e)
-                {
-                InvokeError err = new InvokeError();
-                err.ConstructorName = "Method. " + payloadName + ".ToString()";// payloadName;
-                    do
-                {
-                    if (e.HResult != -2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
-                        err.AddMsg(e.Message);
-                    e = e.InnerException;
-                }
-                while (e != null);
-
-                errorList.Add(err);
-            }
-        }
-            return payloadStr;
-        }
-            /// <summary>Gets the invoke ctor.</summary>
-            /// <param name="ctor">The constructor object.</param>
-            /// <param name="cntrlFromForm">The CNTRL from form.</param>
-            /// <param name="payloadName">Name of the payload.</param>
-            /// <param name="errorList">The error list.</param>
-            /// <returns>Invoke Constructor object.</returns>
-            public object GetInvokeCtor(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm, string payloadName, List<InvokeError> errorList)
-        {
-            object ctorObj = null;
-
-            if (ctor.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
-            {
-                ctorObj = ctor.Invoke(new object[] { });
-                //сопоставить параметры по имени
-                foreach (KeyValuePair<string, object> entry in cntrlFromForm)
-                {
-                    ctorObj.GetType().GetProperty(entry.Key).SetValue(ctorObj, entry.Value);
-                }
-
-                try
-                {
-                    object instance = ctor.Invoke(ctorObj, new object[] { });
-                }
-                catch (Exception e)
-                {
-                    InvokeError err = new InvokeError();
-                    err.ConstructorName = "Constructor. " + ctor.DeclaringType.Name;// payloadName;
-                    do
-                    {
-                        if (e.HResult != -2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
-                            err.AddMsg(e.Message);
-                        e = e.InnerException;
-                    }
-                    while (e != null);
-
-                    errorList.Add(err);
-                }
-            }
-            else
-            {
-                if (cntrlFromForm.Count != 0)
-                {
-                    object[] propFromForm = cntrlFromForm.Select(z => z.Value).ToArray();
-                    Boolean check = false;
-                    //if parameter is a constructor - check that it is not zero
-                    for (int i= 0; i < propFromForm.Count(); i++) 
-                    {
-                        Type item = ctor.GetParameters()[i].ParameterType;
-                        if ((item.IsClass && item.Namespace != "System" && !item.IsGenericType) && propFromForm[i]==null) 
-                            check = check | true;
-                    }
-                    if (check) 
-                    {
-                        InvokeError err = new InvokeError();
-                        err.ConstructorName = "Constructor. " + ctor.DeclaringType.Name;// payloadName;
-                        err.AddMsg("Not all class constructors are initialized");
-                        errorList.Add(err);
-                    }
-                    else 
-                    {
-                        try
-                        {
-                            ctorObj = ctor.Invoke(propFromForm);
-                        }
-                        catch (Exception e)
-                        {
-                            InvokeError err = new InvokeError();
-                            err.ConstructorName = "Constructor. " + ctor.DeclaringType.Name;// payloadName;
-                            do
-                            {
-                                if (e.HResult != -2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
-                                    err.AddMsg(e.Message);
-                                e = e.InnerException;
-                            }
-                            while (e != null);
-
-                            errorList.Add(err);
-                        }
-                    }
-                }
-            }
-            return ctorObj;
-        }
 
         /// <summary>
         /// ReadGUITreePanel
@@ -631,7 +495,7 @@ namespace QRCoderArt
                                     Control[] pan = panelPayload.FilterControls(c => c.Name != null
                                                                                 && c.Name == cntrl.Name && c is FlowLayoutPanel);
 //                                  //!!! recursion
-                                    ret = GetInvokeCtor(ctor, GetParamFromGUITreePanel((FlowLayoutPanel)pan[0], errorList), cntrl.Name, errorList);
+                                    ret = new GUIInvoke().GetInvokeCtor(ctor, GetParamFromGUITreePanel((FlowLayoutPanel)pan[0], errorList), cntrl.Name, errorList);
                                     break;
                                 case "String":
                                     ret = ((TextBox)cntrl).Text;
@@ -695,9 +559,9 @@ namespace QRCoderArt
                 //инициализировать конструктор payload
                 Control[] cmb = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is ComboBox);
                 ConstructorInfo ctrm = (ConstructorInfo)((System.Collections.Generic.KeyValuePair<string, object>)((ComboBox)cmb[0]).SelectedItem).Value;
-                object ctorObj = GetInvokeCtor(ctrm, ParamFromControl, cmb[0].Name, errorList);
+                object ctorObj = new GUIInvoke().GetInvokeCtor(ctrm, ParamFromControl, cmb[0].Name, errorList);
                 //выполнить главный метод
-                string payloadStr = GetInvokeMember(ctorObj, ctrm, cmb[0].Name, errorList);
+                string payloadStr = new GUIInvoke().GetInvokeMember(ctorObj, ctrm, cmb[0].Name, errorList);
                 if (ctorObj != null && errorList.Count()==0) 
                 {
                     if (ctrm.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
