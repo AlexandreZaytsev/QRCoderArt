@@ -24,11 +24,11 @@ _Uses dynamic creation of the payload interface (one dynamic panel for all views
 ![payload](https://user-images.githubusercontent.com/16114000/125486591-23b995d2-3a1e-44b3-bf25-cbca1393af51.png)
 ***
 ps.
-current state 19.07.2021 ([+] ok; [ ] trying to implement)
+current state 19.07.2021 ([+] ok; [ ] trying to implement)    
 pps.
-all payloads of the version are supported qrcoder.dll (1.4.1) - but there are very few default values or restrictions on the ranges of values through attributes
+all payloads of the version are supported qrcoder.dll (1.4.1) - but there are very few default values or restrictions on the ranges of values through attributes    
 ppps.
-I tried to use clean code - but a beginner in c#, you can definitely write better and easier ))
+I tried to use clean code - but a beginner in c#, you can definitely write better and easier ))    
 
 - [x] WiFi
   - (string ssid, string password, Authentication authenticationMode, bool isHiddenSSID = false)
