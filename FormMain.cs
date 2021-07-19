@@ -68,19 +68,6 @@ namespace QRCoderArt
             this.QRCodeString.Dock = DockStyle.Fill;
             this.QRCodeError.Dock = DockStyle.Fill;
             this.QRCodeString.Visible = true;
-
-            /*//-test--------
-            PayloadGenerator.SwissQrCode.Contact contactGeneral = new PayloadGenerator.SwissQrCode.Contact("John Doe", "3003", "Bern", "CH", "Parlamentsgebäude", "1");
-//            PayloadGenerator.SwissQrCode.Iban iban = new PayloadGenerator.SwissQrCode.Iban("CH2609000000857666015", PayloadGenerator.SwissQrCode.Iban.IbanType.QrIban);
-            PayloadGenerator.SwissQrCode.Reference reference = new PayloadGenerator.SwissQrCode.Reference(PayloadGenerator.SwissQrCode.Reference.ReferenceType.QRR, "990005000000000320071012303", PayloadGenerator.SwissQrCode.Reference.ReferenceTextType.QrReference);
-  //          PayloadGenerator.SwissQrCode.Reference reference = new PayloadGenerator.SwissQrCode.Reference(PayloadGenerator.SwissQrCode.Reference.ReferenceType.QRR, "1", PayloadGenerator.SwissQrCode.Reference.ReferenceTextType.QrReference);
-            PayloadGenerator.SwissQrCode.AdditionalInformation additionalInformation = new PayloadGenerator.SwissQrCode.AdditionalInformation("This is my unstructured message.", "Some bill information here...");
-            PayloadGenerator.SwissQrCode.Currency currency = PayloadGenerator.SwissQrCode.Currency.CHF;
-            decimal amount = 100.25m;
-
- //           PayloadGenerator.SwissQrCode generator = new PayloadGenerator.SwissQrCode(iban, currency, contactGeneral, additionalInformation, reference, null, amount, null, null);
- //           string payload = generator.ToString();
- */
         }
 
         /// <summary>
@@ -495,7 +482,7 @@ namespace QRCoderArt
                                     Control[] pan = panelPayload.FilterControls(c => c.Name != null
                                                                                 && c.Name == cntrl.Name && c is FlowLayoutPanel);
 //                                  //!!! recursion
-                                    ret = new GUIInvoke().GetInvokeCtor(ctor, GetParamFromGUITreePanel((FlowLayoutPanel)pan[0], errorList), cntrl.Name, errorList);
+                                    ret = new GUIInvoke().GetInvokeCtor(ctor, GetParamFromGUITreePanel((FlowLayoutPanel)pan[0], errorList), errorList);
                                     break;
                                 case "String":
                                     ret = ((TextBox)cntrl).Text;
@@ -559,9 +546,9 @@ namespace QRCoderArt
                 //инициализировать конструктор payload
                 Control[] cmb = this.FilterControls(c => c.Name != null && c.Name.Equals(cbPayload.Text) && c is ComboBox);
                 ConstructorInfo ctrm = (ConstructorInfo)((System.Collections.Generic.KeyValuePair<string, object>)((ComboBox)cmb[0]).SelectedItem).Value;
-                object ctorObj = new GUIInvoke().GetInvokeCtor(ctrm, ParamFromControl, cmb[0].Name, errorList);
+                object ctorObj = new GUIInvoke().GetInvokeCtor(ctrm, ParamFromControl, errorList);
                 //выполнить главный метод
-                string payloadStr = new GUIInvoke().GetInvokeMember(ctorObj, ctrm, cmb[0].Name, errorList);
+                string payloadStr = new GUIInvoke().GetInvokeMember(ctorObj, ctrm, errorList);
                 if (ctorObj != null && errorList.Count()==0) 
                 {
                     if (ctrm.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
@@ -577,7 +564,7 @@ namespace QRCoderArt
                 else
                 {
                     QRCodeString.Visible = false;
-                    QRCodeError.DocumentText = new GUIInvoke().GetFormattedErrorDescription(cmb[0].Name, errorList);
+                    QRCodeError.DocumentText = new GUIInvoke().GetHTMLFormattedErrorDescription(cmb[0].Name, errorList);
                     QRCodeString.Visible = false;
                     QRCodeError.Visible = true;
                     pictureBoxQRCode.BackgroundImage = global::QRCoderArt.Properties.Resources.qr_no;

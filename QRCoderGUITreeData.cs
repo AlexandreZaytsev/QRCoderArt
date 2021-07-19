@@ -19,22 +19,30 @@ using System.Reflection;
 
 namespace QRCoderArt
 {
-    /// <summary>Class InvokeError.</summary>
+    /// <summary>
+    /// Class InvokeError.
+    /// </summary>
     public class InvokeError
     {
         public InvokeError(string name)
         {
             ConstructorName = name;
         }
-        /// <summary>Gets or sets the name of the constructor.</summary>
+        /// <summary>
+        /// Gets or sets the name of the constructor.
+        /// </summary>
         /// <value>The name of the constructor.</value>
         public string ConstructorName { get; set; }
-        /// <summary>Gets or sets the errors.</summary>
+        /// <summary>
+        /// Gets or sets the errors.
+        /// </summary>
         /// <value>The errors.</value>
         public List<string> Errors { get; set; } = new List<string>();
-        /// <summary>Adds the MSG.</summary>
+        /// <summary>
+        /// Adds the message.
+        /// </summary>
         /// <param name="val">The value.</param>
-        public void AddMsg(string val)
+        public void AddMessage(string val)
         {
             Errors.Add(val);
         }
@@ -362,10 +370,9 @@ namespace QRCoderArt
         /// <summary>Gets the invoke member.</summary>
         /// <param name="initСtor">The initialize сtor.</param>
         /// <param name="ctor">The ctor.</param>
-        /// <param name="payloadName">Name of the payload.</param>
         /// <param name="errorList">The error list.</param>
         /// <returns>System.String.</returns>
-        public string GetInvokeMember(object initСtor, ConstructorInfo ctor, string payloadName, List<InvokeError> errorList)
+        public string GetInvokeMember(object initСtor, ConstructorInfo ctor, List<InvokeError> errorList)
         {
             string payloadStr = "";
             if (ctor.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
@@ -376,11 +383,11 @@ namespace QRCoderArt
                 }
                 catch (Exception e)
                 {
-                    InvokeError err = new InvokeError("Method. " + payloadName + ".ToString()");
+                    InvokeError err = new InvokeError("Method. " + ctor.ReflectedType.Name + ".ToString()");
                     do
                     {
                         if (e.HResult != -2146232828)       //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
-                            err.AddMsg(e.Message);
+                            err.AddMessage(e.Message);
                         e = e.InnerException;
                     }
                     while (e != null);
@@ -396,11 +403,11 @@ namespace QRCoderArt
                 }
                 catch (Exception e)
                 {
-                    InvokeError err = new InvokeError("Method. " + payloadName + ".ToString()");
+                    InvokeError err = new InvokeError("Method. " + ctor.ReflectedType.Name + ".ToString()");
                     do
                     {
                         if (e.HResult != -2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
-                            err.AddMsg(e.Message);
+                            err.AddMessage(e.Message);
                         e = e.InnerException;
                     }
                     while (e != null);
@@ -413,10 +420,9 @@ namespace QRCoderArt
         /// <summary>Gets the invoke ctor.</summary>
         /// <param name="ctor">The constructor object.</param>
         /// <param name="cntrlFromForm">The CNTRL from form.</param>
-        /// <param name="payloadName">Name of the payload.</param>
         /// <param name="errorList">The error list.</param>
         /// <returns>Invoke Constructor object.</returns>
-        public object GetInvokeCtor(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm, string payloadName, List<InvokeError> errorList)
+        public object GetInvokeCtor(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm, List<InvokeError> errorList)
         {
             object ctorObj = null;
 
@@ -439,7 +445,7 @@ namespace QRCoderArt
                     do
                     {
                         if (e.HResult != -2146232828)       //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
-                            err.AddMsg(e.Message);
+                            err.AddMessage(e.Message);
                         e = e.InnerException;
                     }
                     while (e != null);
@@ -463,7 +469,7 @@ namespace QRCoderArt
                     if (check)
                     {
                         InvokeError err = new InvokeError("Constructor. " + ctor.DeclaringType.Name);
-                        err.AddMsg("Not all class constructors are initialized");
+                        err.AddMessage("Not all class constructors are initialized");
                         errorList.Add(err);
                     }
                     else
@@ -478,7 +484,7 @@ namespace QRCoderArt
                             do
                             {
                                 if (e.HResult != -2146232828)  //"Адресат вызова создал исключение."}	System.Exception {System.Reflection.TargetInvocationException}
-                                    err.AddMsg(e.Message);
+                                    err.AddMessage(e.Message);
                                 e = e.InnerException;
                             }
                             while (e != null);
@@ -491,21 +497,30 @@ namespace QRCoderArt
             return ctorObj;
         }
 
-        public string GetFormattedErrorDescription(string payloadName, List<InvokeError> errorList)
+        public string GetHTMLFormattedErrorDescription(string payloadName, List<InvokeError> errorList)
         {
             string  strMsg = "<style>" +
-                             "table {" +
-                             //  "border: 1px solid black; "+
-                             "width:100%;" +
-                             "border - collapse: collapse;}" +
-                             "th {" +
-                             "text-align: left; " +
-                             //     "font-size: 11pt; " +
-                             "font-weight:normal; " +
-                             "background-color: rgb(240, 240, 240);}" +
+                             "  * { "+
+                             "    font-size: 10pt; " +
+                             "  }" +
+                             "  .descr {" +
+                             //"    font-size: 9pt; " +
+                             "    font-weight:bold "+
+                             "  }" +
+                             "  table {" +
+                             //    "border: 1px solid black; "+
+                             "    width:100%;" +
+                             "    border - collapse: collapse; "+
+                             "  }" +
+                             "  th {" +
+                             "    text-align: left; " +
+                             //    "font-size: 11pt; " +
+                             "    font-weight:normal; " +
+                             "    background-color: rgb(240, 240, 240);"+
+                             "  }" +
                              "</style>" +
                              "<body>" +// bgcolor='#FFEFD5'>" +
-                             "<strong>&#128270;&nbsp;" + "Create " + payloadName + " payload string error" + "</strong>" +
+                             "<span class='descr'>&#128270;&nbsp;" + "Create " + payloadName + " payload string error(s)" + "</span>" +
                              "<hr><table><tbody>";
 
             foreach (var err in errorList)
