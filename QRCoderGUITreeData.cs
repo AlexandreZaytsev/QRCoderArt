@@ -24,6 +24,10 @@ namespace QRCoderArt
     /// </summary>
     public class InvokeError
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InvokeError"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
         public InvokeError(string name)
         {
             ConstructorName = name;
@@ -48,67 +52,78 @@ namespace QRCoderArt
         }
     }
     /// <summary>
-    /// Class GUITreeNode
-    /// узел дерева параметров GUI для создания элемента формы (GUI Control)
+    /// Class GUITreeNode.
+    /// GUI parameter tree node for creating a form element (GUI Control)
     /// </summary>
     public class GUITreeNode
     {
         /// <summary>
-        /// уровень вложенности параметра в дереве
+        /// The f level
+        /// the nesting level of the parameter in the tree
         /// </summary>
         public int fLevel;
         /// <summary>
-        /// имя родителя параметра
+        /// The f parent name
+        /// name of the parameter parent
         /// </summary>
         public string fParentName;
         /// <summary>
-        /// имя параметра
+        /// The f name
+        /// parameter name
         /// </summary>
         public string fName;
         /// <summary>
-        /// наименование типа данных параметра (строка: 'String', 'Integer', и т.д.)
+        /// The f type
+        /// name of the parameter data type (string: 'String', 'Integer', etc.)
         /// </summary>
         public string fType;
         /// <summary>
-        /// наименование типа элемента формы (строка: 'TextBox'; 'ConboBox', и т.д.)
+        /// The f form
+        /// name of the form element type (string: 'TextBox'; 'Combobox', etc.)
         /// </summary>
         public string fForm;
         /// <summary>
-        /// расширенные данные (Словарь) - используется для для datasource ComboBox
+        /// The f list
+        /// extended data (Dictionary) - used for for datasource ComboBox
         /// </summary>
         public Dictionary<string, object> fList;
         /// <summary>
-        /// признак наличия нулевого значения параметра - используется для CheckBox
+        /// The f null
+        /// indicates whether the parameter value is zero-used for CheckB
         /// </summary>
         public Boolean fNull;
         /// <summary>
-        /// значение параметра по умолчанию
+        /// The f definition
+        /// the default value of the parameter
         /// </summary>
         public object fDef;
     }
 
     /// <summary>
-    /// GUITree
-    /// Класс ддя работы с Reflection crqoder.dll
+    /// Class GUITree.
+    /// A class for working with Reflection crqoder.dll
+    /// Implements the <see cref="System.IDisposable" />
     /// </summary>
+    /// <seealso cref="System.IDisposable" />
     public class GUITree : IDisposable
     {
         /// <summary>
-        /// узел (точка входа) в Reflection
+        /// The t reference
+        /// node (entry point) in Reflection
         /// </summary>
         private readonly Type tRef;
 
         /// <summary>
-        /// инициализация узла в Reflection по имени<see cref="GUITree" /> class.
+        /// Initializes a new instance of the <see cref="GUITree"/> class.
         /// </summary>
-        /// <param name="name">имя узла Reflection от которого читается структура</param>
+        /// <param name="name">The name name of the Reflection node from which the structure is read.</param>
         public GUITree(string name)
         {
             tRef = Type.GetType(name);
         }
 
         /// <summary>
-        /// выполняет определяемые приложением задачи, связанные с удалением, высвобождением или сбросом неуправляемых ресурсов.
+        /// Выполняет определяемые приложением задачи, связанные с удалением, высвобождением или сбросом неуправляемых ресурсов.
         /// </summary>
         public void Dispose()
         {
@@ -116,22 +131,21 @@ namespace QRCoderArt
         }
 
         /// <summary>
-        /// GetMemberByName
-        /// вернуть узел по имени 
+        /// Gets the member by name.
         /// </summary>
-        /// <param name="baseName">имя узла Reflection</param>
-        /// <returns>первый найденный узел</returns>
+        /// <param name="baseName">Reflection node name.</param>
+        /// <returns>First node found Type.</returns>
         public Type GetMemberByName(string baseName)
         {
             return (Type)tRef.GetMember(baseName).First();
         }
 
         /// <summary>
-        /// GetMembersClassName
-        /// вернуть все имена публичных, актуальных классов узла. Для отображения всех интерфейсов payload qrcoder.dll
+        /// Gets the name of the members class.
+        /// return all the names of the public, current classes of the node. To display all the payload interfaces qrcoder.dll
         /// </summary>
-        /// <param name="cName">имя узла Reflection</param>
-        /// <returns>список имен payload &lt;System.String&gt;</returns>
+        /// <param name="cName">Reflection node name.</param>
+        /// <returns>list of payload List&lt;System.String&gt;.</returns>
         public List<string> GetMembersClassName(string cName)
         {
             return (from t in tRef.GetMembers(BindingFlags.Public)
@@ -141,11 +155,11 @@ namespace QRCoderArt
         }
 
         /// <summary>
-        /// GetConstructor
-        /// вернуть конструкторы узла
+        /// Gets the constructors.
+        /// return the node constructors
         /// </summary>
-        /// <param name="param">узел Reflection</param>
-        /// <returns>словарь с конструкторами (имя значение) &lt;System.String, System.Object&gt;.</returns>
+        /// <param name="param">The parameter (Reflection node).</param>
+        /// <returns>dictionary with constructors (name value) Dictionary&lt;System.String, System.Object&gt;.</returns>
         public Dictionary<string, object> GetConstructors(Type param)
         {
 
@@ -179,14 +193,14 @@ namespace QRCoderArt
         }
 
         /// <summary>
-        /// GetParamsConstuctor
-        /// дополнить общий список параметров дерева GUI - параметрами конструктора
-        /// (если конструктор не объявлен (нет параметров) - читаем свойства )
+        /// Gets the parameters constuctor.
+        /// add GUI constructor parameters to the general list of tree parameters
+        /// (if the constructor is not declared (there are no parameters), we read the properties)
         /// </summary>
-        /// <param name="ctor">конструктор</param>
-        /// <param name="Params">текущее дерево GIU</param>
-        /// <param name="nestingLevel">текущий уровень вложенности параметра</param>
-        /// <param name="parentName">текущее имя родителя параметра</param>
+        /// <param name="ctor">The constructor.</param>
+        /// <param name="Params">The parameters (current GIU tree).</param>
+        /// <param name="nestingLevel">The nesting level (current nesting level of the parameter).</param>
+        /// <param name="parentName">Name of the parent (current name of the parameter parent).</param>
         private void GetParamsConstuctor(ConstructorInfo ctor, List<GUITreeNode> Params, int nestingLevel, string parentName)
         {
             //for pure (witout k__BackingField) names here we use GetProperties()  
@@ -209,12 +223,11 @@ namespace QRCoderArt
           START
         ************************************************************************************************************/
         /// <summary>
-        /// GetGUITree
-        /// вернуть все дерево GUI от узла Reflection payload
-        /// для создания всей панели payload
+        /// Gets the GUI tree.
+        /// return the entire GUI tree from the Reflection payload node to create the entire payload panel
         /// </summary>
-        /// <param name="obj">payload узел Reflection</param>
-        /// <returns>payload дерево GUI &lt;System.String&gt;</returns>
+        /// <param name="obj">The object (payload Reflection node).</param>
+        /// <returns>payload GUI tree IList.</returns>
         public IList GetGUITree(Object obj)
         {
             List<GUITreeNode> GUITree = new List<GUITreeNode>();                                //list of parameters
@@ -225,14 +238,13 @@ namespace QRCoderArt
         }
 
         /// <summary>
-        /// GetGUITreeNodes
-        /// вернуть фрагмент дерева GUI от конкретного конструктора
-        /// для пересоздания фрагмента панели payload
+        /// Gets the GUI tree nodes.
+        /// return a fragment of the GUI tree from a specific constructor to recreate a fragment of the payload panel
         /// </summary>
-        /// <param name="obj">узел конструктора Reflection</param>
-        /// <param name="nodeParentName">имя узла родителя</param>
-        /// <param name="nodeNestingLevel">текущий уровень вложенности узла в дереве GUI</param>
-        /// <returns>фрагмент дерева GUI IList.</returns>
+        /// <param name="obj">The object (node of the Reflection constructor).</param>
+        /// <param name="nodeParentName">Name of the node parent.</param>
+        /// <param name="nodeNestingLevel">Current nesting level of the node in the GUI tree.</param>
+        /// <returns>IList.</returns>
         public IList GetGUITreeNodes(ConstructorInfo obj, string nodeParentName, int nodeNestingLevel)
         {
             List<GUITreeNode> GUITreeNodes = new List<GUITreeNode>();                   //list of parameters
@@ -241,16 +253,16 @@ namespace QRCoderArt
         }
 
         /// <summary>
-        /// GetGUITreeNode
-        /// вернуть узел дерева GUI с параметрами
+        /// Gets the GUI tree node.
+        /// return the GUI tree node with the parameters
         /// </summary>
-        /// <param name="nodeName">имя параметра</param>
-        /// <param name="nodeType">параметр (приведен к типу Type)</param>
-        /// <param name="nodeDefValue">значение по умолчанию</param>
-        /// <param name="guiTree">текущее дерево GUI</param>
-        /// <param name="nodeNestingLevel">текущий уровень вложенности в дереве GUI</param>
-        /// <param name="nodeParentName">текущее имя родителя в дереве GUI</param>
-        /// <returns>количество добавленных узлов в дерево GUI System.Int32.</returns>
+        /// <param name="nodeName">Name of the node.</param>
+        /// <param name="nodeType">Type of the node (converted to Type).</param>
+        /// <param name="nodeDefValue">The node definition value.</param>
+        /// <param name="guiTree">The GUI tree.</param>
+        /// <param name="nodeNestingLevel">CCurrent nesting level of the node in the GUI tree.</param>
+        /// <param name="nodeParentName">Name of the node parent.</param>
+        /// <returns>System.Int32.</returns>
         private int GetGUITreeNode(string nodeName, Type nodeType, object nodeDefValue, List<GUITreeNode> guiTree, int nodeNestingLevel, string nodeParentName)
         {
             GUITreeNode Node = new GUITreeNode();// { fName = paramName, fType = paramType.Name, fForm = "TextBox", fList = null, fNull = false, fDef = defValue, fLevel = nestingLevel };
@@ -365,6 +377,7 @@ namespace QRCoderArt
         }
     }
 
+    /// <summary>Class GUIInvoke.</summary>
     public class GUIInvoke
     {
         /// <summary>Gets the invoke member.</summary>
@@ -417,11 +430,13 @@ namespace QRCoderArt
             }
             return payloadStr;
         }
-        /// <summary>Gets the invoke ctor.</summary>
-        /// <param name="ctor">The constructor object.</param>
+        /// <summary>
+        /// Gets the invoke ctor.
+        /// </summary>
+        /// <param name="ctor">The ctor.</param>
         /// <param name="cntrlFromForm">The CNTRL from form.</param>
         /// <param name="errorList">The error list.</param>
-        /// <returns>Invoke Constructor object.</returns>
+        /// <returns>System.Object.</returns>
         public object GetInvokeCtor(ConstructorInfo ctor, Dictionary<string, object> cntrlFromForm, List<InvokeError> errorList)
         {
             object ctorObj = null;
@@ -497,6 +512,10 @@ namespace QRCoderArt
             return ctorObj;
         }
 
+        /// <summary>Gets the HTML formatted error description.</summary>
+        /// <param name="payloadName">Name of the payload.</param>
+        /// <param name="errorList">The error list.</param>
+        /// <returns>HTML format string System.String.</returns>
         public string GetHTMLFormattedErrorDescription(string payloadName, List<InvokeError> errorList)
         {
             string  strMsg = "<style>" +
