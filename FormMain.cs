@@ -470,7 +470,7 @@ namespace QRCoderArt
             {
                 foreach (Control cntrl in panelGUITree.Controls)
                 {
-                    if (cntrl.Created && cntrl.AccessibleName == "Get" && cntrl.Parent.Name== panelGUITree.Name)
+                    if (cntrl.Created && cntrl.AccessibleName == "Get" && cntrl.Parent.Name == panelGUITree.Name)
                     {
                         ret = null;
                         if (cntrl.Enabled)
@@ -481,7 +481,7 @@ namespace QRCoderArt
                                     ConstructorInfo ctor = (ConstructorInfo)((KeyValuePair<string, object>)((ComboBox)cntrl).SelectedItem).Value;
                                     Control[] pan = panelPayload.FilterControls(c => c.Name != null
                                                                                 && c.Name == cntrl.Name && c is FlowLayoutPanel);
-//                                  //!!! recursion
+                                    //                                  //!!! recursion
                                     ret = new GUIInvoke().GetInvokeCtor(ctor, GetParamFromGUITreePanel((FlowLayoutPanel)pan[0], errorList), errorList);
                                     break;
                                 case "String":
@@ -549,7 +549,7 @@ namespace QRCoderArt
                 object ctorObj = new GUIInvoke().GetInvokeCtor(ctrm, ParamFromControl, errorList);
                 //выполнить главный метод
                 string payloadStr = new GUIInvoke().GetInvokeMember(ctorObj, ctrm, errorList);
-                if (ctorObj != null && errorList.Count()==0) 
+                if (ctorObj != null && errorList.Count() == 0)
                 {
                     if (ctrm.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
                     {
@@ -596,28 +596,28 @@ namespace QRCoderArt
                 using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
                 using (QRCodeData qrCodeData = qrGenerator.CreateQrCode(QRCodeString.Text, eccLevel))
 
-                if (artPath.Text.Length == 0)
-                {
-                    using (QRCode qrCode = new QRCode(qrCodeData))
+                    if (artPath.Text.Length == 0)
                     {
-                        pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic((int)pixelSize.Value, GetPrimaryColor(), GetBackgroundColor(), GetIconBitmap(), (int)iconSize.Value);
-                        this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
-                        //Set the SizeMode to center the image.
-                        this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
-                        pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
+                        using (QRCode qrCode = new QRCode(qrCodeData))
+                        {
+                            pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic((int)pixelSize.Value, GetPrimaryColor(), GetBackgroundColor(), GetIconBitmap(), (int)iconSize.Value);
+                            this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
+                            //Set the SizeMode to center the image.
+                            this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
+                            pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
+                        }
                     }
-                }
-                else
-                {
-                    using (ArtQRCode qrCode = new ArtQRCode(qrCodeData))
+                    else
                     {
-                        pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic((int)dotSize.Value, GetPrimaryColor(), GetBackgroundColor(), GetArtBitmap());// (20, GetPrimaryColor(), GetBackgroundColor(), GetIconBitmap(), (int)iconSize.Value);
-                        this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
-                        //Set the SizeMode to center the image.
-                        this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
-                        pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
+                        using (ArtQRCode qrCode = new ArtQRCode(qrCodeData))
+                        {
+                            pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic((int)dotSize.Value, GetPrimaryColor(), GetBackgroundColor(), GetArtBitmap());// (20, GetPrimaryColor(), GetBackgroundColor(), GetIconBitmap(), (int)iconSize.Value);
+                            this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
+                            //Set the SizeMode to center the image.
+                            this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
+                            pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
+                        }
                     }
-                }
             }
         }
 

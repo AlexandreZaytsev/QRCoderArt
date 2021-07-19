@@ -164,32 +164,32 @@ namespace QRCoderArt
         {
 
             return (from ctor in param.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                                where !ctor.IsDefined(typeof(ObsoleteAttribute), true)
-                                select new
-                                {
-                                    name = ((ConstructorInfo)ctor).GetParameters().Count() == 0 ? 
-                                        "the constructor is not used here" : 
-                                        string.Join(", ", ((ConstructorInfo)ctor).GetParameters().Select(pr => pr.Name)),
-                                    ctor
-                                }).ToDictionary(k => k.name, v => (Object)v.ctor);
-/*            
-            return (from ctor in param.GetConstructors()
-              //      where !ctor.IsDefined(typeof(ObsoleteAttribute), true)
+                    where !ctor.IsDefined(typeof(ObsoleteAttribute), true)
                     select new
                     {
-                        name = ctor.GetParameters().Count() == 0 ? "the constructor is not used here" : string.Join(", ", ctor.GetParameters().Select(pr => pr.Name)),
+                        name = ((ConstructorInfo)ctor).GetParameters().Count() == 0 ?
+                            "the constructor is not used here" :
+                            string.Join(", ", ((ConstructorInfo)ctor).GetParameters().Select(pr => pr.Name)),
                         ctor
                     }).ToDictionary(k => k.name, v => (Object)v.ctor);
-*/
+            /*            
+                        return (from ctor in param.GetConstructors()
+                          //      where !ctor.IsDefined(typeof(ObsoleteAttribute), true)
+                                select new
+                                {
+                                    name = ctor.GetParameters().Count() == 0 ? "the constructor is not used here" : string.Join(", ", ctor.GetParameters().Select(pr => pr.Name)),
+                                    ctor
+                                }).ToDictionary(k => k.name, v => (Object)v.ctor);
+            */
         }
 
         //get enum dictionary
-         private IDictionary<string, object> GetParamEnum(Type param)
-         {
-//            return param.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
+        private IDictionary<string, object> GetParamEnum(Type param)
+        {
+            //            return param.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
             return (from t in param.GetFields(BindingFlags.Static | BindingFlags.Public)
-                          where !t.IsDefined(typeof(ObsoleteAttribute), true)
-                          select new { v = t.Name, k = t.GetValue(new object()) }).ToDictionary(k => k.v, v => v.k);
+                    where !t.IsDefined(typeof(ObsoleteAttribute), true)
+                    select new { v = t.Name, k = t.GetValue(new object()) }).ToDictionary(k => k.v, v => v.k);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace QRCoderArt
                                      where !t.IsDefined(typeof(ObsoleteAttribute), true)
                                      select GetGUITreeNode(t.Name, t.ParameterType, t.DefaultValue, Params, nestingLevel, parentName);
             //Deferred Execution
-            foreach (object Param in ctor.GetParameters().Length == 0 ? queryProp : queryParam) {}  //run function from query
+            foreach (object Param in ctor.GetParameters().Length == 0 ? queryProp : queryParam) { }  //run function from query
         }
 
         /**********************************************************************************************************
@@ -518,24 +518,24 @@ namespace QRCoderArt
         /// <returns>HTML format string System.String.</returns>
         public string GetHTMLFormattedErrorDescription(string payloadName, List<InvokeError> errorList)
         {
-            string  strMsg = "<style>" +
-                             "  * { "+
+            string strMsg = "<style>" +
+                             "  * { " +
                              "    font-size: 10pt; " +
                              "  }" +
                              "  .descr {" +
                              //"    font-size: 9pt; " +
-                             "    font-weight:bold "+
+                             "    font-weight:bold " +
                              "  }" +
                              "  table {" +
                              //    "border: 1px solid black; "+
                              "    width:100%;" +
-                             "    border - collapse: collapse; "+
+                             "    border - collapse: collapse; " +
                              "  }" +
                              "  th {" +
                              "    text-align: left; " +
                              //    "font-size: 11pt; " +
                              "    font-weight:normal; " +
-                             "    background-color: rgb(240, 240, 240);"+
+                             "    background-color: rgb(240, 240, 240);" +
                              "  }" +
                              "</style>" +
                              "<body>" +// bgcolor='#FFEFD5'>" +

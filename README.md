@@ -1,33 +1,35 @@
 # QRCoderArt
-Demo project WinForm приложение - создание файла с картинкой QR кода на базе QRCoder (1.4.1). С возможностью создания лейбла (верхний слой) или фоновой картинки (подложка) на основе ArtQRCode.cs. Интерфейс полезной нагрузки (Payload) - динамический (Reflection) QRCoder.dll 
+Demo project WinForm application - creating a file with a picture of QR code based on QRCoder (1.4.1). With the possibility of creating a label (top layer) or background picture (substrate) based on ArtQRCode.cs. Payload Interface - QRCoder.dll Dynamic (Reflection)
 
-- генератор картинки QR кода QRCoder 1.4.1 QRCoder.dll + QRCoderDemo (Raffael Herrmann)
+- QR Code Picture Generator QRCoder.dll (base 1.4.1) + QRCoderDemo (Raffael Herrmann)
   (https://github.com/codebude/QRCoder) 
-- файл ArtQRCode.cs фоновая картика (NigelThorne)
+- file ArtQRCode.cs background picture (NigelThorne)
   (https://github.com/codebude/QRCoder/pull/295)
   (https://github.com/codebude/QRCoder/tree/91839cfe9c445832a61a993893eccfab9e264ee8/QRCoder) 
 
-идея: 
-- прочитать параметрв коструктора -> динамически создать контролы по типу
-- при изменении значений контролов -> инициализировать параметры конструктора с приведением типов
+idea:
+- read the parameters of the payload designer (* attribute obsolete - checked)
+- dynamically create parameter type controls
+- If control values change - > initialize payload constructor parameters with type mapping
+* attribute obsolete - checked
 
-_Windows/собирал под  .NET Framework 4.0_  
-_Использовано динамическое создание интерфейса полезной нагрузки payload (одна динамическая панель под все виды)(без сохранения параметров) reflection QRCoder.dll_
+_Windows/collected under the .NET Framework 4.0_  
+_Uses dynamic creation of the payload interface (one dynamic panel for all views) (without saving parameters) reflection QRCoder.dll_
 ***
-1. Выберите payload  
-2. Выберите construction
-3. Заполните параметры  
+1. Select payload
+2. Select construction
+3. If there are no errors, a QR picture of the code will be created
+3. If there are errors, follow the troubleshooting guidelines = Complete the settings  
 
-ps
-пока не смог воспроизвести конструкторы с вложенными классами - не хватает знаний <br>
-pps
-если сможете помочь - будет - супер
- 
 ![QRCoderArtInfo](https://user-images.githubusercontent.com/16114000/124744118-168d2700-df27-11eb-9cea-66fa37da21a5.png)
 ![payload](https://user-images.githubusercontent.com/16114000/125486591-23b995d2-3a1e-44b3-bf25-cbca1393af51.png)
 ***
 ps.
-current state 07.07.2021 ([+] ok; [ ] trying to implement)
+current state 19.07.2021 ([+] ok; [ ] trying to implement)
+pps.
+all payloads of the version are supported qrcoder.dll (1.4.1) - but there are very few default values or restrictions on the ranges of values through attributes
+ppps.
+I tried to use clean code - but a beginner in c#, you can definitely write better and easier ))
 
 - [x] WiFi
   - (string ssid, string password, Authentication authenticationMode, bool isHiddenSSID = false)
