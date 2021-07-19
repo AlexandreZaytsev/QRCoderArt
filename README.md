@@ -8,10 +8,9 @@ Demo project WinForm application - creating a file with a picture of QR code bas
   (https://github.com/codebude/QRCoder/tree/91839cfe9c445832a61a993893eccfab9e264ee8/QRCoder) 
 
 idea:
-- read the parameters of the payload designer (* attribute obsolete - checked)
+- read the parameters of the payload designer (attribute [obsolete] - checked)
 - dynamically create parameter type controls
 - If control values change - > initialize payload constructor parameters with type mapping
-* attribute obsolete - checked
 
 _Windows/collected under the .NET Framework 4.0_  
 _Uses dynamic creation of the payload interface (one dynamic panel for all views) (without saving parameters) reflection QRCoder.dll_
