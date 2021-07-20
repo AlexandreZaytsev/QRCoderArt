@@ -16,9 +16,10 @@ _Windows/collected under the .NET Framework 4.0_
 _Uses dynamic creation of the payload interface (one dynamic panel for all views) (without saving parameters) reflection QRCoder.dll_
 ***
 1. Select payload
-2. Select construction
+2. Select constructor
 3. If there are no errors, a QR picture of the code will be created
 3. If there are errors, follow the troubleshooting guidelines = Complete the settings  
+***
 ![QRCoderView](https://user-images.githubusercontent.com/16114000/126315774-471ed7eb-81a6-43ff-baeb-9702f5a6340c.png)
 ***
 ps.<br/>
