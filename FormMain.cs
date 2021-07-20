@@ -738,7 +738,7 @@ namespace QRCoderArt
                             throw new NotSupportedException("File extension is not supported");
                     }
 
-                    pictureBoxQRCode.BackgroundImage.Save(fs, imageFormat);
+                    pictureBoxQRCode.BackgroundImage.Save(fs, imageFormat); 
                 }
             }
         }
