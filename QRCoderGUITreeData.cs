@@ -57,6 +57,12 @@ namespace QRCoderArt
     /// </summary>
     public class GUITreeNode
     {
+        public GUITreeNode()
+        {
+            id = Guid.NewGuid();
+        }
+        /// <summary>The identifier</summary>
+        public Guid id;
         /// <summary>
         /// The f level
         /// the nesting level of the parameter in the tree
