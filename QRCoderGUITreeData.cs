@@ -183,7 +183,7 @@ namespace QRCoderArt
             */
         }
 
-        //get enum dictionary
+        //get enum dictionary 
         private IDictionary<string, object> GetParamEnum(Type param)
         {
             //            return param.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
