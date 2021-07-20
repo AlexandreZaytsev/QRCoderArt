@@ -19,9 +19,7 @@ _Uses dynamic creation of the payload interface (one dynamic panel for all views
 2. Select construction
 3. If there are no errors, a QR picture of the code will be created
 3. If there are errors, follow the troubleshooting guidelines = Complete the settings  
-
-![QRCoderArtInfo](https://user-images.githubusercontent.com/16114000/124744118-168d2700-df27-11eb-9cea-66fa37da21a5.png)
-![payload](https://user-images.githubusercontent.com/16114000/125486591-23b995d2-3a1e-44b3-bf25-cbca1393af51.png)
+![QRCoderView](https://user-images.githubusercontent.com/16114000/126315774-471ed7eb-81a6-43ff-baeb-9702f5a6340c.png)
 ***
 ps.<br/>
 _current state 19.07.2021 ([+] ok; [ ] trying to implement)_<br/>
