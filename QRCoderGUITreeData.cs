@@ -57,6 +57,7 @@ namespace QRCoderArt
     /// </summary>
     public class GUITreeNode
     {
+        /// <summary>Initializes a new instance of the <see cref="T:QRCoderArt.GUITreeNode" /> class.</summary>
         public GUITreeNode()
         {
             id = Guid.NewGuid();
@@ -118,6 +119,7 @@ namespace QRCoderArt
         /// node (entry point) in Reflection
         /// </summary>
         private readonly Type tRef;
+        private readonly List<GUITreeNode> GUITreeNodes = new List<GUITreeNode>();                   //list of parameters
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GUITree"/> class.
