@@ -42,6 +42,7 @@ namespace QRCoderArt
                                                 false,                 //MainForm is Load
                                                 false };               //Mainform is Show    
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FormMain" /> class.
         /// </summary>

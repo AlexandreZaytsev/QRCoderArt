@@ -14,11 +14,107 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 
 namespace QRCoderArt
 {
+
+    public class GenericTree<T> where T : GenericTree<T> // recursive constraint  
+    {
+        // no specific data declaration  
+
+        protected List<T> children;
+
+        public GenericTree()
+        {
+            this.children = new List<T>();
+        }
+
+        public virtual void AddChild(T newChild)
+        {
+            this.children.Add(newChild);
+        }
+
+        public void Traverse(Action<int, T> visitor)
+        {
+            this.traverse(0, visitor);
+        }
+
+        protected virtual void traverse(int depth, Action<int, T> visitor)
+        {
+            visitor(depth, (T)this);
+            foreach (T child in this.children)
+                child.traverse(depth + 1, visitor);
+        }
+    }
+
+    public class GenericTreeNext : GenericTree<GenericTreeNext> // concrete derivation
+    {
+        public string Name { get; set; } // user-data example
+
+        public GenericTreeNext(string name)
+        {
+            this.Name = name;
+        }
+    }
+
+    public class TreeNode<T>
+    {
+        private readonly T _value;
+        private readonly List<TreeNode<T>> _children = new List<TreeNode<T>>();
+
+        public TreeNode(T value)
+        {
+            _value = value;
+        }
+
+        public TreeNode<T> this[int i]
+        {
+            get { return _children[i]; }
+        }
+
+        public TreeNode<T> Parent { get; private set; }
+
+        public T Value { get { return _value; } }
+
+        public ReadOnlyCollection<TreeNode<T>> Children
+        {
+            get { return _children.AsReadOnly(); }
+        }
+
+        public TreeNode<T> AddChild(T value)
+        {
+            var node = new TreeNode<T>(value) { Parent = this };
+            _children.Add(node);
+            return node;
+        }
+
+        public TreeNode<T>[] AddChildren(params T[] values)
+        {
+            return values.Select(AddChild).ToArray();
+        }
+
+        public bool RemoveChild(TreeNode<T> node)
+        {
+            return _children.Remove(node);
+        }
+
+        public void Traverse(Action<T> action)
+        {
+            action(Value);
+            foreach (var child in _children)
+                child.Traverse(action);
+        }
+
+        public IEnumerable<T> Flatten()//выровнять
+        {
+            return new[] { Value }.Concat(_children.SelectMany(x => x.Flatten()));
+        }
+    }
+
+
     /// <summary>
     /// Class InvokeError.
     /// </summary>
@@ -61,6 +157,11 @@ namespace QRCoderArt
         public GUITreeNode()
         {
             id = Guid.NewGuid();
+        }
+        public GUITreeNode(string Name)
+        {
+            id = Guid.NewGuid();
+            fName = Name;
         }
         /// <summary>The identifier</summary>
         public Guid id;
@@ -106,6 +207,7 @@ namespace QRCoderArt
         public object fDef;
     }
 
+
     /// <summary>
     /// Class GUITree.
     /// A class for working with Reflection crqoder.dll
@@ -128,7 +230,40 @@ namespace QRCoderArt
         public GUITree(string memberParentNodeName)
         {
             tRef = Type.GetType(memberParentNodeName);
+
+            GenericTreeNext tree = new GenericTreeNext("Main-Harry");
+            tree.AddChild(new GenericTreeNext("Main-Sub-Willy"));
+            GenericTreeNext inter = new GenericTreeNext("Main-Inter-Willy");
+            inter.AddChild(new GenericTreeNext("Inter-Sub-Tom"));
+            inter.AddChild(new GenericTreeNext("Inter-Sub-Magda"));
+            tree.AddChild(inter);
+            tree.AddChild(new GenericTreeNext("Main-Sub-Chantal"));
+            tree.Traverse(NodeWorker);
+
+
+
+
+
+
+            TreeNode<GUITreeNode> root = new TreeNode<GUITreeNode>(new GUITreeNode("root"));
+            {
+    TreeNode<GUITreeNode> node0 = root.AddChild(new GUITreeNode("node0"));
+            TreeNode<GUITreeNode> node1 = root.AddChild(new GUITreeNode("node1"));
+            TreeNode<GUITreeNode> node2 = root.AddChild(new GUITreeNode("node2"));
+            {
+                TreeNode<GUITreeNode> node20 = node2.AddChild(null);
+                TreeNode<GUITreeNode> node21 = node2.AddChild(new GUITreeNode("node21"));
+                {
+                    TreeNode<GUITreeNode> node210 = node21.AddChild(new GUITreeNode("node210"));
+                    TreeNode<GUITreeNode> node211 = node21.AddChild(new GUITreeNode("node211"));
+                }
+            }
+            TreeNode<GUITreeNode> node3 = root.AddChild(new GUITreeNode("node3"));
+            {
+                TreeNode<GUITreeNode> node30 = node3.AddChild(new GUITreeNode("node30"));
+            }
         }
+    }
         /// <summary>Initializes a new instance of the <see cref="T:QRCoderArt.GUITree" /> class.</summary>
         /// <param name="memberParentNodeName">Name of the member parent node.</param>
         /// <param name="memberChildNodeName">Name of the member child node.</param>
@@ -144,6 +279,11 @@ namespace QRCoderArt
         public void Dispose()
         {
             //         throw new NotImplementedException();
+        }
+
+        static void NodeWorker(int depth, GenericTreeNext node)
+        {                                // a little one-line string-concatenation (n-times)
+            Console.WriteLine("{0}{1}: {2}", String.Join("   ", new string[depth + 1]), depth, node.Name);
         }
 
         /// <summary>
