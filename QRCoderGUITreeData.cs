@@ -189,7 +189,7 @@ namespace QRCoderArt
             //            return param.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
             return (from t in param.GetFields(BindingFlags.Static | BindingFlags.Public)
                     where !t.IsDefined(typeof(ObsoleteAttribute), true)
-                    select new { v = t.Name, k = t.GetValue(new object()) }).ToDictionary(k => k.v, v => v.k);
+                    select new { v = t.Name, k = t.GetValue(new object()) }).ToDictionary(k => k.v, v => v.k); 
         }
 
         /// <summary>
