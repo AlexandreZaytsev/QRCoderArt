@@ -124,10 +124,18 @@ namespace QRCoderArt
         /// <summary>
         /// Initializes a new instance of the <see cref="GUITree"/> class.
         /// </summary>
-        /// <param name="name">The name name of the Reflection node from which the structure is read.</param>
-        public GUITree(string name)
+        /// <param name="memberParentNodeName">Name of the member parent node.</param>
+        public GUITree(string memberParentNodeName)
         {
-            tRef = Type.GetType(name);
+            tRef = Type.GetType(memberParentNodeName);
+        }
+        /// <summary>Initializes a new instance of the <see cref="T:QRCoderArt.GUITree" /> class.</summary>
+        /// <param name="memberParentNodeName">Name of the member parent node.</param>
+        /// <param name="memberChildNodeName">Name of the member child node.</param>
+        public GUITree(string memberParentNodeName, string memberChildNodeName)
+        {
+            tRef = Type.GetType(memberParentNodeName);
+            GUITreeNodes = new List<GUITreeNode>((IEnumerable<GUITreeNode>)GetMemberByName(memberChildNodeName));
         }
 
         /// <summary>
