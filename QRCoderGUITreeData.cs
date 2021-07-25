@@ -26,7 +26,7 @@ namespace QRCoderArt
     public class ValueNode
     {
         public ValueNode() { id = Guid.NewGuid(); }
-        private readonly Guid id;                           // node field identifier
+        public readonly Guid id;                           // node field identifier
         public string name;                                // node field name
         public int nestingLevel;                            // the nesting level of the node in the tree
         public string parentName;                          // name of the parent node 

@@ -179,7 +179,7 @@ namespace QRCoderArt
                             Size = new Size(controlWidth, 20),
                             Margin = padding,
                             Name = "" + prop.name,
-                            AccessibleName = "Get",
+                            AccessibleName = prop.id.ToString(),// "Get",
                             AccessibleDescription = prop.dataType                          //type in tooltype
 
                         };
@@ -221,7 +221,7 @@ namespace QRCoderArt
                             Size = new Size(controlWidth, 20),
                             Margin = padding,
                             Name = "" + prop.name,
-                            AccessibleName = "Get",
+                            AccessibleName = prop.id.ToString(),// "Get",
                             AccessibleDescription = prop.dataType
                         };
                         chb.CheckedChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
@@ -235,7 +235,7 @@ namespace QRCoderArt
                             Name = "" + prop.name,
                             DataSource = new Dictionary<string, string> { ["plugin"] = "plugin + pluginOption", ["-"] = "-" }, //!!! refresh from callback -> CallBack_GetParam
                                                                                                                                //new Dictionary<string, string>{["plugin"] = plugin + (string.IsNullOrEmpty(pluginOption)? "": $";{pluginOption}")}
-                            AccessibleName = "Get",
+                            AccessibleName = prop.id.ToString(),// "Get",
                             AccessibleDescription = prop.dataType
                         };
                         dgv.MouseHover += new System.EventHandler(ToolTipMouseHover);
@@ -264,7 +264,7 @@ namespace QRCoderArt
                             Size = new Size(controlWidth, 20),
                             Margin = padding,
                             Name = "" + prop.name,
-                            AccessibleName = "Get",
+                            AccessibleName = prop.id.ToString(),// "Get",
                             AccessibleDescription = prop.dataType,
                             Format = DateTimePickerFormat.Short
                         };
@@ -291,7 +291,7 @@ namespace QRCoderArt
                         {
                             //                        cmb.BeginUpdate();
                             Name = "" + prop.name,
-                            AccessibleName = "Get",
+                            AccessibleName = prop.id.ToString(),// "Get",
                             //cmb.AccessibleDescription = prop.fType;
                             DataSource = new BindingSource(prop.dataSource, null),   //получить конструкторы member
                             DisplayMember = "Key",                                            //Имя    
@@ -455,9 +455,11 @@ namespace QRCoderArt
             {
                 foreach (Control cntrl in panelGUITree.Controls)
                 {
-                    if (cntrl.Created && cntrl.AccessibleName == "Get" && cntrl.Parent.Name == panelGUITree.Name)
-                    {
-                        ret = null;
+
+//                    if (cntrl.Created && cntrl.AccessibleName == "Get" && cntrl.Parent.Name == panelGUITree.Name)
+                    if (cntrl.Created && Guid.TryParse(cntrl.AccessibleName, out var newGuid) && cntrl.Parent.Name == panelGUITree.Name)
+                        {
+                            ret = null;
                         if (cntrl.Enabled)
                         {
                             switch (cntrl.AccessibleDescription)
