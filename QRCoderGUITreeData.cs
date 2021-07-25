@@ -27,16 +27,16 @@ namespace QRCoderArt
     {
         public ValueNode() { id = Guid.NewGuid(); }
         private readonly Guid id;                           // node field identifier
-        public string vName;                                // node field name
+        public string name;                                // node field name
         public int nestingLevel;                            // the nesting level of the node in the tree
-        public string vParentName;                          // name of the parent node 
-        public string vDataType;                            // name of the node field data type(string: 'String', 'Integer', etc.)
-        public string vFormType;                            // name of the form element type (string: 'TextBox'; 'Combobox', etc.)
-        public Dictionary<string, object> vDataSource;      // extended data (Dictionary) - used for for datasource ComboBox
-        public Boolean vNullValue;                          // indicates whether the parameter value is zero-used for CheckBox
-        public object vDefaultValue;                        //the default value of the parameter
-        public object vFormValue;                           //the current value of the parameter from form
-        public Type vMetaDataSource;                      //the current data source form control
+        public string parentName;                          // name of the parent node 
+        public string dataType;                            // name of the node field data type(string: 'String', 'Integer', etc.)
+        public string formType;                            // name of the form element type (string: 'TextBox'; 'Combobox', etc.)
+        public Dictionary<string, object> dataSource;      // extended data (Dictionary) - used for for datasource ComboBox
+        public Boolean nullValue;                          // indicates whether the parameter value is zero-used for CheckBox
+        public object defaultValue;                        //the default value of the parameter
+        public object formValue;                           //the current value of the parameter from form
+        public Type metaDataSource;                      //the current data source form control
     }
 
     //----------------------------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ namespace QRCoderArt
         }
         public Node<ValueNode> Find(Node<ValueNode> node, string nameDescriptor, string nameType)
         {
-            if (nameDescriptor == node._value.vName && nameType == node._value.vDataType)
+            if (nameDescriptor == node._value.name && nameType == node._value.dataType)
                 return node;
 
             Node<ValueNode> personFound = null;
@@ -146,7 +146,7 @@ namespace QRCoderArt
         {
             tRef = Type.GetType(memberParentNodeName);          // reflection base member
             rootTree = new Node<ValueNode>(new ValueNode());
-            rootTree.Value.vName = "Payload";
+            rootTree.Value.name = "Payload";
             pointTree = rootTree;
         }
 
@@ -311,12 +311,12 @@ namespace QRCoderArt
 
             if (nodeType.IsClass && nodeType.Namespace != "System" && !nodeType.IsGenericType)
             {
-                dataNode.vMetaDataSource = nodeType;
-                dataNode.vParentName = nodeNestingLevel == 0 ? "" : nodeParentName;// paramName; ;
-                dataNode.vName = nodeName; //"ctor_" +paramName;
-                dataNode.vDataType = "Constructor";
-                dataNode.vFormType = "ComboBox";
-                dataNode.vDataSource = GetConstructors(nodeType);// (((Type)Param));
+                dataNode.metaDataSource = nodeType;
+                dataNode.parentName = nodeNestingLevel == 0 ? "" : nodeParentName;// paramName; ;
+                dataNode.name = nodeName; //"ctor_" +paramName;
+                dataNode.dataType = "Constructor";
+                dataNode.formType = "ComboBox";
+                dataNode.dataSource = GetConstructors(nodeType);// (((Type)Param));
                 //mParam.fNull
                 //mParam.fDef
                 dataNode.nestingLevel = nodeNestingLevel;
@@ -325,7 +325,7 @@ namespace QRCoderArt
                 nodeNestingLevel++;
 
                 //!!! recursion
-                GetParamsConstuctor((ConstructorInfo)dataNode.vDataSource.Values.First(), nodeNestingLevel, dataNode.vName);   //!!! attention - recursion
+                GetParamsConstuctor((ConstructorInfo)dataNode.dataSource.Values.First(), nodeNestingLevel, dataNode.name);   //!!! attention - recursion
                 /*
                 foreach (var ctor in mParam.fList.Values)
                 {
@@ -336,14 +336,14 @@ namespace QRCoderArt
             }
             else
             {
-                dataNode.vMetaDataSource = nodeType;
-                dataNode.vParentName = nodeParentName;
-                dataNode.vName = nodeName;
-                dataNode.vDataType = nodeType.Name;
+                dataNode.metaDataSource = nodeType;
+                dataNode.parentName = nodeParentName;
+                dataNode.name = nodeName;
+                dataNode.dataType = nodeType.Name;
                 //mParam.fForm 
                 //mParam.fList 
                 //mParam.fNull 
-                dataNode.vDefaultValue = nodeDefValue;
+                dataNode.defaultValue = nodeDefValue;
                 dataNode.nestingLevel = nodeNestingLevel;
 
                 switch (nodeType.Name)
@@ -353,31 +353,31 @@ namespace QRCoderArt
                     case "Single":
                     case "Int32":
                     case "Decimal":
-                        dataNode.vFormType = "TextBox";
+                        dataNode.formType = "TextBox";
                         break;
                     case "DateTime":
-                        dataNode.vFormType = "DateTime";
+                        dataNode.formType = "DateTime";
                         break;
                     case "Nullable`1":
-                        dataNode.vDataType = nodeType.GenericTypeArguments.First().Name;
-                        dataNode.vNullValue = true;
-                        switch (dataNode.vDataType)
+                        dataNode.dataType = nodeType.GenericTypeArguments.First().Name;
+                        dataNode.nullValue = true;
+                        switch (dataNode.dataType)
                         {
                             case "String":
                             case "Double":
                             case "Single":
                             case "Int32":
                             case "Decimal":
-                                dataNode.vFormType = "TextBox";
+                                dataNode.formType = "TextBox";
                                 break;
                             case "DateTime":
-                                dataNode.vFormType = "DateTime";
+                                dataNode.formType = "DateTime";
                                 break;
                             default:
                                 if (nodeType.GenericTypeArguments.First().IsEnum)
                                 {
-                                    dataNode.vFormType = "ComboBox";
-                                    dataNode.vDataSource = (Dictionary<string, object>)GetParamEnum(nodeType.GenericTypeArguments.First());
+                                    dataNode.formType = "ComboBox";
+                                    dataNode.dataSource = (Dictionary<string, object>)GetParamEnum(nodeType.GenericTypeArguments.First());
 
                                 }
                                 //                             else 
@@ -390,13 +390,13 @@ namespace QRCoderArt
                     //                    case "Dictionary`2":
                     //                        break:
                     case "Boolean":
-                        dataNode.vFormType = "CheckBox";
+                        dataNode.formType = "CheckBox";
                         break;
                     default:
                         if (nodeType.IsEnum)
                         {
-                            dataNode.vFormType = "ComboBox";
-                            dataNode.vDataSource = (Dictionary<string, object>)GetParamEnum(nodeType);
+                            dataNode.formType = "ComboBox";
+                            dataNode.dataSource = (Dictionary<string, object>)GetParamEnum(nodeType);
                         }
                         else if (nodeType.IsGenericType)
                         {
@@ -406,7 +406,7 @@ namespace QRCoderArt
                             //   {
                             //mParam.fForm = "Button"; //"Dictionary`2"
                             //mParam.fList = (new Dictionary<string, string> {["plugin"] = "plugin" + (string.IsNullOrEmpty("pluginOption") ? "" : $";" + $"{"pluginOption"}")}).Values.Cast<object>().ToDictionary(k => k.ToString(), v => v); ;
-                            dataNode.vFormType = "dataGridView";
+                            dataNode.formType = "dataGridView";
                             //   }
                         }
                         else

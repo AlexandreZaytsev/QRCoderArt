@@ -142,50 +142,50 @@ namespace QRCoderArt
             foreach (var prop in ReflectionData.GetTree())
             {
                 //                 this.Refresh();
-                controlWidth = prop.vNullValue ? 113 : 128;
+                controlWidth = prop.nullValue ? 113 : 128;
                 //                controlWidth = prop.fNull ? 103 : 128;
 
-                if (panels.Peek().Name != prop.vParentName && panels.Peek().Name != panelGUITree.Name)
+                if (panels.Peek().Name != prop.parentName && panels.Peek().Name != panelGUITree.Name)
                 {
                     tPanel = panels.Pop();  //go back to the previous panel
                 }
 
                 Label lb = new Label
                 {
-                    Name = prop.vName,
+                    Name = prop.name,
                     AutoSize = false,
                     Margin = padding
                 }; //Label();
-                if (prop.vDataType != "Constructor")
+                if (prop.dataType != "Constructor")
                 {
                     lb.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-                    lb.Text = prop.vName;
+                    lb.Text = prop.name;
                     lb.Size = new Size(labelWidth - prop.nestingLevel * reverseShift, 20);
                     panels.Peek().Controls.Add(lb);
                 }
                 else
                 {
                     lb.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-                    lb.Text = prop.vName + " constructor's"; //(panels.Peek().Name == "panelPayload" ? "Class: " : "subClass: ") + prop.fName + " constructor's";
+                    lb.Text = prop.name + " constructor's"; //(panels.Peek().Name == "panelPayload" ? "Class: " : "subClass: ") + prop.fName + " constructor's";
                     lb.Size = new Size(sizeWidth - prop.nestingLevel * reverseShift, 20);
                     panels.Peek().Controls.Add(lb);
                 }
 
-                switch (prop.vFormType)
+                switch (prop.formType)
                 {
                     case "TextBox":
                         TextBox tb = new TextBox
                         {
                             Size = new Size(controlWidth, 20),
                             Margin = padding,
-                            Name = "" + prop.vName,
+                            Name = "" + prop.name,
                             AccessibleName = "Get",
-                            AccessibleDescription = prop.vDataType                          //type in tooltype
+                            AccessibleDescription = prop.dataType                          //type in tooltype
 
                         };
                         tb.MouseHover += new System.EventHandler(ToolTipMouseHover);
                         tb.TextChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
-                        switch (prop.vDataType)
+                        switch (prop.dataType)
                         {
                             case "Single":
                             case "Int32":
@@ -193,20 +193,20 @@ namespace QRCoderArt
                             case "Double":
                                 tb.BackColor = Color.GhostWhite;//.OldLace;// LightBlue;
                                 tb.KeyPress += new KeyPressEventHandler(FilterOnlyReal);
-                                tb.Text = prop.vDefaultValue == null ? "" : Convert.ToString(prop.vDefaultValue);
+                                tb.Text = prop.defaultValue == null ? "" : Convert.ToString(prop.defaultValue);
                                 break;
                             default:
-                                tb.Text = prop.vDefaultValue == null ? "" : Convert.ToString(prop.vDefaultValue);
+                                tb.Text = prop.defaultValue == null ? "" : Convert.ToString(prop.defaultValue);
                                 break;
                         }
                         panels.Peek().Controls.Add(tb);
-                        if (prop.vNullValue)
+                        if (prop.nullValue)
                         {
                             CheckBox chtb = new CheckBox
                             {
                                 Size = new Size(13, 20),
                                 Margin = padding,
-                                Name = "" + prop.vName,
+                                Name = "" + prop.name,
                                 AccessibleDescription = "Nullable"                          //type in tooltype
                             };
                             chtb.MouseHover += new System.EventHandler(ToolTipMouseHover);
@@ -220,9 +220,9 @@ namespace QRCoderArt
                         {
                             Size = new Size(controlWidth, 20),
                             Margin = padding,
-                            Name = "" + prop.vName,
+                            Name = "" + prop.name,
                             AccessibleName = "Get",
-                            AccessibleDescription = prop.vDataType
+                            AccessibleDescription = prop.dataType
                         };
                         chb.CheckedChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
                         panels.Peek().Controls.Add(chb);
@@ -232,11 +232,11 @@ namespace QRCoderArt
                         {
                             Size = new Size(103, 20),
                             Margin = padding,
-                            Name = "" + prop.vName,
+                            Name = "" + prop.name,
                             DataSource = new Dictionary<string, string> { ["plugin"] = "plugin + pluginOption", ["-"] = "-" }, //!!! refresh from callback -> CallBack_GetParam
                                                                                                                                //new Dictionary<string, string>{["plugin"] = plugin + (string.IsNullOrEmpty(pluginOption)? "": $";{pluginOption}")}
                             AccessibleName = "Get",
-                            AccessibleDescription = prop.vDataType
+                            AccessibleDescription = prop.dataType
                         };
                         dgv.MouseHover += new System.EventHandler(ToolTipMouseHover);
                         dgv.DataSourceChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
@@ -247,7 +247,7 @@ namespace QRCoderArt
                         {
                             Size = new Size(23, 20),
                             Margin = padding,
-                            Name = "" + prop.vName,
+                            Name = "" + prop.name,
                             Text = "...",
                             AccessibleName = "",// "Get";
                             FlatStyle = FlatStyle.System,
@@ -263,21 +263,21 @@ namespace QRCoderArt
                         {
                             Size = new Size(controlWidth, 20),
                             Margin = padding,
-                            Name = "" + prop.vName,
+                            Name = "" + prop.name,
                             AccessibleName = "Get",
-                            AccessibleDescription = prop.vDataType,
+                            AccessibleDescription = prop.dataType,
                             Format = DateTimePickerFormat.Short
                         };
                         dtp.ValueChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
                         dtp.EnabledChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
                         panels.Peek().Controls.Add(dtp);
-                        if (prop.vNullValue)
+                        if (prop.nullValue)
                         {
                             CheckBox chdtp = new CheckBox
                             {
                                 Size = new Size(13, 20),
                                 Margin = padding,
-                                Name = "" + prop.vName,
+                                Name = "" + prop.name,
                                 AccessibleDescription = "Nullable"                          //type in tooltype
                             };
                             chdtp.MouseHover += new System.EventHandler(ToolTipMouseHover);
@@ -290,16 +290,16 @@ namespace QRCoderArt
                         ComboBox cmb = new ComboBox
                         {
                             //                        cmb.BeginUpdate();
-                            Name = "" + prop.vName,
+                            Name = "" + prop.name,
                             AccessibleName = "Get",
                             //cmb.AccessibleDescription = prop.fType;
-                            DataSource = new BindingSource(prop.vDataSource, null),   //получить конструкторы member
+                            DataSource = new BindingSource(prop.dataSource, null),   //получить конструкторы member
                             DisplayMember = "Key",                                            //Имя    
                             ValueMember = "Value",                                            //значение  
                             SelectedItem = 0,
                             DropDownStyle = ComboBoxStyle.DropDownList
                         };
-                        if (prop.vDataType == "Constructor")
+                        if (prop.dataType == "Constructor")
                         {
                             //  cmb.Name += "ctor_";
                             cmb.AccessibleDescription = "Constructor";
@@ -310,7 +310,7 @@ namespace QRCoderArt
 
                             FlowLayoutPanel cPanel = new FlowLayoutPanel
                             {
-                                Name = "" + prop.vName,
+                                Name = "" + prop.name,
                                 AutoSize = true,
                                 Padding = new Padding(0, 2, 0, 2),
                                 BorderStyle = BorderStyle.FixedSingle
@@ -318,8 +318,8 @@ namespace QRCoderArt
                             panels.Peek().Controls.Add(cPanel);
                             panels.Push(cPanel);
 
-                            Control cntrl = this.FilterControls(c => c.Name != null && c.Name.Equals(prop.vName) && c is Label).First();
-                            cntrl.Text += " (" + prop.vDataSource.Count.ToString() + ")";
+                            Control cntrl = this.FilterControls(c => c.Name != null && c.Name.Equals(prop.name) && c is Label).First();
+                            cntrl.Text += " (" + prop.dataSource.Count.ToString() + ")";
                         }
                         else
                         {
@@ -327,13 +327,13 @@ namespace QRCoderArt
                             cmb.Size = new Size(controlWidth, 20);
                             cmb.Margin = padding;
                             panels.Peek().Controls.Add(cmb);
-                            if (prop.vNullValue)
+                            if (prop.nullValue)
                             {
                                 CheckBox chcmb = new CheckBox
                                 {
                                     Size = new Size(13, 20),
                                     Margin = padding,
-                                    Name = "" + prop.vName,
+                                    Name = "" + prop.name,
                                     AccessibleDescription = "Nullable"                          //type in tooltype
                                 };
                                 chcmb.MouseHover += new System.EventHandler(ToolTipMouseHover);
