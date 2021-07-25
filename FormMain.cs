@@ -13,7 +13,6 @@
 // ***********************************************************************
 using QRCoder;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -151,201 +150,201 @@ namespace QRCoderArt
                     tPanel = panels.Pop();  //go back to the previous panel
                 }
 
-                    Label lb = new Label
-                    {
-                        Name = prop.vName,
-                        AutoSize = false,
-                        Margin = padding
-                    }; //Label();
-                    if (prop.vDataType != "Constructor")
-                    {
-                        lb.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-                        lb.Text = prop.vName;
-                        lb.Size = new Size(labelWidth - prop.nestingLevel * reverseShift, 20);
-                        panels.Peek().Controls.Add(lb);
-                    }
-                    else
-                    {
-                        lb.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-                        lb.Text = prop.vName + " constructor's"; //(panels.Peek().Name == "panelPayload" ? "Class: " : "subClass: ") + prop.fName + " constructor's";
-                        lb.Size = new Size(sizeWidth - prop.nestingLevel * reverseShift, 20);
-                        panels.Peek().Controls.Add(lb);
-                    }
+                Label lb = new Label
+                {
+                    Name = prop.vName,
+                    AutoSize = false,
+                    Margin = padding
+                }; //Label();
+                if (prop.vDataType != "Constructor")
+                {
+                    lb.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+                    lb.Text = prop.vName;
+                    lb.Size = new Size(labelWidth - prop.nestingLevel * reverseShift, 20);
+                    panels.Peek().Controls.Add(lb);
+                }
+                else
+                {
+                    lb.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+                    lb.Text = prop.vName + " constructor's"; //(panels.Peek().Name == "panelPayload" ? "Class: " : "subClass: ") + prop.fName + " constructor's";
+                    lb.Size = new Size(sizeWidth - prop.nestingLevel * reverseShift, 20);
+                    panels.Peek().Controls.Add(lb);
+                }
 
-                    switch (prop.vFormType)
-                    {
-                        case "TextBox":
-                            TextBox tb = new TextBox
+                switch (prop.vFormType)
+                {
+                    case "TextBox":
+                        TextBox tb = new TextBox
+                        {
+                            Size = new Size(controlWidth, 20),
+                            Margin = padding,
+                            Name = "" + prop.vName,
+                            AccessibleName = "Get",
+                            AccessibleDescription = prop.vDataType                          //type in tooltype
+
+                        };
+                        tb.MouseHover += new System.EventHandler(ToolTipMouseHover);
+                        tb.TextChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
+                        switch (prop.vDataType)
+                        {
+                            case "Single":
+                            case "Int32":
+                            case "Decimal":
+                            case "Double":
+                                tb.BackColor = Color.GhostWhite;//.OldLace;// LightBlue;
+                                tb.KeyPress += new KeyPressEventHandler(FilterOnlyReal);
+                                tb.Text = prop.vDefaultValue == null ? "" : Convert.ToString(prop.vDefaultValue);
+                                break;
+                            default:
+                                tb.Text = prop.vDefaultValue == null ? "" : Convert.ToString(prop.vDefaultValue);
+                                break;
+                        }
+                        panels.Peek().Controls.Add(tb);
+                        if (prop.vNullValue)
+                        {
+                            CheckBox chtb = new CheckBox
                             {
-                                Size = new Size(controlWidth, 20),
+                                Size = new Size(13, 20),
                                 Margin = padding,
                                 Name = "" + prop.vName,
-                                AccessibleName = "Get",
-                                AccessibleDescription = prop.vDataType                          //type in tooltype
-                                    
+                                AccessibleDescription = "Nullable"                          //type in tooltype
                             };
-                            tb.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                            tb.TextChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
-                            switch (prop.vDataType)
+                            chtb.MouseHover += new System.EventHandler(ToolTipMouseHover);
+                            chtb.CheckedChanged += (sender, e) => tb.Enabled = (chtb.CheckState == CheckState.Checked); // GeyPayLoadStringFromForm(null, null);
+                            panels.Peek().Controls.Add(chtb);
+                            tb.Enabled = false;// chtb.Checked;
+                        }
+                        break;
+                    case "CheckBox":
+                        CheckBox chb = new CheckBox
+                        {
+                            Size = new Size(controlWidth, 20),
+                            Margin = padding,
+                            Name = "" + prop.vName,
+                            AccessibleName = "Get",
+                            AccessibleDescription = prop.vDataType
+                        };
+                        chb.CheckedChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
+                        panels.Peek().Controls.Add(chb);
+                        break;
+                    case "dataGridView":
+                        DataGridView dgv = new DataGridView
+                        {
+                            Size = new Size(103, 20),
+                            Margin = padding,
+                            Name = "" + prop.vName,
+                            DataSource = new Dictionary<string, string> { ["plugin"] = "plugin + pluginOption", ["-"] = "-" }, //!!! refresh from callback -> CallBack_GetParam
+                                                                                                                               //new Dictionary<string, string>{["plugin"] = plugin + (string.IsNullOrEmpty(pluginOption)? "": $";{pluginOption}")}
+                            AccessibleName = "Get",
+                            AccessibleDescription = prop.vDataType
+                        };
+                        dgv.MouseHover += new System.EventHandler(ToolTipMouseHover);
+                        dgv.DataSourceChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
+                        panels.Peek().Controls.Add(dgv);
+
+                        // case "Button":          //for custom parameter
+                        Button bt = new Button
+                        {
+                            Size = new Size(23, 20),
+                            Margin = padding,
+                            Name = "" + prop.vName,
+                            Text = "...",
+                            AccessibleName = "",// "Get";
+                            FlatStyle = FlatStyle.System,
+                            AccessibleDescription = "setting a custom parameter"// prop.fType;
+                        };
+                        bt.MouseHover += new System.EventHandler(ToolTipMouseHover);
+                        bt.Click += new EventHandler(SetPropretyPairs);
+                        //                        bt.Click += (sender, e) => {dictionaryForm a = new dictionaryForm(); a.ShowDialog(); };
+                        panels.Peek().Controls.Add(bt);
+                        break;
+                    case "DateTime":
+                        DateTimePicker dtp = new DateTimePicker
+                        {
+                            Size = new Size(controlWidth, 20),
+                            Margin = padding,
+                            Name = "" + prop.vName,
+                            AccessibleName = "Get",
+                            AccessibleDescription = prop.vDataType,
+                            Format = DateTimePickerFormat.Short
+                        };
+                        dtp.ValueChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
+                        dtp.EnabledChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
+                        panels.Peek().Controls.Add(dtp);
+                        if (prop.vNullValue)
+                        {
+                            CheckBox chdtp = new CheckBox
                             {
-                                case "Single":
-                                case "Int32":
-                                case "Decimal":
-                                case "Double":
-                                    tb.BackColor = Color.GhostWhite;//.OldLace;// LightBlue;
-                                    tb.KeyPress += new KeyPressEventHandler(FilterOnlyReal);
-                                    tb.Text = prop.vDefaultValue == null ? "" : Convert.ToString(prop.vDefaultValue);
-                                    break;
-                                default:
-                                    tb.Text = prop.vDefaultValue == null ? "" : Convert.ToString(prop.vDefaultValue);
-                                    break;
-                            }
-                            panels.Peek().Controls.Add(tb);
+                                Size = new Size(13, 20),
+                                Margin = padding,
+                                Name = "" + prop.vName,
+                                AccessibleDescription = "Nullable"                          //type in tooltype
+                            };
+                            chdtp.MouseHover += new System.EventHandler(ToolTipMouseHover);
+                            chdtp.CheckedChanged += (sender, e) => dtp.Enabled = (chdtp.CheckState == CheckState.Checked);// GeyPayLoadStringFromForm(null, null);
+                            panels.Peek().Controls.Add(chdtp);
+                            dtp.Enabled = false;// chdtp.Checked;
+                        }
+                        break;
+                    case "ComboBox":
+                        ComboBox cmb = new ComboBox
+                        {
+                            //                        cmb.BeginUpdate();
+                            Name = "" + prop.vName,
+                            AccessibleName = "Get",
+                            //cmb.AccessibleDescription = prop.fType;
+                            DataSource = new BindingSource(prop.vDataSource, null),   //получить конструкторы member
+                            DisplayMember = "Key",                                            //Имя    
+                            ValueMember = "Value",                                            //значение  
+                            SelectedItem = 0,
+                            DropDownStyle = ComboBoxStyle.DropDownList
+                        };
+                        if (prop.vDataType == "Constructor")
+                        {
+                            //  cmb.Name += "ctor_";
+                            cmb.AccessibleDescription = "Constructor";
+                            cmb.SelectedIndexChanged += new EventHandler(RebuildingGUITreePanel);
+                            panels.Peek().Controls.Add(cmb);
+                            cmb.Size = new Size(sizeWidth - prop.nestingLevel * reverseShift, 20);
+
+
+                            FlowLayoutPanel cPanel = new FlowLayoutPanel
+                            {
+                                Name = "" + prop.vName,
+                                AutoSize = true,
+                                Padding = new Padding(0, 2, 0, 2),
+                                BorderStyle = BorderStyle.FixedSingle
+                            };
+                            panels.Peek().Controls.Add(cPanel);
+                            panels.Push(cPanel);
+
+                            Control cntrl = this.FilterControls(c => c.Name != null && c.Name.Equals(prop.vName) && c is Label).First();
+                            cntrl.Text += " (" + prop.vDataSource.Count.ToString() + ")";
+                        }
+                        else
+                        {
+                            cmb.SelectedIndexChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
+                            cmb.Size = new Size(controlWidth, 20);
+                            cmb.Margin = padding;
+                            panels.Peek().Controls.Add(cmb);
                             if (prop.vNullValue)
                             {
-                                CheckBox chtb = new CheckBox
+                                CheckBox chcmb = new CheckBox
                                 {
                                     Size = new Size(13, 20),
                                     Margin = padding,
                                     Name = "" + prop.vName,
                                     AccessibleDescription = "Nullable"                          //type in tooltype
                                 };
-                                chtb.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                                chtb.CheckedChanged += (sender, e) => tb.Enabled = (chtb.CheckState == CheckState.Checked); // GeyPayLoadStringFromForm(null, null);
-                                panels.Peek().Controls.Add(chtb);
-                                tb.Enabled = false;// chtb.Checked;
+                                chcmb.MouseHover += new System.EventHandler(ToolTipMouseHover);
+                                chcmb.CheckedChanged += (sender, e) => cmb.Enabled = (chcmb.CheckState == CheckState.Checked);// GeyPayLoadStringFromForm(null, null);
+                                panels.Peek().Controls.Add(chcmb);
+                                cmb.Enabled = false;// chdtp.Checked;
                             }
-                            break;
-                        case "CheckBox":
-                            CheckBox chb = new CheckBox
-                            {
-                                Size = new Size(controlWidth, 20),
-                                Margin = padding,
-                                Name = "" + prop.vName,
-                                AccessibleName = "Get",
-                                AccessibleDescription = prop.vDataType
-                            };
-                            chb.CheckedChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
-                            panels.Peek().Controls.Add(chb);
-                            break;
-                        case "dataGridView":
-                            DataGridView dgv = new DataGridView
-                            {
-                                Size = new Size(103, 20),
-                                Margin = padding,
-                                Name = "" + prop.vName,
-                                DataSource = new Dictionary<string, string> { ["plugin"] = "plugin + pluginOption", ["-"] = "-" }, //!!! refresh from callback -> CallBack_GetParam
-                                                                                                                                   //new Dictionary<string, string>{["plugin"] = plugin + (string.IsNullOrEmpty(pluginOption)? "": $";{pluginOption}")}
-                                AccessibleName = "Get",
-                                AccessibleDescription = prop.vDataType
-                            };
-                            dgv.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                            dgv.DataSourceChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
-                            panels.Peek().Controls.Add(dgv);
-
-                            // case "Button":          //for custom parameter
-                            Button bt = new Button
-                            {
-                                Size = new Size(23, 20),
-                                Margin = padding,
-                                Name = "" + prop.vName,
-                                Text = "...",
-                                AccessibleName = "",// "Get";
-                                FlatStyle = FlatStyle.System,
-                                AccessibleDescription = "setting a custom parameter"// prop.fType;
-                            };
-                            bt.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                            bt.Click += new EventHandler(SetPropretyPairs);
-                            //                        bt.Click += (sender, e) => {dictionaryForm a = new dictionaryForm(); a.ShowDialog(); };
-                            panels.Peek().Controls.Add(bt);
-                            break;
-                        case "DateTime":
-                            DateTimePicker dtp = new DateTimePicker
-                            {
-                                Size = new Size(controlWidth, 20),
-                                Margin = padding,
-                                Name = "" + prop.vName,
-                                AccessibleName = "Get",
-                                AccessibleDescription = prop.vDataType,
-                                Format = DateTimePickerFormat.Short
-                            };
-                            dtp.ValueChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
-                            dtp.EnabledChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
-                            panels.Peek().Controls.Add(dtp);
-                            if (prop.vNullValue)
-                            {
-                                CheckBox chdtp = new CheckBox
-                                {
-                                    Size = new Size(13, 20),
-                                    Margin = padding,
-                                    Name = "" + prop.vName,
-                                    AccessibleDescription = "Nullable"                          //type in tooltype
-                                };
-                                chdtp.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                                chdtp.CheckedChanged += (sender, e) => dtp.Enabled = (chdtp.CheckState == CheckState.Checked);// GeyPayLoadStringFromForm(null, null);
-                                panels.Peek().Controls.Add(chdtp);
-                                dtp.Enabled = false;// chdtp.Checked;
-                            }
-                            break;
-                        case "ComboBox":
-                            ComboBox cmb = new ComboBox
-                            {
-                                //                        cmb.BeginUpdate();
-                                Name = "" + prop.vName,
-                                AccessibleName = "Get",
-                                //cmb.AccessibleDescription = prop.fType;
-                                DataSource = new BindingSource(prop.vDataSource, null),   //получить конструкторы member
-                                DisplayMember = "Key",                                            //Имя    
-                                ValueMember = "Value",                                            //значение  
-                                SelectedItem = 0,
-                                DropDownStyle = ComboBoxStyle.DropDownList
-                            };
-                            if (prop.vDataType == "Constructor")
-                            {
-                                //  cmb.Name += "ctor_";
-                                cmb.AccessibleDescription = "Constructor";
-                                cmb.SelectedIndexChanged += new EventHandler(RebuildingGUITreePanel);
-                                panels.Peek().Controls.Add(cmb);
-                                cmb.Size = new Size(sizeWidth - prop.nestingLevel * reverseShift, 20);
-
-
-                                FlowLayoutPanel cPanel = new FlowLayoutPanel
-                                {
-                                    Name = "" + prop.vName,
-                                    AutoSize = true,
-                                    Padding = new Padding(0, 2, 0, 2),
-                                    BorderStyle = BorderStyle.FixedSingle
-                                };
-                                panels.Peek().Controls.Add(cPanel);
-                                panels.Push(cPanel);
-
-                                Control cntrl = this.FilterControls(c => c.Name != null && c.Name.Equals(prop.vName) && c is Label).First();
-                                cntrl.Text += " (" + prop.vDataSource.Count.ToString() + ")";
-                            }
-                            else
-                            {
-                                cmb.SelectedIndexChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
-                                cmb.Size = new Size(controlWidth, 20);
-                                cmb.Margin = padding;
-                                panels.Peek().Controls.Add(cmb);
-                                if (prop.vNullValue)
-                                {
-                                    CheckBox chcmb = new CheckBox
-                                    {
-                                        Size = new Size(13, 20),
-                                        Margin = padding,
-                                        Name = "" + prop.vName,
-                                        AccessibleDescription = "Nullable"                          //type in tooltype
-                                    };
-                                    chcmb.MouseHover += new System.EventHandler(ToolTipMouseHover);
-                                    chcmb.CheckedChanged += (sender, e) => cmb.Enabled = (chcmb.CheckState == CheckState.Checked);// GeyPayLoadStringFromForm(null, null);
-                                    panels.Peek().Controls.Add(chcmb);
-                                    cmb.Enabled = false;// chdtp.Checked;
-                                }
-                            }
-                            //                      cmb.EndUpdate();
-                            break;
-                    }
+                        }
+                        //                      cmb.EndUpdate();
+                        break;
+                }
             }
             panelPayload.Visible = true;    //render on
         }
@@ -427,12 +426,12 @@ namespace QRCoderArt
                 else
                 {
                     //clear child from parentName in tree
-  //                  ReflectionData.
+                    //                  ReflectionData.
 
                     ReflectionData.GetGUITreeNodes(((ConstructorInfo)((KeyValuePair<string, object>)combo.SelectedItem).Value), panel[0].GetNestleLevel("panelPayload"), combo.Name);
                 }
                 CreateGUITreePanel(panel.First());    //create payload panel from constructor parameters
-                                                                   //                this.Refresh();
+                                                      //                this.Refresh();
                 readyState[0] = true;                              //full ready:= Data preparation completed
                 GetPayloadStringFromGUITreePanel(null, null);
             }
@@ -724,7 +723,7 @@ namespace QRCoderArt
                             throw new NotSupportedException("File extension is not supported");
                     }
 
-                    pictureBoxQRCode.BackgroundImage.Save(fs, imageFormat); 
+                    pictureBoxQRCode.BackgroundImage.Save(fs, imageFormat);
                 }
             }
         }

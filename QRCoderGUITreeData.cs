@@ -23,10 +23,9 @@ namespace QRCoderArt
     //----------------------------------------------------------------------------------------------------
     /// <summary>Class DataNode.</summary>
     //----------------------------------------------------------------------------------------------------
-    public class DataNode
+    public class ValueNode
     {
-        public DataNode(){id = Guid.NewGuid();}
- 
+        public ValueNode() { id = Guid.NewGuid(); }
         private readonly Guid id;                           // node field identifier
         public string vName;                                // node field name
         public int nestingLevel;                            // the nesting level of the node in the tree
@@ -37,33 +36,33 @@ namespace QRCoderArt
         public Boolean vNullValue;                          // indicates whether the parameter value is zero-used for CheckBox
         public object vDefaultValue;                        //the default value of the parameter
         public object vFormValue;                           //the current value of the parameter from form
-        public object vFormSource;                          //the current data source form control
+        public Type vMetaDataSource;                      //the current data source form control
     }
 
     //----------------------------------------------------------------------------------------------------
     /// <summary>Class DataNodeTree.</summary>
     /// <typeparam name="T"></typeparam>
     //----------------------------------------------------------------------------------------------------
-    public class DataNodeTree<T> 
+    public class Node<T>
     {
         //https://codengineering.ru/q/tree-data-structure-in-c-sharp-23594
         private readonly T _value;
-        private readonly List<DataNodeTree<T>> _children = new List<DataNodeTree<T>>();
-        public DataNodeTree<T> Parent { get; private set; }             // parent node
-        public DataNodeTree(T value) { _value = value; }                                    // first constructor node    
-        public DataNodeTree<T> this[int i] { get { return _children[i]; }}                             // get node from List by index
+        private readonly List<Node<T>> _children = new List<Node<T>>();
+        public Node<T> Parent { get; private set; }             // parent node
+        public Node(T value) { _value = value; }                                    // first constructor node    
+        public Node<T> this[int i] { get { return _children[i]; } }                             // get node from List by index
         public T Value { get { return _value; } }                       // get value data (T) node
-        public ReadOnlyCollection<DataNodeTree<T>> Children             // get collection childrens node  
+        public ReadOnlyCollection<Node<T>> Children             // get collection childrens node  
         {
             get { return _children.AsReadOnly(); }
         }
-        public DataNodeTree<T> AddChild(T value)                        // add single node (List)     
+        public Node<T> AddChild(T value)                        // add single node (List)     
         {
-            var node = new DataNodeTree<T>(value) { Parent = this };
+            var node = new Node<T>(value) { Parent = this };
             _children.Add(node);
             return node;
         }
-        public void RemoveChildren(DataNodeTree<T> node, DataNodeTree<T> root_node) // remove node (List)
+        public void RemoveChildren(Node<T> node, Node<T> root_node) // remove node (List)
         {
             if (node != null)
             {
@@ -79,12 +78,12 @@ namespace QRCoderArt
                 }
             }
         }
-        public DataNodeTree<DataNode> Find(DataNodeTree<DataNode> node, string nameDescriptor, string nameType)
+        public Node<ValueNode> Find(Node<ValueNode> node, string nameDescriptor, string nameType)
         {
             if (nameDescriptor == node._value.vName && nameType == node._value.vDataType)
                 return node;
 
-            DataNodeTree<DataNode> personFound = null;
+            Node<ValueNode> personFound = null;
             for (int i = 0; i < node._children.Count; i++)
             {
                 personFound = Find(node._children[i], nameDescriptor, nameType);
@@ -95,7 +94,7 @@ namespace QRCoderArt
         }
         public IEnumerable<T> Flatten()     // return the tree as a flat list with parent
         {
-             return new[] { Value }.Concat(_children.SelectMany(x => x.Flatten()));
+            return new[] { Value }.Concat(_children.SelectMany(x => x.Flatten()));
         }
     }
 
@@ -106,7 +105,7 @@ namespace QRCoderArt
     //----------------------------------------------------------------------------------------------------
     public class InvokeError
     {
-        public InvokeError(string name){ConstructorName = name;}
+        public InvokeError(string name) { ConstructorName = name; }
         public string ConstructorName { get; set; }
         /// <summary>
         /// Gets or sets the errors.
@@ -117,7 +116,7 @@ namespace QRCoderArt
         /// Adds the message.
         /// </summary>
         /// <param name="val">The value.</param>
-        public void AddMessage(string val){Errors.Add(val);}
+        public void AddMessage(string val) { Errors.Add(val); }
     }
 
     //----------------------------------------------------------------------------------------------------
@@ -136,8 +135,8 @@ namespace QRCoderArt
         /// node (entry point) in Reflection
         /// </summary>
         private readonly Type tRef;                             // reflection base member
-        private DataNodeTree<DataNode> rootTree;                // root node in the tree data
-        private DataNodeTree<DataNode> pointTree;               // current point node in the tree data
+        private readonly Node<ValueNode> rootTree;                // root node in the tree data
+        private Node<ValueNode> pointTree;               // current point node in the tree data
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GUITree"/> class.
@@ -146,15 +145,8 @@ namespace QRCoderArt
         public GUITree(string memberParentNodeName)
         {
             tRef = Type.GetType(memberParentNodeName);          // reflection base member
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="T:QRCoderArt.GUITree" /> class.</summary>
-        /// <param name="memberParentNodeName">Name of the member parent node.</param>
-        /// <param name="memberChildNodeName">Name of the member child node.</param>
-        public GUITree(string memberParentNodeName, string memberChildNodeName)
-        {
-            tRef = Type.GetType(memberParentNodeName);
-            rootTree = new DataNodeTree<DataNode>(new DataNode());
+            rootTree = new Node<ValueNode>(new ValueNode());
+            rootTree.Value.vName = "Payload";
             pointTree = rootTree;
         }
 
@@ -168,7 +160,7 @@ namespace QRCoderArt
 
         /// <summary>Gets the tree from name.</summary>
         /// <returns>DataNodeTree&lt;DataNode&gt;.</returns>
-        public IEnumerable<DataNode> GetTree()
+        public IEnumerable<ValueNode> GetTree()
         {
             return pointTree.Flatten().Select(n => n).Skip(1);  // without parent (first element)
         }
@@ -231,9 +223,11 @@ namespace QRCoderArt
             //            return param.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
             return (from t in param.GetFields(BindingFlags.Static | BindingFlags.Public)
                     where !t.IsDefined(typeof(ObsoleteAttribute), true)
-                    select new { v = t.Name, k = t.GetValue(new object()) }).ToDictionary(k => k.v, v => v.k); 
+                    select new { v = t.Name, k = t.GetValue(new object()) }).ToDictionary(k => k.v, v => v.k);
         }
 
+
+#pragma warning disable CS1572 // Комментарий XML имеет тег param для "Params", но параметр с таким именем отсутствует.
         /// <summary>
         /// Gets the parameters constuctor.
         /// add GUI constructor parameters to the general list of tree parameters
@@ -244,6 +238,7 @@ namespace QRCoderArt
         /// <param name="nestingLevel">The nesting level (current nesting level of the parameter).</param>
         /// <param name="parentName">Name of the parent (current name of the parameter parent).</param>
         private void GetParamsConstuctor(ConstructorInfo ctor, int nestingLevel, string parentName)
+#pragma warning restore CS1572 // Комментарий XML имеет тег param для "Params", но параметр с таким именем отсутствует.
         {
             //for pure (witout k__BackingField) names here we use GetProperties()  
             //from t in ctor.ReflectedType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) select t
@@ -294,7 +289,9 @@ namespace QRCoderArt
             GetParamsConstuctor(obj, nodeNestingLevel, nodeParentName);   //!!! attention - recursion
             return null;// GUITreeNodes;
         }
-  
+
+
+#pragma warning disable CS1572 // Комментарий XML имеет тег param для "guiTree", но параметр с таким именем отсутствует.
         /// <summary>
         /// Gets the GUI tree node.
         /// return the GUI tree node with the parameters
@@ -307,13 +304,14 @@ namespace QRCoderArt
         /// <param name="nodeParentName">Name of the node parent.</param>
         /// <returns>System.Int32.</returns>
         private int GetGUITreeNode(string nodeName, Type nodeType, object nodeDefValue, int nodeNestingLevel, string nodeParentName)
+#pragma warning restore CS1572 // Комментарий XML имеет тег param для "guiTree", но параметр с таким именем отсутствует.
         {
-            DataNode dataNode = new DataNode();//  new GUITreeNode()
-           // DataNodeTree<DataNode> currentNode = rootNode;
+            ValueNode dataNode = new ValueNode();//  new GUITreeNode()
+                                               // DataNodeTree<DataNode> currentNode = rootNode;
 
             if (nodeType.IsClass && nodeType.Namespace != "System" && !nodeType.IsGenericType)
             {
-
+                dataNode.vMetaDataSource = nodeType;
                 dataNode.vParentName = nodeNestingLevel == 0 ? "" : nodeParentName;// paramName; ;
                 dataNode.vName = nodeName; //"ctor_" +paramName;
                 dataNode.vDataType = "Constructor";
@@ -334,10 +332,11 @@ namespace QRCoderArt
                     GetParamsConstuctor((ConstructorInfo)ctor, Params, nestingLevel, mParam.fParentName);   //!!! attention - recursion
                 }
                 */
-                pointTree=pointTree.Parent; //down
+                pointTree = pointTree.Parent; //down
             }
             else
             {
+                dataNode.vMetaDataSource = nodeType;
                 dataNode.vParentName = nodeParentName;
                 dataNode.vName = nodeName;
                 dataNode.vDataType = nodeType.Name;
@@ -403,12 +402,12 @@ namespace QRCoderArt
                         {
                             //!!! Exception
                             //https://stackoverflow.com/questions/577092/c-sharp-gui-control-for-editing-a-dictionary
-                         //   if (nodeParentName == "ShadowSocksConfig" && nodeName == "parameters")
-                         //   {
-                                //mParam.fForm = "Button"; //"Dictionary`2"
-                                //mParam.fList = (new Dictionary<string, string> {["plugin"] = "plugin" + (string.IsNullOrEmpty("pluginOption") ? "" : $";" + $"{"pluginOption"}")}).Values.Cast<object>().ToDictionary(k => k.ToString(), v => v); ;
-                                dataNode.vFormType = "dataGridView";
-                         //   }
+                            //   if (nodeParentName == "ShadowSocksConfig" && nodeName == "parameters")
+                            //   {
+                            //mParam.fForm = "Button"; //"Dictionary`2"
+                            //mParam.fList = (new Dictionary<string, string> {["plugin"] = "plugin" + (string.IsNullOrEmpty("pluginOption") ? "" : $";" + $"{"pluginOption"}")}).Values.Cast<object>().ToDictionary(k => k.ToString(), v => v); ;
+                            dataNode.vFormType = "dataGridView";
+                            //   }
                         }
                         else
                         {
