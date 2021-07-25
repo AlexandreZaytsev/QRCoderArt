@@ -86,7 +86,7 @@ namespace QRCoder
             int numModules = this.QrCodeData.ModuleMatrix.Count - (drawQuietZones ? 0 : 8);
             var offset = (drawQuietZones ? 0 : 4);
             int size = numModules * pixelsPerModule;
-            var moduleMargin = pixelsPerModule - pixelSize;
+            _ = pixelsPerModule - pixelSize;
 
             Bitmap bitmap = backgroundImage ?? new Bitmap(size, size);
             bitmap = Resize(bitmap, size);

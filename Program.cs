@@ -14,6 +14,8 @@
 using System;
 using System.Windows.Forms;
 
+using System.Linq;
+using System.Collections.Generic;
 
 namespace QRCoderArt
 {
@@ -28,11 +30,11 @@ namespace QRCoderArt
         [STAThread]
         static void Main()
         {
-
+            GUITree ReflectionData = new GUITree(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName, "Payload");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
-        }
+            Application.Run(new FormMain(ReflectionData));
+       }
 
 
         // Display a formatted string indented by the specified amount.
