@@ -181,7 +181,6 @@ namespace QRCoderArt
                             Name = "" + prop.name,
                             AccessibleName = prop.id.ToString(),// "Get",
                             AccessibleDescription = prop.dataType                          //type in tooltype
-
                         };
                         tb.MouseHover += new System.EventHandler(ToolTipMouseHover);
                         tb.TextChanged += new EventHandler(GetPayloadStringFromGUITreePanel);
@@ -214,6 +213,8 @@ namespace QRCoderArt
                             panels.Peek().Controls.Add(chtb);
                             tb.Enabled = false;// chtb.Checked;
                         }
+             //           DataBindings.Add("Text", ReflectionData.pointTree.Value.formValue, "formValue");
+
                         break;
                     case "CheckBox":
                         CheckBox chb = new CheckBox

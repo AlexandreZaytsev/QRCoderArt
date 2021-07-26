@@ -136,7 +136,7 @@ namespace QRCoderArt
         /// </summary>
         private readonly Type tRef;                             // reflection base member
         private readonly Node<ValueNode> rootTree;                // root node in the tree data
-        private Node<ValueNode> pointTree;               // current point node in the tree data
+        public Node<ValueNode> pointTree;               // current point node in the tree data
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GUITree"/> class.
