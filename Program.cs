@@ -27,7 +27,9 @@ namespace QRCoderArt
         [STAThread]
         static void Main()
         {
-            GUITree ReflectionData = new GUITree(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName);
+//            GUITree ReflectionData = new GUITree(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName);
+            GUITree ReflectionData = new GUITree();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain(ReflectionData));

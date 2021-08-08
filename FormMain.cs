@@ -55,14 +55,7 @@ namespace QRCoderArt
         public FormMain(GUITree guiTree) : this()
         {
             ReflectionData = guiTree;
-            //     using (GUITree qqRef = new GUITree(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
-            //     {
-            //find abstract class (payload)
-            /*
-                        string baseName = (from t in tRef.GetMembers(BindingFlags.Public)
-                                           where ((System.Type)t).IsAbstract
-                                           select t.Name).First();
-            */
+
             string baseName = "Payload";                                        //проще сразу указать имя
           //this.cbPayload.DataSource = ReflectionData.GetMembersClassName_(baseName);    //get list names classes members QRCoder.PayloadGenerator
             this.cbPayload.DataSource = new BindingSource(ReflectionData.GetMembersClassName(baseName), null);

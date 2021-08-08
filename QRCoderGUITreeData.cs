@@ -134,17 +134,19 @@ namespace QRCoderArt
         /// The t reference
         /// node (entry point) in Reflection
         /// </summary>
-        private readonly Type tRef;                             // reflection base member
-        private readonly Node<ValueNode> rootTree;                // root node in the tree data
+        private readonly Type basePayloads;             // Payload from QRCoder.Dll
+        private readonly Type extPayloads;              // Payload from PayloadExt.cs
+        private readonly Node<ValueNode> rootTree;      // root node in the tree data
         public Node<ValueNode> pointTree;               // current point node in the tree data
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GUITree"/> class.
         /// </summary>
-        /// <param name="memberParentNodeName">Name of the member parent node.</param>
-        public GUITree(string memberParentNodeName)
+        public GUITree()
         {
-            tRef = Type.GetType(memberParentNodeName);          // reflection base member
+            basePayloads = typeof(QRCoder.PayloadGenerator);
+            extPayloads = typeof(QRCoderArt.PayloadExt);
+
             rootTree = new Node<ValueNode>(new ValueNode());
             rootTree.Value.name = "Payload";
             pointTree = rootTree;
@@ -167,13 +169,14 @@ namespace QRCoderArt
 
         /// <summary>
         /// Gets the name of the members class.
-        /// return all the names of the public, current classes of the node. To display all the payload interfaces qrcoder.dll
+        /// typeof(QRCoder.PayloadGenerator) return all the names of the public, current classes of the node. To display all the payload interfaces qrcoder.dll
+        /// typeof(QRCoderArt.PayloadExt) return all the names of the public, current classes of the node. To display all the payload interfaces qrcoder.dll
         /// </summary>
         /// <param name="cName">Reflection node name.</param>
         /// <returns>list of payload Dictionary&lt;System.String, System.Object&gt;.</returns>
         public Dictionary<string, object> GetMembersClassName(string cName)
         {
-            return (from t in tRef.GetMembers(BindingFlags.Public)
+            return (from t in basePayloads.GetMembers(BindingFlags.Public).Concat(extPayloads.GetMembers(BindingFlags.Public))
                     where (!((System.Type)t).IsAbstract) &&
                           ((System.Type)t).BaseType.Name == cName
                     select new
