@@ -144,8 +144,8 @@ namespace QRCoderArt
         /// </summary>
         public GUITree()
         {
-            basePayloads = typeof(QRCoder.PayloadGenerator);
-            extPayloads = typeof(QRCoderArt.PayloadExt);
+            basePayloads = typeof(QRCoder.PayloadGenerator);    //node reflection
+            extPayloads = typeof(QRCoderArt.PayloadExt);        //node reflection
 
             rootTree = new Node<ValueNode>(new ValueNode());
             rootTree.Value.name = "Payload";
@@ -168,9 +168,9 @@ namespace QRCoderArt
         }
 
         /// <summary>
-        /// Gets the name of the members class.
-        /// typeof(QRCoder.PayloadGenerator) return all the names of the public, current classes of the node. To display all the payload interfaces qrcoder.dll
-        /// typeof(QRCoderArt.PayloadExt) return all the names of the public, current classes of the node. To display all the payload interfaces qrcoder.dll
+        /// Gets the name of the members class from two source.
+        /// basePayloads return all the names of the public, current classes of the node. To display all the payload interfaces qrcoder.dll
+        /// extPayloads return all the names of the public, current classes of the node. To display all the payload interfaces PayloadExt.cs
         /// </summary>
         /// <param name="cName">Reflection node name.</param>
         /// <returns>list of payload Dictionary&lt;System.String, System.Object&gt;.</returns>
@@ -203,15 +203,6 @@ namespace QRCoderArt
                             string.Join(", ", ((ConstructorInfo)ctor).GetParameters().Select(pr => pr.Name)),
                         ctor
                     }).ToDictionary(k => k.name, v => (Object)v.ctor);
-            /*            
-                        return (from ctor in param.GetConstructors()
-                          //      where !ctor.IsDefined(typeof(ObsoleteAttribute), true)
-                                select new
-                                {
-                                    name = ctor.GetParameters().Count() == 0 ? "the constructor is not used here" : string.Join(", ", ctor.GetParameters().Select(pr => pr.Name)),
-                                    ctor
-                                }).ToDictionary(k => k.name, v => (Object)v.ctor);
-            */
         }
 
         //get enum dictionary 
@@ -234,9 +225,6 @@ namespace QRCoderArt
         /// <param name="parentName">Name of the parent (current name of the parameter parent).</param>
         private void GetParamsConstuctor(ConstructorInfo ctor, int nestingLevel, string parentName)
         {
-            //for pure (witout k__BackingField) names here we use GetProperties()  
-            //from t in ctor.ReflectedType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) select t
-
             //constrictor without parameters = there is 'no constructor'
             IEnumerable queryProp = from t in ctor.ReflectedType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
                                     where !t.IsDefined(typeof(ObsoleteAttribute), true)
