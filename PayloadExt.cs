@@ -22,11 +22,51 @@ namespace QRCoderArt
             private readonly string CorrespAcc;
             //extend
             private readonly string Sum;
-            private readonly string Purpose, PayeeINN, PayerINN, DrawerStatus, KPP, CBC, OKTMO, PaytReason, ТaxPeriod, DocNo;
+            private readonly string Purpose;
+            private readonly string PayeeINN;
+            private readonly string PayerINN;
+            private readonly string DrawerStatus;
+            private readonly string KPP;
+            private readonly string CBC;
+            private readonly string OKTMO;
+            private readonly string PaytReason;
+            private readonly string ТaxPeriod;
+            private readonly string DocNo;
             private readonly DateTime? DocDate;
             private readonly string TaxPaytKind;
             //other
-            private readonly string LastName, FirstName, MiddleName, PayerAddress, PersonalAccount, DocIdx, PensAcc, Contract, PersAcc, Flat, Phone, PayerIdType, PayerIdNum, ChildFio, BirthDate, PaymTerm, PaymPeriod, Category, ServiceName, CounterId, CounterVal, QuittId, QuittDate, InstNum, ClassNum, SpecFio, AddAmount, RuleId, ExecId, RegType, UIN, TechCode;
+            private readonly string LastName;
+            private readonly string FirstName;
+            private readonly string MiddleName;
+            private readonly string PayerAddress;
+            private readonly string PersonalAccount;
+            private readonly string DocIdx;
+            private readonly string PensAcc;
+            private readonly string Contract;
+            private readonly string PersAcc;
+            private readonly string Flat;
+            private readonly string Phone;
+            private readonly string PayerIdType;
+            private readonly string PayerIdNum;
+            private readonly string ChildFio;
+            private readonly DateTime? BirthDate;
+            private readonly string PaymTerm;
+            private readonly string PaymPeriod;
+            private readonly string Category;
+            private readonly string ServiceName;
+            private readonly string CounterId;
+            private readonly string CounterVal;
+            private readonly string QuittId;
+            private readonly DateTime? QuittDate;
+            private readonly string InstNum;
+            private readonly string ClassNum;
+            private readonly string SpecFio;
+            private readonly string AddAmount;
+            private readonly string RuleId;
+            private readonly string ExecId;
+            private readonly string RegType;
+            private readonly string UIN;
+            private readonly string TechCode;
 
 
             private readonly string ssid, password, authenticationMode;
