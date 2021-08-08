@@ -28,7 +28,7 @@ pps.<br/>
 _all payloads of the version are supported qrcoder.dll (1.4.1) - but there are very few default values or restrictions on the ranges of values through attributes_<br/>
 ppps.<br/>
 _I tried to use clean code - but a beginner in c#, you can definitely write better and easier ))_<br/>
-
+### base QRCoder.dll
 - [x] WiFi
   - (string ssid, string password, Authentication authenticationMode, bool isHiddenSSID = false)
 - [x] Mail 
@@ -90,3 +90,7 @@ _I tried to use clean code - but a beginner in c#, you can definitely write bett
 ***it is necessary to set the values of the payload parameters (see the html error message window)***
 - [X] SlovenianUpnQr
   - (string payerName, string payerAddress, string payerPlace, string recipientName, string recipientAddress, string recipientPlace, string recipientIban, string description, double amount, string recipientSiModel = "SI00", string recipientSiReference = "", string code = "OTHR") 
+### extension PayloadExt.cs
+- [X] RussiaPaymentOrder
+  - (string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc)  
+  - (string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc, string PayeeINN, string LastName, string FirstName, string MiddleName, string Purpose, string PayerAddress, string Sum)  
