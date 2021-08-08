@@ -9,6 +9,9 @@ namespace QRCoderArt
 {
     class PayloadExt
     {
+        /// <summary>
+        /// Generates a RussiaPaymentOrder payload. Standards of financial transactions. Two-dimensional barcode symbols for payments by individuals.
+        /// </summary>
         //ГОСТ Р 56042-2014
         //https://docs.cntd.ru/document/1200110981
         //https://sbqr.ru/standard/files/standart.pdf
@@ -68,17 +71,6 @@ namespace QRCoderArt
             private readonly string UIN;
             private readonly string TechCode;
 
-
-            private readonly string ssid, password, authenticationMode;
-            private readonly bool isHiddenSsid;
-
-            /// <summary>
-            /// Generates a WiFi payload. Scanned by a QR Code scanner app, the device will connect to the WiFi.
-            /// </summary>
-            /// <param name="ssid">SSID of the WiFi network</param>
-            /// <param name="password">Password of the WiFi network</param>
-            /// <param name="authenticationMode">Authentification mode (WEP, WPA, WPA2)</param>
-            /// <param name="isHiddenSSID">Set flag, if the WiFi network hides its SSID</param>
             public RussiaPaymentOrder(string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc)
             {
                 this.Name = Name;
