@@ -166,27 +166,21 @@ namespace QRCoderArt
         }
 
         /// <summary>
-        /// Gets the member by name.
-        /// </summary>
-        /// <param name="baseName">Reflection node name.</param>
-        /// <returns>First node found Type.</returns>
-        public Type GetMemberByName(string baseName)
-        {
-            return (Type)tRef.GetMember(baseName).First();
-        }
-
-        /// <summary>
         /// Gets the name of the members class.
         /// return all the names of the public, current classes of the node. To display all the payload interfaces qrcoder.dll
         /// </summary>
         /// <param name="cName">Reflection node name.</param>
-        /// <returns>list of payload List&lt;System.String&gt;.</returns>
-        public List<string> GetMembersClassName(string cName)
+        /// <returns>list of payload Dictionary&lt;System.String, System.Object&gt;.</returns>
+        public Dictionary<string, object> GetMembersClassName(string cName)
         {
             return (from t in tRef.GetMembers(BindingFlags.Public)
                     where (!((System.Type)t).IsAbstract) &&
                           ((System.Type)t).BaseType.Name == cName
-                    select t.Name).ToList();
+                    select new
+                    {
+                        name = t.Name,
+                        t
+                    }).ToDictionary(k => k.name, v => (Object)v.t);
         }
 
         /// <summary>
@@ -226,8 +220,6 @@ namespace QRCoderArt
                     select new { v = t.Name, k = t.GetValue(new object()) }).ToDictionary(k => k.v, v => v.k);
         }
 
-
-#pragma warning disable CS1572 // Комментарий XML имеет тег param для "Params", но параметр с таким именем отсутствует.
         /// <summary>
         /// Gets the parameters constuctor.
         /// add GUI constructor parameters to the general list of tree parameters
@@ -238,7 +230,6 @@ namespace QRCoderArt
         /// <param name="nestingLevel">The nesting level (current nesting level of the parameter).</param>
         /// <param name="parentName">Name of the parent (current name of the parameter parent).</param>
         private void GetParamsConstuctor(ConstructorInfo ctor, int nestingLevel, string parentName)
-#pragma warning restore CS1572 // Комментарий XML имеет тег param для "Params", но параметр с таким именем отсутствует.
         {
             //for pure (witout k__BackingField) names here we use GetProperties()  
             //from t in ctor.ReflectedType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) select t

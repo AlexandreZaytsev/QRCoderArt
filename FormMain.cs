@@ -38,8 +38,8 @@ namespace QRCoderArt
         /// структура для фиксации ошибки (при пересоздании CTRL из GUITree) при первом запуске функции payload
         /// </summary>
         private readonly bool[] readyState = {false,                 //Data preparation completed
-                                                false,                 //MainForm is Load
-                                                false };               //Mainform is Show    
+                                              false,                 //MainForm is Load
+                                              false };               //Mainform is Show    
 
         readonly GUITree ReflectionData;
 
@@ -52,9 +52,9 @@ namespace QRCoderArt
             InitializeComponent();
         }
 
-        public FormMain(GUITree gScreen) : this()
+        public FormMain(GUITree guiTree) : this()
         {
-            ReflectionData = gScreen;
+            ReflectionData = guiTree;
             //     using (GUITree qqRef = new GUITree(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName))
             //     {
             //find abstract class (payload)
@@ -64,7 +64,11 @@ namespace QRCoderArt
                                            select t.Name).First();
             */
             string baseName = "Payload";                                        //проще сразу указать имя
-            this.cbPayload.DataSource = ReflectionData.GetMembersClassName(baseName);    //get list names classes members QRCoder.PayloadGenerator
+          //this.cbPayload.DataSource = ReflectionData.GetMembersClassName_(baseName);    //get list names classes members QRCoder.PayloadGenerator
+            this.cbPayload.DataSource = new BindingSource(ReflectionData.GetMembersClassName(baseName), null);
+            this.cbPayload.DisplayMember = "Key";                                            //Имя    
+            this.cbPayload.ValueMember = "Value";                                            //значение  
+       //     this.cbPayload.SelectedItem = 0;
                                                                                          //    }
             this.viewMode.DataSource = Enum.GetValues(typeof(ImageLayout));
             this.viewMode.SelectedIndex = 4;
@@ -94,6 +98,7 @@ namespace QRCoderArt
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void FormMain_Shown(object sender, EventArgs e)
         {
+            RebuildingGUITreePanel(this.cbPayload,null);
             readyState[2] = true;           //Main form is Show
         }
 
@@ -422,7 +427,9 @@ namespace QRCoderArt
                 ClearGUITreePanel(panel.First());                  //clear payload panel
                 if (combo.Name == "cbPayload")
                 {
-                    ReflectionData.GetGUITree(ReflectionData.GetMemberByName(combo.Text));//, combo.Name);
+                //    ReflectionData.GetGUITree(ReflectionData.GetMemberByName(combo.Text));//, combo.Name);
+                    ReflectionData.GetGUITree(((KeyValuePair<string, object>)combo.SelectedItem).Value);
+               //     ReflectionData.GetGUITree(ReflectionData.GetMemberByName(combo.Name));
                 }
                 else
                 {
