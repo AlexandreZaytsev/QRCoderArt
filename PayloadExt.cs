@@ -99,6 +99,7 @@ namespace QRCoderArt
                 this.LastName = LastName;
                 this.FirstName = FirstName;
                 this.MiddleName = MiddleName;
+                this.Purpose = Purpose;
                 this.PayerAddress = PayerAddress;
                 this.Sum = Sum;
             }
