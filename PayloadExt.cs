@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using QRCoder;
+//using System.ComponentModel.DataAnnotations;
 
 namespace QRCoderArt
 {
@@ -18,6 +19,7 @@ namespace QRCoderArt
         public class RussiaPaymentOrder : PayloadGenerator.Payload
         {
             //base
+//            [Required(ErrorMessage = "Name must be a filled string max. 160 characters")]
             private readonly string Name;
             private readonly string PersonalAcc;
             private readonly string BankName;
@@ -95,9 +97,7 @@ namespace QRCoderArt
                 this.PayerAddress = PayerAddress;
                 this.Sum = Sum;
             }
-//ST00011|Name=ООО «Три кита»|PersonalAcc=40702810138250123017|BankName=ОАО "БАНК"|BIC=044525225|CorrespAcc=30101810400000000225
-//       |PayeeINN=6200098765|LastName = Иванов | FirstName = Иван | MiddleName = Иванович | Purpose = Оплата членского взноса
-//       |PayerAddress=г.Рязань ул.Ленина д.10 кв.15|Sum= 100000
+
             public override string ToString()
             {
                 if (Name.Length == 0)
