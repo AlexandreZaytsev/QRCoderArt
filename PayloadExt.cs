@@ -76,6 +76,7 @@ namespace QRCoderArt
 
             public RussiaPaymentOrder(characterSets CharacterSets, string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc = "0")
             {
+/*
                 if (string.IsNullOrEmpty(Name))
                     throw new RussiaPaymentOrderException("Name must be a filled string max. 160 characters.");
                 if (string.IsNullOrEmpty(PersonalAcc))
@@ -86,7 +87,7 @@ namespace QRCoderArt
                     throw new RussiaPaymentOrderException("BIC must be a filled string max. 9 characters.");
                 if (string.IsNullOrEmpty(CorrespAcc))
                     throw new RussiaPaymentOrderException("CorrespAcc must be a filled string max. 20 characters.");
-
+*/
 
                 this.CharacterSets = CharacterSets;
                 this.Name = Name;
@@ -116,18 +117,18 @@ namespace QRCoderArt
 
             public override string ToString()
             {
-/*
-                if (Name.Length == 0)
+
+                if (string.IsNullOrEmpty(Name))
                     throw new Exception("Name must be a filled string max. 160 characters");
-                if (PersonalAcc.Length == 0)
+                if (string.IsNullOrEmpty(PersonalAcc))
                     throw new Exception("PersonalAcc must be a filled string max. 20 characters");
-                if (BankName.Length == 0)
+                if (string.IsNullOrEmpty(BankName))
                     throw new Exception("BankName must be a filled string max. 45 characters");
-                if (BIC.Length == 0)
+                if (string.IsNullOrEmpty(BIC))
                     throw new Exception("BIC must be a filled string max. 9 characters");
-                if (CorrespAcc.Length == 0)
+                if (string.IsNullOrEmpty(CorrespAcc))
                     throw new Exception("CorrespAcc must be a filled string max. 20 characters");
-*/
+
                 string ret = $"ST0001" + ((int)this.CharacterSets).ToString() + $"|Name={this.Name}" +
                     $"|PersonalAcc={this.PersonalAcc}" +
                     $"|BankName={this.BankName}" +
