@@ -76,12 +76,14 @@ namespace QRCoderArt
 
             public RussiaPaymentOrder(characterSets CharacterSets, string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc = "0")
             {
+                
                 this.CharacterSets = CharacterSets;
                 this.Name = Name;
                 this.PersonalAcc = PersonalAcc;
                 this.BankName = BankName;
                 this.BIC = BIC;
                 this.CorrespAcc = CorrespAcc;
+                
             }
             public RussiaPaymentOrder(characterSets CharacterSets, string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc,
                                       string PayeeINN, string LastName, string FirstName, string MiddleName, string Purpose, string PayerAddress, string Sum)
