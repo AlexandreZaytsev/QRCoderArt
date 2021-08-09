@@ -186,6 +186,8 @@ namespace QRCoderArt
                         {
                             case "Single":
                             case "Int32":
+                            case "UInt32":
+                            case "UInt64":
                             case "Decimal":
                             case "Double":
                                 tb.BackColor = Color.GhostWhite;//.OldLace;// LightBlue;
@@ -483,6 +485,12 @@ namespace QRCoderArt
                                     break;
                                 case "Int32":
                                     ret = Convert.ToInt32(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
+                                    break;
+                                case "UInt32":
+                                    ret = Convert.ToUInt32(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
+                                    break;
+                                case "UInt64":
+                                    ret = Convert.ToUInt64(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);
                                     break;
                                 case "Decimal":
                                     ret = Convert.ToDecimal(((TextBox)cntrl).Text == "" ? "0" : ((TextBox)cntrl).Text);

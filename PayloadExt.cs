@@ -2,6 +2,7 @@
 //using System.Collections.Generic;
 //using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 //using System.Threading.Tasks;
 using QRCoder;
 //using System.ComponentModel.DataAnnotations;
@@ -19,12 +20,13 @@ namespace QRCoderArt
         public class RussiaPaymentOrder : PayloadGenerator.Payload
         {
             //base
-//            [Required(ErrorMessage = "Name must be a filled string max. 160 characters", AllowEmptyStrings = true)]
-            private readonly string Name;// { get; set; }
-            private readonly string PersonalAcc;
-            private readonly string BankName;
-            private readonly string BIC;
-            private readonly string CorrespAcc = "0";
+            private characterSets CharacterSets;
+            //            [Required(ErrorMessage = "Name must be a filled string max. 160 characters", AllowEmptyStrings = true)]
+            private readonly string Name;// { get; set; }       // 1-160 char
+            private readonly double PersonalAcc;                // 20 digit (UInt64)               
+            private readonly string BankName;                   // 1-45 char
+            private readonly double BIC;                        // 9 digit (UInt32)
+            private readonly double CorrespAcc = 0;             // up to 20 digit (0-default) (UInt64)
             //extend
             private readonly string Sum;
             private readonly string Purpose;
@@ -72,9 +74,8 @@ namespace QRCoderArt
             private readonly string RegType;
             private readonly string UIN;
             private readonly techCode TechCode;
-            private characterSets CharacterSets;
 
-            public RussiaPaymentOrder(characterSets CharacterSets, string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc = "0")
+            public RussiaPaymentOrder(characterSets CharacterSets, string Name, double PersonalAcc, string BankName, double BIC, double CorrespAcc = 0)
             {
 /*
                 if (string.IsNullOrEmpty(Name))
@@ -97,7 +98,7 @@ namespace QRCoderArt
                 this.CorrespAcc = CorrespAcc;
                 
             }
-            public RussiaPaymentOrder(characterSets CharacterSets, string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc,
+            public RussiaPaymentOrder(characterSets CharacterSets, string Name, double PersonalAcc, string BankName, double BIC, double CorrespAcc,
                                       string PayeeINN, string LastName, string FirstName, string MiddleName, string Purpose, string PayerAddress, string Sum)
             {
                 this.CharacterSets = CharacterSets;
@@ -119,15 +120,16 @@ namespace QRCoderArt
             {
 
                 if (string.IsNullOrEmpty(Name))
-                    throw new Exception("Name must be a filled string max. 160 characters");
-                if (string.IsNullOrEmpty(PersonalAcc))
-                    throw new Exception("PersonalAcc must be a filled string max. 20 characters");
+                    throw new Exception("Name must be a filled string 1-160 characters");
+                if (PersonalAcc.ToString().Length!=20)
+//                if (!string.IsNullOrEmpty(PersonalAcc.ToString()) && !Regex.IsMatch(PersonalAcc.ToString().Replace(" ", ""), @"^([A-Za-z0-9]|[\+|\?|/|\-|:|\(|\)|\.|,|']){1,20}$"))
+                        throw new Exception("PersonalAcc must be a filled strong 20 digit");
                 if (string.IsNullOrEmpty(BankName))
-                    throw new Exception("BankName must be a filled string max. 45 characters");
-                if (string.IsNullOrEmpty(BIC))
-                    throw new Exception("BIC must be a filled string max. 9 characters");
-                if (string.IsNullOrEmpty(CorrespAcc))
-                    throw new Exception("CorrespAcc must be a filled string max. 20 characters");
+                    throw new Exception("BankName must be a filled string 1-45 characters");
+                if (BIC.ToString().Length!=9)
+                    throw new Exception("BIC must be a filled strong 9 digit");
+                if (CorrespAcc.ToString().Length<1 || CorrespAcc.ToString().Length>20)
+                    throw new Exception("CorrespAcc must be a filled 1-20 dugit or 0 value if empty");
 
                 string ret = $"ST0001" + ((int)this.CharacterSets).ToString() + $"|Name={this.Name}" +
                     $"|PersonalAcc={this.PersonalAcc}" +

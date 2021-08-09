@@ -334,6 +334,8 @@ namespace QRCoderArt
                     case "Double":
                     case "Single":
                     case "Int32":
+                    case "UInt32":
+                    case "UInt64":
                     case "Decimal":
                         dataNode.formType = "TextBox";
                         break;
@@ -349,6 +351,8 @@ namespace QRCoderArt
                             case "Double":
                             case "Single":
                             case "Int32":
+                            case "UInt32":
+                            case "UInt64":
                             case "Decimal":
                                 dataNode.formType = "TextBox";
                                 break;
