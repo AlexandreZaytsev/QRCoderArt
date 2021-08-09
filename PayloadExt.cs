@@ -19,12 +19,12 @@ namespace QRCoderArt
         public class RussiaPaymentOrder : PayloadGenerator.Payload
         {
             //base
-//            [Required(ErrorMessage = "Name must be a filled string max. 160 characters")]
+            //            [Required(ErrorMessage = "Name must be a filled string max. 160 characters")]
             private readonly string Name;
             private readonly string PersonalAcc;
             private readonly string BankName;
             private readonly string BIC;
-            private readonly string CorrespAcc="0";
+            private readonly string CorrespAcc = "0";
             //extend
             private readonly string Sum;
             private readonly string Purpose;
@@ -72,18 +72,21 @@ namespace QRCoderArt
             private readonly string RegType;
             private readonly string UIN;
             private readonly techCode TechCode;
+            private characterSets CharacterSets;
 
-            public RussiaPaymentOrder(string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc="0")
+            public RussiaPaymentOrder(characterSets CharacterSets, string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc = "0")
             {
+                this.CharacterSets = CharacterSets;
                 this.Name = Name;
                 this.PersonalAcc = PersonalAcc;
                 this.BankName = BankName;
                 this.BIC = BIC;
                 this.CorrespAcc = CorrespAcc;
             }
-            public RussiaPaymentOrder(string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc, 
+            public RussiaPaymentOrder(characterSets CharacterSets, string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc,
                                       string PayeeINN, string LastName, string FirstName, string MiddleName, string Purpose, string PayerAddress, string Sum)
             {
+                this.CharacterSets = CharacterSets;
                 this.Name = Name;
                 this.PersonalAcc = PersonalAcc;
                 this.BankName = BankName;
@@ -111,8 +114,7 @@ namespace QRCoderArt
                 if (CorrespAcc.Length == 0)
                     throw new Exception("CorrespAcc must be a filled string max. 20 characters");
 
-                return
-                        $"ST00011|Name={this.Name}" +
+                string ret = $"ST0001" + ((int)this.CharacterSets).ToString() + $"|Name={this.Name}" +
                     $"|PersonalAcc={this.PersonalAcc}" +
                     $"|BankName={this.BankName}" +
                     $"|BIC={this.BIC}" +
@@ -125,6 +127,9 @@ namespace QRCoderArt
                     $"|PayerAddress={this.PayerAddress}" +
                     $"|Sum={this.Sum}"
                     ;
+
+                string page = this.CharacterSets.ToString().Replace("_", "-");
+                return Encoding.GetEncoding(page).GetString(Encoding.Convert(Encoding.Default, Encoding.GetEncoding(page), Encoding.GetEncoding(page).GetBytes(ret)));
             }
 
             /// <summary>
@@ -136,7 +141,7 @@ namespace QRCoderArt
                 Коммунальные_услуги_ЖКХAFN = 02,
                 ГИБДД_налоги_пошлины_бюджетные_платежи = 03,
                 Охранные_услуги = 04,
-                Услуги_оказываемые_УФМС=05,
+                Услуги_оказываемые_УФМС = 05,
                 ПФР = 06,
                 Погашение_кредитов = 07,
                 Образовательные_учреждения = 08,
@@ -148,6 +153,14 @@ namespace QRCoderArt
                 Благотворительные_и_общественные_организации = 14,
                 Прочие_услуги = 15
             }
-        }
+
+            public enum characterSets
+            {
+                windows_1251 = 1,       // Encoding.GetEncoding("windows-1251")
+                utf_8 = 2,              // Encoding.UTF8                          
+                koi8_r = 3              // Encoding.GetEncoding("koi8-r")
+
+            }
+    }
     }
 }
