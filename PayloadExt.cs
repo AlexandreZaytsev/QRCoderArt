@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+//using System.Collections.Generic;
+//using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 using QRCoder;
 //using System.ComponentModel.DataAnnotations;
 
@@ -19,8 +19,8 @@ namespace QRCoderArt
         public class RussiaPaymentOrder : PayloadGenerator.Payload
         {
             //base
-            //            [Required(ErrorMessage = "Name must be a filled string max. 160 characters")]
-            private readonly string Name;
+//            [Required(ErrorMessage = "Name must be a filled string max. 160 characters", AllowEmptyStrings = true)]
+            private readonly string Name;// { get; set; }
             private readonly string PersonalAcc;
             private readonly string BankName;
             private readonly string BIC;
@@ -119,7 +119,7 @@ namespace QRCoderArt
             {
 
                 if (string.IsNullOrEmpty(Name))
-                    throw new Exception("Name must be a filled string max. 160 characters");
+    //                throw new Exception("Name must be a filled string max. 160 characters");
                 if (string.IsNullOrEmpty(PersonalAcc))
                     throw new Exception("PersonalAcc must be a filled string max. 20 characters");
                 if (string.IsNullOrEmpty(BankName))
