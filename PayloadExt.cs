@@ -71,7 +71,7 @@ namespace QRCoderArt
             private readonly string ExecId;
             private readonly string RegType;
             private readonly string UIN;
-//            private readonly string TechCode;
+            private readonly techCode TechCode;
 
             public RussiaPaymentOrder(string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc="0")
             {
@@ -130,7 +130,7 @@ namespace QRCoderArt
             /// <summary>
             /// Перечень значений технического кода платежа
             /// </summary>
-            public enum TechCode
+            public enum techCode
             {
                 Мобильная_связь_стационарный_телефон = 01,
                 Коммунальные_услуги_ЖКХAFN = 02,
