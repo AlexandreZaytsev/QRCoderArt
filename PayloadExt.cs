@@ -100,8 +100,19 @@ namespace QRCoderArt
 //       |PayerAddress=г.Рязань ул.Ленина д.10 кв.15|Sum= 100000
             public override string ToString()
             {
+                if (Name.Length == 0)
+                    throw new Exception("Name must be a filled string max. 160 characters");
+                if (PersonalAcc.Length == 0)
+                    throw new Exception("PersonalAcc must be a filled string max. 20 characters");
+                if (BankName.Length == 0)
+                    throw new Exception("BankName must be a filled string max. 45 characters");
+                if (BIC.Length == 0)
+                    throw new Exception("BIC must be a filled string max. 9 characters");
+                if (CorrespAcc.Length == 0)
+                    throw new Exception("CorrespAcc must be a filled string max. 20 characters");
+
                 return
-                    $"ST00011|Name={this.Name}" +
+                        $"ST00011|Name={this.Name}" +
                     $"|PersonalAcc={this.PersonalAcc}" +
                     $"|BankName={this.BankName}" +
                     $"|BIC={this.BIC}" +
