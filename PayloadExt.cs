@@ -119,7 +119,7 @@ namespace QRCoderArt
             {
 
                 if (string.IsNullOrEmpty(Name))
-    //                throw new Exception("Name must be a filled string max. 160 characters");
+                    throw new Exception("Name must be a filled string max. 160 characters");
                 if (string.IsNullOrEmpty(PersonalAcc))
                     throw new Exception("PersonalAcc must be a filled string max. 20 characters");
                 if (string.IsNullOrEmpty(BankName))
