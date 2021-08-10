@@ -23,10 +23,10 @@ namespace QRCoderArt
             private characterSets CharacterSets;
             //            [Required(ErrorMessage = "Name must be a filled string max. 160 characters", AllowEmptyStrings = true)]
             private readonly string Name;// { get; set; }       // 1-160 char
-            private readonly double PersonalAcc;                // 20 digit (UInt64)               
+            private readonly string PersonalAcc;                // 20 digit (UInt64)               
             private readonly string BankName;                   // 1-45 char
-            private readonly double BIC;                        // 9 digit (UInt32)
-            private readonly double CorrespAcc = 0;             // up to 20 digit (0-default) (UInt64)
+            private readonly string BIC;                        // 9 digit (UInt32)
+            private readonly string CorrespAcc = "0";             // up to 20 digit (0-default) (UInt64)
             //extend
             private readonly string Sum;
             private readonly string Purpose;
@@ -75,7 +75,7 @@ namespace QRCoderArt
             private readonly string UIN;
             private readonly techCode TechCode;
 
-            public RussiaPaymentOrder(characterSets CharacterSets, string Name, double PersonalAcc, string BankName, double BIC, double CorrespAcc = 0)
+            public RussiaPaymentOrder(characterSets CharacterSets, string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc = "0")
             {
 /*
                 if (string.IsNullOrEmpty(Name))
@@ -98,8 +98,8 @@ namespace QRCoderArt
                 this.CorrespAcc = CorrespAcc;
                 
             }
-            public RussiaPaymentOrder(characterSets CharacterSets, string Name, double PersonalAcc, string BankName, double BIC, double CorrespAcc,
-                                      string PayeeINN, string LastName, string FirstName, string MiddleName, string Purpose, string PayerAddress, string Sum)
+            public RussiaPaymentOrder(characterSets CharacterSets, string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc = "0",
+                                      string PayeeINN="", string LastName="", string FirstName="", string MiddleName="", string Purpose="", string PayerAddress="", string Sum="0")
             {
                 this.CharacterSets = CharacterSets;
                 this.Name = Name;
@@ -119,16 +119,15 @@ namespace QRCoderArt
             public override string ToString()
             {
 
-                if (string.IsNullOrEmpty(Name))
+                if (string.IsNullOrEmpty(Name) && PersonalAcc.Length <= 160)
                     throw new Exception("Name must be a filled string 1-160 characters");
-                if (PersonalAcc.ToString().Length!=20)
-//                if (!string.IsNullOrEmpty(PersonalAcc.ToString()) && !Regex.IsMatch(PersonalAcc.ToString().Replace(" ", ""), @"^([A-Za-z0-9]|[\+|\?|/|\-|:|\(|\)|\.|,|']){1,20}$"))
-                        throw new Exception("PersonalAcc must be a filled strong 20 digit");
-                if (string.IsNullOrEmpty(BankName))
+                if (!(!string.IsNullOrEmpty(PersonalAcc) && PersonalAcc.Length == 20 && Regex.IsMatch(PersonalAcc.Replace(" ", ""), @"^[0-9]+$")))
+                    throw new Exception("PersonalAcc must be a filled strong 20 digit");
+                if (string.IsNullOrEmpty(BankName) && BankName.Length <= 45)
                     throw new Exception("BankName must be a filled string 1-45 characters");
-                if (BIC.ToString().Length!=9)
+                if (!(!string.IsNullOrEmpty(BIC) && BIC.Length == 9 && Regex.IsMatch(BIC.Replace(" ", ""), @"^[0-9]+$")))
                     throw new Exception("BIC must be a filled strong 9 digit");
-                if (CorrespAcc.ToString().Length<1 || CorrespAcc.ToString().Length>20)
+                if (!(!string.IsNullOrEmpty(CorrespAcc) && CorrespAcc.Length <= 20 && Regex.IsMatch(CorrespAcc.Replace(" ", ""), @"^[0-9]+$")))
                     throw new Exception("CorrespAcc must be a filled 1-20 dugit or 0 value if empty");
 
                 string ret = $"ST0001" + ((int)this.CharacterSets).ToString() + $"|Name={this.Name}" +

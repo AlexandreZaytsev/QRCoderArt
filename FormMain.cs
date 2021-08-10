@@ -20,6 +20,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace QRCoderArt
@@ -375,6 +376,33 @@ namespace QRCoderArt
         private void FilterOnlyReal(object sender, KeyPressEventArgs e)
         {
             string sep = ((float)1 / 2).ToString().Substring(1, 1);  // system sparator
+/*
+            bool lCheck = false;
+            TextBox cnt = sender as TextBox;
+            string txt = (cnt.Text + e.KeyChar).Replace(" ", "");
+            switch (cnt.AccessibleDescription)
+            {
+                case "Single":
+                    lCheck = Regex.IsMatch(txt, @"^([0-9\b\" + sep + "]){1,10}$");
+                    break;
+                case "Int32":
+                    break;
+                case "UInt32":
+                    lCheck = Regex.IsMatch(txt, @"^([0-9\b\" + sep + "]){1,10}$");   
+                    break;
+                case "UInt64":
+                    lCheck = Regex.IsMatch(txt, @"^([0-9\b\" + sep + "]){1,20}$");
+                    break;
+                case "Decimal":
+                    break;
+                case "Double":
+                    break;
+                default:
+                    lCheck = Regex.IsMatch(txt, @"^([0-9\b])");
+                    break;
+            }
+            e.Handled = !lCheck;
+*/
             if (!(Char.IsDigit(e.KeyChar)) && !((e.KeyChar == Convert.ToChar(sep)) && (((TextBox)sender).Text.IndexOf(sep) == -1) && (((TextBox)sender).Text.Length != 0)))
             {
                 if (e.KeyChar != (char)Keys.Back)
