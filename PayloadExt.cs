@@ -118,7 +118,6 @@ namespace QRCoderArt
 
             public override string ToString()
             {
-
                 if (string.IsNullOrEmpty(Name) && PersonalAcc.Length <= 160)
                     throw new Exception("Name must be a filled string 1-160 characters");
                 if (!(!string.IsNullOrEmpty(PersonalAcc) && PersonalAcc.Length == 20 && Regex.IsMatch(PersonalAcc.Replace(" ", ""), @"^[0-9]+$")))
