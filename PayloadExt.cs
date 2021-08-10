@@ -88,7 +88,7 @@ namespace QRCoderArt
                     throw new RussiaPaymentOrderException("BIC must be a filled string max. 9 characters.");
                 if (string.IsNullOrEmpty(CorrespAcc))
                     throw new RussiaPaymentOrderException("CorrespAcc must be a filled string max. 20 characters.");
-*/
+*/ 
 
                 this.CharacterSets = CharacterSets;
                 this.Name = Name;
