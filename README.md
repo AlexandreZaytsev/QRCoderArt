@@ -93,4 +93,6 @@ _I tried to use clean code - but a beginner in c#, you can definitely write bett
 ### extension PayloadExt.cs
 - [X] RussiaPaymentOrder
   - (string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc)  
+***it is necessary to set the values of the payload parameters (see the html error message window)***  
   - (string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc, string PayeeINN, string LastName, string FirstName, string MiddleName, string Purpose, string PayerAddress, string Sum)  
+***it is necessary to set the values of the payload parameters (see the html error message window)***  
