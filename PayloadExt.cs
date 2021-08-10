@@ -77,26 +77,12 @@ namespace QRCoderArt
 
             public RussiaPaymentOrder(characterSets CharacterSets, string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc = "0")
             {
-/*
-                if (string.IsNullOrEmpty(Name))
-                    throw new RussiaPaymentOrderException("Name must be a filled string max. 160 characters.");
-                if (string.IsNullOrEmpty(PersonalAcc))
-                    throw new RussiaPaymentOrderException("PersonalAcc must be a filled string max. 20 characters.");
-                if (string.IsNullOrEmpty(BankName))
-                    throw new RussiaPaymentOrderException("BankName must be a filled string max. 45 characters.");
-                if (string.IsNullOrEmpty(BIC))
-                    throw new RussiaPaymentOrderException("BIC must be a filled string max. 9 characters.");
-                if (string.IsNullOrEmpty(CorrespAcc))
-                    throw new RussiaPaymentOrderException("CorrespAcc must be a filled string max. 20 characters.");
-*/ 
-
                 this.CharacterSets = CharacterSets;
                 this.Name = Name;
                 this.PersonalAcc = PersonalAcc;
                 this.BankName = BankName;
                 this.BIC = BIC;
                 this.CorrespAcc = CorrespAcc;
-                
             }
             public RussiaPaymentOrder(characterSets CharacterSets, string Name, string PersonalAcc, string BankName, string BIC, string CorrespAcc = "0",
                                       string PayeeINN="", string LastName="", string FirstName="", string MiddleName="", string Purpose="", string PayerAddress="", string Sum="0")
@@ -107,6 +93,10 @@ namespace QRCoderArt
                 this.BankName = BankName;
                 this.BIC = BIC;
                 this.CorrespAcc = CorrespAcc;
+
+                if (!string.IsNullOrEmpty(PayeeINN) && PayeeINN.Length <= 12 && !Regex.IsMatch(PayeeINN.Replace(" ", ""), @"^[0-9]+$"))
+                    throw new RussiaPaymentOrderException("PayeeINN must be a filled 1-10(12) digits.");
+
                 this.PayeeINN = PayeeINN;
                 this.LastName = LastName;
                 this.FirstName = FirstName;
@@ -114,6 +104,20 @@ namespace QRCoderArt
                 this.Purpose = Purpose;
                 this.PayerAddress = PayerAddress;
                 this.Sum = Sum;
+
+                /*
+                if (string.IsNullOrEmpty(Name))
+                    throw new RussiaPaymentOrderException("Name must be a filled string max. 160 characters.");
+                if (string.IsNullOrEmpty(PersonalAcc))
+                    throw new RussiaPaymentOrderException("PersonalAcc must be a filled string max. 20 characters.");
+                if (string.IsNullOrEmpty(BankName))
+                    throw new RussiaPaymentOrderException("BankName must be a filled string max. 45 characters.");
+                if (string.IsNullOrEmpty(BIC))
+                    throw new RussiaPaymentOrderException("BIC must be a filled string max. 9 characters.");
+                if (string.IsNullOrEmpty(CorrespAcc))
+                    throw new RussiaPaymentOrderException("CorrespAcc must be a filled string max. 20 characters.");
+*/
+
             }
 
             public override string ToString()
@@ -121,13 +125,13 @@ namespace QRCoderArt
                 if (string.IsNullOrEmpty(Name) && PersonalAcc.Length <= 160)
                     throw new Exception("Name must be a filled string 1-160 characters");
                 if (!(!string.IsNullOrEmpty(PersonalAcc) && PersonalAcc.Length == 20 && Regex.IsMatch(PersonalAcc.Replace(" ", ""), @"^[0-9]+$")))
-                    throw new Exception("PersonalAcc must be a filled strong 20 digit");
+                    throw new Exception("PersonalAcc must be a filled strong 20 digits");
                 if (string.IsNullOrEmpty(BankName) && BankName.Length <= 45)
                     throw new Exception("BankName must be a filled string 1-45 characters");
                 if (!(!string.IsNullOrEmpty(BIC) && BIC.Length == 9 && Regex.IsMatch(BIC.Replace(" ", ""), @"^[0-9]+$")))
-                    throw new Exception("BIC must be a filled strong 9 digit");
+                    throw new Exception("BIC must be a filled strong 9 digits");
                 if (!(!string.IsNullOrEmpty(CorrespAcc) && CorrespAcc.Length <= 20 && Regex.IsMatch(CorrespAcc.Replace(" ", ""), @"^[0-9]+$")))
-                    throw new Exception("CorrespAcc must be a filled 1-20 dugit or 0 value if empty");
+                    throw new Exception("CorrespAcc must be a filled 1-20 digits or 0 value if empty");
 
                 string ret = $"ST0001" + ((int)this.CharacterSets).ToString() + $"|Name={this.Name}" +
                     $"|PersonalAcc={this.PersonalAcc}" +
