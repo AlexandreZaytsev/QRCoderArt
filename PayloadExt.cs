@@ -94,9 +94,9 @@ namespace QRCoderArt
                 this.BIC = BIC;
                 this.CorrespAcc = CorrespAcc;
 
-                if (!string.IsNullOrEmpty(PayeeINN) && PayeeINN.Length <= 12 && !Regex.IsMatch(PayeeINN.Replace(" ", ""), @"^[0-9]+$"))
+                if (!string.IsNullOrEmpty(PayeeINN) && !(PayeeINN.Length >=10 && Regex.IsMatch(PayeeINN.Replace(" ", ""), @"^[0-9]+$")))
                     throw new RussiaPaymentOrderException("PayeeINN must be a filled 1-10(12) digits.");
-                if (!string.IsNullOrEmpty(Sum) && (Sum.Length >18 && !Regex.IsMatch(Sum.Replace(" ", ""), @"^[0-9]+$")))
+                if (!string.IsNullOrEmpty(Sum) && !(Sum.Length <=18 && Regex.IsMatch(Sum.Replace(" ", ""), @"^[0-9]+$")))
                     throw new Exception("Sum must be a filled 1-18 digits (*including Sum/100 (the last two digits) without a separator sign)");
 
                 this.PayeeINN = PayeeINN;
