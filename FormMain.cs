@@ -1,17 +1,4 @@
-﻿// ***********************************************************************
-// Assembly         : QRCoderArt
-// Author           : zaytsev
-// Created          : 07-14-2021
-//
-// Last Modified By : zaytsev
-// Last Modified On : 07-14-2021
-// ***********************************************************************
-// <copyright file="FormMain.cs" company="">
-//     MIT ©  2021
-// </copyright>
-// <summary></summary>
-// ***********************************************************************
-using QRCoder;
+﻿using QRCoder;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -79,9 +66,20 @@ namespace QRCoderArt
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void FormMain_Load(object sender, EventArgs e)
         {
-            comboBoxECC.SelectedIndex = 0; //Pre-select ECC level "L"
+            //заполним выпадающие списки из enum
+            eccLevel.DataSource = Enum.GetValues(typeof(QRCodeGenerator.ECCLevel));
+//            eccLevel.SelectedIndex = eccLevel.FindStringExact(QRCodeGenerator.ECCLevel.Q.ToString());
+            eccLevel.SelectedItem = QRCodeGenerator.ECCLevel.M;
+
+            artQuietZoneRenderingStyle.DataSource = Enum.GetValues(typeof(ArtQRCode.QuietZoneStyle));
+            artQuietZoneRenderingStyle.SelectedItem = ArtQRCode.QuietZoneStyle.Dotted;
+
+            artBackgroundImageStyle.DataSource = Enum.GetValues(typeof(ArtQRCode.BackgroundImageStyle));
+            artBackgroundImageStyle.SelectedItem = ArtQRCode.BackgroundImageStyle.DataAreaOnly;
+
             QRCodeString.Text = "enter your text or select payload + constructor + fill in the parameters";
             readyState[1] = true;           //MainForm is Load
+            Art.Parent = null;
         }
 
         /// <summary>
@@ -96,9 +94,8 @@ namespace QRCoderArt
             readyState[2] = true;           //Main form is Show
         }
 
-        /*-----------------------------------------------------------------------------------------------------------------------------------------------
-                     REFLECTION
-         ------------------------------------------------------------------------------------------------------------------------------------------------*/
+        #region //REFLECTION
+
         /// <summary>
         /// ClearGUITreePanel
         /// очистить все CTRL из плавающей панели payload
@@ -351,6 +348,8 @@ namespace QRCoderArt
             panelPayload.Visible = true;    //render on
         }
 
+        #endregion
+
         /*--------------------------------------------------------------------------------------------  
                      EVENTS
         --------------------------------------------------------------------------------------------*/
@@ -596,71 +595,46 @@ namespace QRCoderArt
             }
         }
 
-        /// <summary>
-        /// Setting_Changed
-        /// общеия обработчик события изменения параметров панели GUITree 
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void Setting_Changed(object sender, EventArgs e)
-        {
-            RenderQrCode();     //create QR image
-        }
+        #region //Interface
 
         /// <summary>
-        /// RenderQrCode
-        /// создать картинку QR кода
+        /// выбор режима рендеринго
         /// </summary>
-        private void RenderQrCode()
+        private void baseMode_CheckedChanged(object sender, EventArgs e)
         {
-            if (comboBoxECC.SelectedItem != null)
+            if (!baseMode.Checked)
             {
-                string level = comboBoxECC.SelectedItem.ToString();
-                QRCodeGenerator.ECCLevel eccLevel = (QRCodeGenerator.ECCLevel)(level == "L" ? 0 : level == "M" ? 1 : level == "Q" ? 2 : 3);
-                using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
-                using (QRCodeData qrCodeData = qrGenerator.CreateQrCode(QRCodeString.Text, eccLevel))
-
-                    if (artPath.Text.Length == 0)
-                    {
-                        using (QRCode qrCode = new QRCode(qrCodeData))
-                        {
-                            pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic((int)pixelSize.Value, GetPrimaryColor(), GetBackgroundColor(), GetIconBitmap(), (int)iconSize.Value);
-                            this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
-                            //Set the SizeMode to center the image.
-                            this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
-                            pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
-                        }
-                    }
-                    else
-                    {
-                        using (ArtQRCode qrCode = new ArtQRCode(qrCodeData))
-                        {
-                            pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic((int)dotSize.Value, GetPrimaryColor(), GetBackgroundColor(), GetArtBitmap());// (20, GetPrimaryColor(), GetBackgroundColor(), GetIconBitmap(), (int)iconSize.Value);
-                            this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
-                            //Set the SizeMode to center the image.
-                            this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
-                            pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
-                        }
-                    }
+                Art.Parent = null;
+                Logo.Parent = baseTabControl;
             }
+            else
+            {
+                Art.Parent = baseTabControl;
+                Logo.Parent = null;
+            }
+            Setting_Changed(null, null);
         }
 
-        /*--------------------------------------------------------------------------------------------  
-                     INTERFACE
-        --------------------------------------------------------------------------------------------*/
+        /// <summary>
+        /// диалог about
+        /// </summary>
+        private void Form1_HelpButtonClicked(object sender, CancelEventArgs e)
+        {
+            FormAbout a = new FormAbout();
+            a.ShowDialog();
+        }
+
         /// <summary>
         /// Gets the icon bitmap.
         /// </summary>
         /// <returns>Bitmap.</returns>
         private Bitmap GetIconBitmap()
         {
-            if (iconPath.Text.Length == 0)
-            {
+            if (logoIconPath.Text.Length == 0)
                 return null;
-            }
             try
             {
-                return new Bitmap(iconPath.Text);
+                return new Bitmap(logoIconPath.Text);
             }
             catch (Exception)
             {
@@ -674,13 +648,11 @@ namespace QRCoderArt
         /// <returns>Bitmap.</returns>
         private Bitmap GetArtBitmap()
         {
-            if (artPath.Text.Length == 0)
-            {
+            if (artIconPath.Text.Length == 0)
                 return null;
-            }
             try
             {
-                return new Bitmap(artPath.Text);
+                return new Bitmap(artIconPath.Text);
             }
             catch (Exception)
             {
@@ -689,32 +661,207 @@ namespace QRCoderArt
         }
 
         /// <summary>
-        /// Handles the Click event of the SelectIconBtn control.
+        /// Gets the artpattern bitmap.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void SelectIconBtn_Click(object sender, EventArgs e)
+        /// <returns>Bitmap.</returns>
+        private Bitmap GetArtPatternBitmap()
         {
-            OpenFileDialog openFileDlg = new OpenFileDialog
+            if (artPatternPath.Text.Length == 0)
+                return null;
+            try
             {
-                Title = "Select icon",
-                Multiselect = false,
-                CheckFileExists = true
-            };
-            if (openFileDlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                iconPath.Text = openFileDlg.FileName;
-                if (iconSize.Value == 0)
-                {
-                    iconSize.Value = 15;
-                }
+                return new Bitmap(artPatternPath.Text);
             }
-            else
+            catch (Exception)
             {
-                iconPath.Text = "";
+                return null;
             }
         }
 
+        /// <summary>
+        /// расположение картинки QRCode в ViewMode окне
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
+        private void ViewMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            pictureBoxQRCode.BackgroundImageLayout = (ImageLayout)Enum.Parse(typeof(ImageLayout), viewMode.Text);// Enum.GetName(typeof(ImageLayout), "2"); //Enum.Parse(typeof(ImageLayout), sender.ToString());
+        }
+
+        #endregion
+
+        #region //QR Setting
+
+        /// <summary>
+        /// RenderQrCode создать картинку QR кода
+        /// </summary>
+        private void RenderQrCode()
+        {
+            if (eccLevel.SelectedItem != null)
+            {
+                using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
+                {
+                    using (QRCodeData qrCodeData = qrGenerator.CreateQrCode(QRCodeString.Text, (QRCodeGenerator.ECCLevel)eccLevel.SelectedItem))
+                    {
+                        if (!baseMode.Checked)
+                        {
+                            using (QRCode qrCode = new QRCode(qrCodeData))
+                            {
+                                pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic(
+                                    (int)basePixelsPerModule.Value,
+                                    baseDarkColor.BackColor,
+                                    baseLightColor.BackColor,
+                                    GetIconBitmap(),
+                                    (int)logoIconSizePercent.Value,
+                                    (int)logoIconBorderWidth.Value,
+                                    baseDrawQuietZones.Checked,
+                                    logoIconPath.Text != "" && logoIconBorderWidth.Value > 0 ? logoBackColor.BackColor : baseLightColor.BackColor
+                                );
+                                this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
+                                //Set the SizeMode to center the image.
+                                this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
+                                pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
+                            }
+                        }
+                        else
+                        {
+                            using (ArtQRCode qrCode = new ArtQRCode(qrCodeData))
+                            {
+                                pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic(
+                                    (int)basePixelsPerModule.Value,
+                                    baseDarkColor.BackColor,
+                                    baseLightColor.BackColor,
+                                    artBackgroundColor.BackColor,
+                                    GetArtBitmap(),
+                                    (double)artPixelSizeFactor.Value,
+                                    baseDrawQuietZones.Checked,
+                                    (ArtQRCode.QuietZoneStyle)artQuietZoneRenderingStyle.SelectedItem,
+                                    (ArtQRCode.BackgroundImageStyle)artBackgroundImageStyle.SelectedItem,
+                                    GetArtPatternBitmap()
+                                );
+                                this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
+                                //Set the SizeMode to center the image.
+                                this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
+                                pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Setting_Changed
+        /// общий обработчик события изменения параметров панели GUITree 
+        /// </summary>
+        private void Setting_Changed(object sender, EventArgs e)
+        {
+            RenderQrCode();     //create QR image
+        }
+
+        /// <summary>
+        /// проверить есть путь к картинке Logo или нет
+        /// </summary>
+        private void logoIconPath_TextChanged(object sender, EventArgs e)
+        {
+            panelLogo.Enabled = logoIconPath.Text != "";
+            Setting_Changed(null, null);
+        }
+
+        /// <summary>
+        /// проверить есть путь к картинке Art или нет
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void artPatternPath_TextChanged(object sender, EventArgs e)
+        {
+            //panelArt.Enabled = artIconPath.Text != "";
+            Setting_Changed(null, null);
+        }
+
+        #endregion
+
+        #region Open Save Dialod and Setting
+
+        /// <summary>
+        /// диалог выбора файла 
+        /// </summary>
+        /// <param name="name">имя файла</param>
+        /// <param name="filter">фильтр</param>
+        /// <returns></returns>
+        private string getFileName(string name, string filter)
+        {
+            filter = string.Empty;
+            /*
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+            string sep = string.Empty;
+            foreach (var c in codecs)
+            {
+                string codecName = c.CodecName.Substring(8).Replace("Codec", "Files").Trim();
+                filter = String.Format("{0}{1}{2} ({3})|{3}", filter, sep, codecName, c.FilenameExtension);
+                sep = "|";
+            }
+            filter = String.Format("{0}{1}{2} ({3})|{3}", filter, sep, "All Files", "*.*");
+            */
+            filter = "png Image|*.png|jpeg Image|*.jpg|gif Image|*.gif|bmp Image|*.bmp";
+
+            openFileDialogSetting.Title = name;
+            openFileDialogSetting.Filter = filter;
+//            openFileDialogSetting.DefaultExt = defaultExt;
+
+            DialogResult dr = openFileDialogSetting.ShowDialog();
+            if (dr == DialogResult.Abort)
+                return "";
+            if (dr == DialogResult.Cancel)
+                return "";
+
+            return openFileDialogSetting.FileName.ToString();
+        }
+
+        /// <summary>
+        /// диалог сохранения файла 
+        /// </summary>
+        /// <returns></returns>
+        private SaveFileDialog setFileName(string name, string filter, string filename)
+        {
+            filter = string.Empty;
+            filter = "png Image|*.png|jpeg Image|*.jpg|gif Image|*.gif|bmp Image|*.bmp";
+            saveFileDialogSetting.Title = name;
+            saveFileDialogSetting.Filter = filter;
+            saveFileDialogSetting.FileName = filename;
+
+            DialogResult dr = saveFileDialogSetting.ShowDialog();
+            if (dr == DialogResult.Abort)
+                return null;
+            if (dr == DialogResult.Cancel)
+                return null;
+
+            return saveFileDialogSetting;
+        }
+
+        /// <summary>
+        /// кнопка выбор Logo (для сброса - выбрать и отказаться)
+        /// </summary>
+        private void SelectIconBtn_Click(object sender, EventArgs e)
+        {
+            logoIconPath.Text = getFileName("Select Logo image file", "");
+        }
+
+        /// <summary>
+        /// кнопка выбор Art (для сброса - выбрать и отказаться)
+        /// </summary>
+        private void SelectArtBtn_Click(object sender, EventArgs e)
+        {
+            artIconPath.Text = getFileName("Select Art image file", "");
+        }
+
+        /// <summary>
+        /// кнопка выбор ArtPattern (3 квадрата по углам) (для сброса - выбрать и отказаться)
+        /// </summary>
+        private void artPatternButton_Click(object sender, EventArgs e)
+        {
+            artPatternPath.Text = getFileName("Select ArtPattern image file", "");
+        }
 
         /// <summary>
         /// Handles the Click event of the Btn_save control.
@@ -724,27 +871,18 @@ namespace QRCoderArt
         /// <exception cref="System.NotSupportedException">File extension is not supported</exception>
         private void Btn_save_Click(object sender, EventArgs e)
         {
-
-            // Displays a SaveFileDialog so the user can save the Image
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog
-            {
-                Filter = "Bitmap Image|*.bmp|PNG Image|*.png|JPeg Image|*.jpg|Gif Image|*.gif",
-                Title = "Save an Image File"
-            };
-            _ = saveFileDialog1.ShowDialog();
-
+            SaveFileDialog saveDialod = setFileName("Select save QRCode filename", "", "QRCode_" + DateTime.Now.ToString("yyyyMMddHHmm"));
             // If the file name is not an empty string open it for saving.
-            if (saveFileDialog1.FileName != "")
+            if (saveDialod.FileName != "")
             {
                 // Saves the Image via a FileStream created by the OpenFile method.
-                using (FileStream fs = (System.IO.FileStream)saveFileDialog1.OpenFile())
+                using (FileStream fs = (System.IO.FileStream)saveDialod.OpenFile())
                 {
                     // Saves the Image in the appropriate ImageFormat based upon the
                     // File type selected in the dialog box.
                     // NOTE that the FilterIndex property is one-based.
-
                     ImageFormat imageFormat = null;
-                    switch (saveFileDialog1.FilterIndex)
+                    switch (saveDialod.FilterIndex)
                     {
                         case 1:
                             imageFormat = ImageFormat.Bmp;
@@ -761,110 +899,72 @@ namespace QRCoderArt
                         default:
                             throw new NotSupportedException("File extension is not supported");
                     }
-
                     pictureBoxQRCode.BackgroundImage.Save(fs, imageFormat);
                 }
             }
         }
 
-        /// <summary>
-        /// Handles the Click event of the PanelPreviewPrimaryColor control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void PanelPreviewPrimaryColor_Click(object sender, EventArgs e)
-        {
-            if (colorDialogPrimaryColor.ShowDialog() == DialogResult.OK)
-            {
-                panelPreviewPrimaryColor.BackColor = colorDialogPrimaryColor.Color;
-                RenderQrCode();
-            }
-        }
+        #endregion
+
+        #region Select Color Dialog
 
         /// <summary>
-        /// Handles the Click event of the PanelPreviewBackgroundColor control.
+        /// диалог выбора цвета
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void PanelPreviewBackgroundColor_Click(object sender, EventArgs e)
+        /// <param name="initColor"></param>
+        /// <returns></returns>
+        private Color getColor(Color initColor)
         {
-            if (colorDialogBackgroundColor.ShowDialog() == DialogResult.OK)
-            {
-                panelPreviewBackgroundColor.BackColor = colorDialogBackgroundColor.Color;
-                RenderQrCode();
-            }
-        }
-
-        /// <summary>
-        /// Gets the color of the primary.
-        /// </summary>
-        /// <returns>Color.</returns>
-        private Color GetPrimaryColor()
-        {
-            return panelPreviewPrimaryColor.BackColor;
-        }
-
-        /// <summary>
-        /// Gets the color of the background.
-        /// </summary>
-        /// <returns>Color.</returns>
-        private Color GetBackgroundColor()
-        {
-            return panelPreviewBackgroundColor.BackColor;
-        }
-
-        /// <summary>
-        /// Handles the Click event of the SelectArtBtn control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void SelectArtBtn_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDlg = new OpenFileDialog
-            {
-                Title = "Select art",
-                Multiselect = false,
-                CheckFileExists = true
-            };
-            if (openFileDlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                artPath.Text = openFileDlg.FileName;
-                // if (iconSize.Value == 0)
-                // {
-                //     iconSize.Value = 15;
-                // }
-            }
+            colorDialogSetting.FullOpen = true;
+            colorDialogSetting.Color = initColor;
+            if (colorDialogSetting.ShowDialog() == DialogResult.OK)
+                return colorDialogSetting.Color;
             else
-            {
-                artPath.Text = "";
-            }
-        }
-
-        //position image from frame 
-        /// <summary>
-        /// Handles the SelectedIndexChanged event of the ViewMode control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void ViewMode_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            pictureBoxQRCode.BackgroundImageLayout = (ImageLayout)Enum.Parse(typeof(ImageLayout), viewMode.Text);// Enum.GetName(typeof(ImageLayout), "2"); //Enum.Parse(typeof(ImageLayout), sender.ToString());
+                return initColor;
         }
 
         /// <summary>
-        /// Handles the HelpButtonClicked event of the Form1 control.
+        /// цвет темной зоны
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="CancelEventArgs" /> instance containing the event data.</param>
-        private void Form1_HelpButtonClicked(object sender, CancelEventArgs e)
+        private void baseDarkColor_Click(object sender, EventArgs e)
         {
-            FormAbout a = new FormAbout();
-            a.ShowDialog();
+            baseDarkColor.BackColor = getColor(baseDarkColor.BackColor);// Color.Black);
+            Setting_Changed(null, null);
         }
 
-        /*--------------------------------------------------------------------------------------------  
-            CALLBACK InPut (подписка на внешние сообщения)
-        --------------------------------------------------------------------------------------------*/
+        /// <summary>
+        /// цвет светлой зоны
+        /// </summary>
+        private void baseLightColor_Click(object sender, EventArgs e)
+        {
+            baseLightColor.BackColor = getColor(baseLightColor.BackColor);
+            Setting_Changed(null, null);
+        }
+
+        /// <summary>
+        /// цвет за/под лого
+        /// </summary>
+        private void logoBackColor_Click(object sender, EventArgs e)
+        {
+            logoBackColor.BackColor = getColor(logoBackColor.BackColor);
+            Setting_Changed(null, null);
+        }
+
+        /// <summary>
+        /// цвет за/под фоновой картинкой
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void artBackgroundColor_Click(object sender, EventArgs e)
+        {
+            artBackgroundColor.BackColor = getColor(artBackgroundColor.BackColor);
+            Setting_Changed(null, null);
+        }
+
+        #endregion
+
+        #region //CALLBACK InPut (подписка на внешние сообщения)
+
         /// <summary>
         /// Callbacks the reload.
         /// входящее асинхронное сообщение для подписанных слушателей с передачей текущих параметров
@@ -880,12 +980,16 @@ namespace QRCoderArt
                 ((DataGridView)cntrl[0]).DataSource = param;
             }
         }
+
+
+
+        #endregion
+
+
     }
 
-    /*--------------------------------------------------------------------------------------------  
-        CALLBACK OutPut (собственные сообщения)
-    --------------------------------------------------------------------------------------------*/
-    //general notification
+    #region //CALLBACK OutPut (собственные сообщения)
+
     /// <summary>
     /// CallBack_GetParam
     /// исходящее асинхронное сообщение для подписанных слушателей с передачей текущих параметров 
@@ -905,13 +1009,12 @@ namespace QRCoderArt
         public static callbackEvent callbackEventHandler;
     }
 
-    /*--------------------------------------------------------------------------------------------  
-                 EXTENSION
-    --------------------------------------------------------------------------------------------*/
+    #endregion
 
+    #region //EXTENSION
     /// <summary>
     /// Class ControlExtensions.
-    /// мега супер пуппер расширение по поиску CTRL - используется здесь везде!!!
+    /// мега супер пуппер расширение по поиску контрола (CTRL) - используется здесь везде!!!
     /// </summary>
     static public class ControlExtensions
     {
@@ -982,4 +1085,5 @@ namespace QRCoderArt
         }
 
     }
+    #endregion
 }
