@@ -697,53 +697,50 @@ namespace QRCoderArt
         /// </summary>
         private void RenderQrCode()
         {
-            if (eccLevel.SelectedItem != null)
+            using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
             {
-                using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
+                using (QRCodeData qrCodeData = qrGenerator.CreateQrCode(QRCodeString.Text, (QRCodeGenerator.ECCLevel)eccLevel.SelectedItem))
                 {
-                    using (QRCodeData qrCodeData = qrGenerator.CreateQrCode(QRCodeString.Text, (QRCodeGenerator.ECCLevel)eccLevel.SelectedItem))
+                    if (!baseMode.Checked)
                     {
-                        if (!baseMode.Checked)
+                        using (QRCode qrCode = new QRCode(qrCodeData))
                         {
-                            using (QRCode qrCode = new QRCode(qrCodeData))
-                            {
-                                pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic(
-                                    (int)basePixelsPerModule.Value,
-                                    baseDarkColor.BackColor,
-                                    baseLightColor.BackColor,
-                                    GetIconBitmap(),
-                                    (int)logoIconSizePercent.Value,
-                                    (int)logoIconBorderWidth.Value,
-                                    baseDrawQuietZones.Checked,
-                                    logoIconPath.Text != "" && logoIconBorderWidth.Value > 0 ? logoBackColor.BackColor : baseLightColor.BackColor
-                                );
-                                this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
-                                //Set the SizeMode to center the image.
-                                this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
-                                pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
-                            }
+                            pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic(
+                                (int)basePixelsPerModule.Value,
+                                baseDarkColor.BackColor,
+                                baseLightColor.BackColor,
+                                GetIconBitmap(),
+                                (int)logoIconSizePercent.Value,
+                                (int)logoIconBorderWidth.Value,
+                                baseDrawQuietZones.Checked,
+                                logoIconPath.Text != "" && logoIconBorderWidth.Value > 0 ? logoBackColor.BackColor : baseLightColor.BackColor
+                            );
+                            this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
+                            //Set the SizeMode to center the image.
+                            this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
+                            pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
                         }
-                        else
+                    }
+                    else
+                    {
+                        using (ArtQRCode qrCode = new ArtQRCode(qrCodeData))
                         {
-                            using (ArtQRCode qrCode = new ArtQRCode(qrCodeData))
-                            {
-                                pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic(
-                                    (int)basePixelsPerModule.Value,
-                                    baseDarkColor.BackColor,
-                                    baseLightColor.BackColor,
-                                    artBackgroundColor.BackColor,
-                                    GetArtBitmap(),
-                                    (double)artPixelSizeFactor.Value,
-                                    baseDrawQuietZones.Checked,
-                                    (ArtQRCode.QuietZoneStyle)artQuietZoneRenderingStyle.SelectedItem,
-                                    (ArtQRCode.BackgroundImageStyle)artBackgroundImageStyle.SelectedItem,
-                                    GetArtPatternBitmap()
-                                );
-                                this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
-                                //Set the SizeMode to center the image.
-                                this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
-                                pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
-                            }
+                            pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic(
+                                (int)basePixelsPerModule.Value,
+                                baseDarkColor.BackColor,
+                                baseLightColor.BackColor,
+                                artBackgroundColor.BackColor,
+                                GetArtBitmap(),
+                                (double)artPixelSizeFactor.Value,
+                                baseDrawQuietZones.Checked,
+                                (ArtQRCode.QuietZoneStyle)artQuietZoneRenderingStyle.SelectedItem,
+                                (ArtQRCode.BackgroundImageStyle)artBackgroundImageStyle.SelectedItem,
+                                GetArtPatternBitmap()
+                            );
+                            this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
+                            //Set the SizeMode to center the image.
+                            this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
+                            pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
                         }
                     }
                 }
