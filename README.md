@@ -17,14 +17,14 @@ _Uses dynamic creation of the payload interface (one dynamic panel for all views
 3. If there are no errors, a QR picture of the code will be created
 3. If there are errors, follow the troubleshooting guidelines = Complete the settings  
 ***
-### with *.dll 4.1.2-4.1.3 pre-release 24.12.2021 
+### with *.dll 1.4.2-1.4.3 pre-release 24.12.2021 
 - add base setting panel   
 _couldn't make a nice angular patterns!!! ))) I don't know the proportions - the picture on the right is hard to read_
 
 ![image](https://user-images.githubusercontent.com/16114000/147327712-6167e552-4967-4ac4-a2dc-0ea77210ee41.png)
 
 ***
-### with *.dll 4.1.1 release 19.07.2021 
+### with *.dll 1.4.1 release 19.07.2021 
 - extension file ArtQRCode.cs background picture (NigelThorne)
   (https://github.com/codebude/QRCoder/pull/295)
   (https://github.com/codebude/QRCoder/tree/91839cfe9c445832a61a993893eccfab9e264ee8/QRCoder) 
