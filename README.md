@@ -19,7 +19,7 @@ _Uses dynamic creation of the payload interface (one dynamic panel for all views
 ***
 ### with *.dll 4.1.2-4.1.3 pre-release 24.12.2021 
 - add base setting panel   
-_couldn't make a nice angular template!!! ))) I don't know the proportions - it's hard to read on the left_
+_couldn't make a nice angular patterns!!! ))) I don't know the proportions - the picture on the right is hard to read_
 
 ![image](https://user-images.githubusercontent.com/16114000/147327712-6167e552-4967-4ac4-a2dc-0ea77210ee41.png)
 
