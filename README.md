@@ -18,9 +18,10 @@ _Uses dynamic creation of the payload interface (one dynamic panel for all views
 3. If there are errors, follow the troubleshooting guidelines = Complete the settings  
 ***
 ### with *.dll 4.1.2-4.1.3 pre-release 24.12.2021 
-- add base setting panel
-- 
-![image](https://user-images.githubusercontent.com/16114000/147327099-5883aff3-740e-4729-8aab-5364c6f7865e.png)
+- add base setting panel   
+_couldn't make a nice angular template!!! ))) I don't know the proportions - it's hard to read on the left_
+
+![image](https://user-images.githubusercontent.com/16114000/147327712-6167e552-4967-4ac4-a2dc-0ea77210ee41.png)
 
 ***
 ### with *.dll 4.1.1 release 19.07.2021 
