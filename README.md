@@ -19,6 +19,7 @@ _Uses dynamic creation of the payload interface (one dynamic panel for all views
 ***
 ### with *.dll 4.1.2-4.1.3 pre-release 24.12.2021 
 - add base setting panel
+- 
 ![image](https://user-images.githubusercontent.com/16114000/147327099-5883aff3-740e-4729-8aab-5364c6f7865e.png)
 
 ***
