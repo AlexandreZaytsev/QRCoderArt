@@ -715,10 +715,6 @@ namespace QRCoderArt
                                 baseDrawQuietZones.Checked,
                                 logoIconPath.Text != "" && logoIconBorderWidth.Value > 0 ? logoBackColor.BackColor : baseLightColor.BackColor
                             );
-                            this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
-                            //Set the SizeMode to center the image.
-                            this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
-                            pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
                         }
                     }
                     else
@@ -737,14 +733,14 @@ namespace QRCoderArt
                                 (ArtQRCode.BackgroundImageStyle)artBackgroundImageStyle.SelectedItem,
                                 GetArtPatternBitmap()
                             );
-                            this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
-                            //Set the SizeMode to center the image.
-                            this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
-                            pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
                         }
                     }
                 }
             }
+            pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
+            //Set the SizeMode to center the image.
+            //pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
+            pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
         /// <summary>
