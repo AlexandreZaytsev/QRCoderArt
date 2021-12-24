@@ -1,12 +1,12 @@
 # QRCoderArt
-Demo project WinForm application - creating a file with a picture of QR code based on QRCoder (1.4.1). With the possibility of creating a label (top layer) or background picture (substrate) based on ArtQRCode.cs. Payload Interface - QRCoder.dll Dynamic (Reflection)
+Demo project WinForm application - creating a file with a picture of QR code based on QRCoder (1.4.x). With the possibility of creating a label (top layer) or background picture (substrate) based on ArtQRCode.cs. Payload Interface - QRCoder.dll Dynamic (Reflection)
 
 - QR Code Picture Generator QRCoder.dll (base 1.4.x) + QRCoderDemo (Raffael Herrmann)
   (https://github.com/codebude/QRCoder) 
 
 idea:
 - read the parameters of the payload designer (attribute [obsolete] - checked)
-- dynamically create parameter type controls
+- #dynamically create parameter type controls
 - If control values change - > initialize payload constructor parameters with type mapping
 
 _Windows/collected under the .NET Framework 4.0_  
