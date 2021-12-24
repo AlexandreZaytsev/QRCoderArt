@@ -6,7 +6,7 @@ Demo project WinForm application - creating a file with a picture of QR code bas
 
 idea:
 - read the parameters of the payload designer (attribute [obsolete] - checked)
-- #dynamically create parameter type controls
+- **dynamically create parameter type controls**
 - If control values change - > initialize payload constructor parameters with type mapping
 
 _Windows/collected under the .NET Framework 4.0_  
