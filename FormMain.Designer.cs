@@ -63,7 +63,7 @@ namespace QRCoderArt
             this.cbPayload = new System.Windows.Forms.ComboBox();
             this.tbConstructor = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelSettings = new System.Windows.Forms.Panel();
             this.baseTabControl = new System.Windows.Forms.TabControl();
             this.Base = new System.Windows.Forms.TabPage();
             this.baseMode = new System.Windows.Forms.CheckBox();
@@ -99,7 +99,6 @@ namespace QRCoderArt
             this.artQuietZoneRenderingStyle = new System.Windows.Forms.ComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.QRCodeString = new System.Windows.Forms.RichTextBox();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.panelPayload = new System.Windows.Forms.FlowLayoutPanel();
             this.outSplitContainer = new System.Windows.Forms.SplitContainer();
             this.QRCodeError = new System.Windows.Forms.WebBrowser();
@@ -107,9 +106,10 @@ namespace QRCoderArt
             this.panel3 = new System.Windows.Forms.Panel();
             this.openFileDialogSetting = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogSetting = new System.Windows.Forms.SaveFileDialog();
+            this.panelSelectPayload = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxQRCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.artPixelSizeFactor)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.panelSettings.SuspendLayout();
             this.baseTabControl.SuspendLayout();
             this.Base.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.basePixelsPerModule)).BeginInit();
@@ -119,13 +119,13 @@ namespace QRCoderArt
             ((System.ComponentModel.ISupportInitialize)(this.logoIconBorderWidth)).BeginInit();
             this.Art.SuspendLayout();
             this.panelArt.SuspendLayout();
-            this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.outSplitContainer)).BeginInit();
             this.outSplitContainer.Panel1.SuspendLayout();
             this.outSplitContainer.Panel2.SuspendLayout();
             this.outSplitContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.qRCodeBindingSource)).BeginInit();
             this.panel3.SuspendLayout();
+            this.panelSelectPayload.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBoxQRCode
@@ -138,8 +138,8 @@ namespace QRCoderArt
             this.pictureBoxQRCode.InitialImage = global::QRCoderArt.Properties.Resources.qr_no;
             this.pictureBoxQRCode.Location = new System.Drawing.Point(3, 3);
             this.pictureBoxQRCode.Name = "pictureBoxQRCode";
-            this.pictureBoxQRCode.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.pictureBoxQRCode.Size = new System.Drawing.Size(392, 336);
+            this.pictureBoxQRCode.Padding = new System.Windows.Forms.Padding(3);
+            this.pictureBoxQRCode.Size = new System.Drawing.Size(392, 337);
             this.pictureBoxQRCode.TabIndex = 2;
             this.pictureBoxQRCode.TabStop = false;
             // 
@@ -261,10 +261,10 @@ namespace QRCoderArt
             this.cbPayload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbPayload.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPayload.FormattingEnabled = true;
-            this.cbPayload.Location = new System.Drawing.Point(62, 151);
+            this.cbPayload.Location = new System.Drawing.Point(67, 6);
             this.cbPayload.Margin = new System.Windows.Forms.Padding(1);
             this.cbPayload.Name = "cbPayload";
-            this.cbPayload.Size = new System.Drawing.Size(228, 21);
+            this.cbPayload.Size = new System.Drawing.Size(224, 21);
             this.cbPayload.TabIndex = 1;
             this.toolTip1.SetToolTip(this.cbPayload, "Select PAYLOAD and Set property");
             this.cbPayload.SelectedIndexChanged += new System.EventHandler(this.RebuildingGUITreePanel);
@@ -272,7 +272,7 @@ namespace QRCoderArt
             // tbConstructor
             // 
             this.tbConstructor.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbConstructor.Location = new System.Drawing.Point(7, 149);
+            this.tbConstructor.Location = new System.Drawing.Point(8, 2);
             this.tbConstructor.Margin = new System.Windows.Forms.Padding(1);
             this.tbConstructor.Name = "tbConstructor";
             this.tbConstructor.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -293,29 +293,27 @@ namespace QRCoderArt
             this.label6.TabIndex = 21;
             this.label6.Text = "image";
             // 
-            // panel1
+            // panelSettings
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.baseTabControl);
-            this.panel1.Controls.Add(this.tbConstructor);
-            this.panel1.Controls.Add(this.cbPayload);
-            this.panel1.Location = new System.Drawing.Point(408, 7);
-            this.panel1.Margin = new System.Windows.Forms.Padding(1);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(296, 178);
-            this.panel1.TabIndex = 30;
+            this.panelSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelSettings.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelSettings.Controls.Add(this.baseTabControl);
+            this.panelSettings.Location = new System.Drawing.Point(408, 7);
+            this.panelSettings.Margin = new System.Windows.Forms.Padding(1);
+            this.panelSettings.Name = "panelSettings";
+            this.panelSettings.Size = new System.Drawing.Size(296, 148);
+            this.panelSettings.TabIndex = 30;
             // 
             // baseTabControl
             // 
             this.baseTabControl.Controls.Add(this.Base);
             this.baseTabControl.Controls.Add(this.Logo);
             this.baseTabControl.Controls.Add(this.Art);
-            this.baseTabControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.baseTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.baseTabControl.Location = new System.Drawing.Point(0, 0);
             this.baseTabControl.Name = "baseTabControl";
             this.baseTabControl.SelectedIndex = 0;
-            this.baseTabControl.Size = new System.Drawing.Size(294, 147);
+            this.baseTabControl.Size = new System.Drawing.Size(294, 146);
             this.baseTabControl.TabIndex = 33;
             // 
             // Base
@@ -333,7 +331,7 @@ namespace QRCoderArt
             this.Base.Controls.Add(this.eccLevel);
             this.Base.Location = new System.Drawing.Point(4, 22);
             this.Base.Name = "Base";
-            this.Base.Size = new System.Drawing.Size(286, 121);
+            this.Base.Size = new System.Drawing.Size(286, 141);
             this.Base.TabIndex = 2;
             this.Base.Text = "QRCode standard";
             // 
@@ -341,7 +339,7 @@ namespace QRCoderArt
             // 
             this.baseMode.AutoSize = true;
             this.baseMode.Location = new System.Drawing.Point(136, 9);
-            this.baseMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.baseMode.Margin = new System.Windows.Forms.Padding(2);
             this.baseMode.Name = "baseMode";
             this.baseMode.Size = new System.Drawing.Size(39, 17);
             this.baseMode.TabIndex = 42;
@@ -407,7 +405,7 @@ namespace QRCoderArt
             this.basePixelsPerModule.BackColor = System.Drawing.SystemColors.Window;
             this.basePixelsPerModule.Cursor = System.Windows.Forms.Cursors.Default;
             this.basePixelsPerModule.Location = new System.Drawing.Point(244, 32);
-            this.basePixelsPerModule.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.basePixelsPerModule.Margin = new System.Windows.Forms.Padding(2);
             this.basePixelsPerModule.Minimum = new decimal(new int[] {
             1,
             0,
@@ -467,8 +465,8 @@ namespace QRCoderArt
             this.Logo.Controls.Add(this.logoIconButton);
             this.Logo.Location = new System.Drawing.Point(4, 22);
             this.Logo.Name = "Logo";
-            this.Logo.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.Logo.Size = new System.Drawing.Size(286, 121);
+            this.Logo.Padding = new System.Windows.Forms.Padding(3);
+            this.Logo.Size = new System.Drawing.Size(286, 141);
             this.Logo.TabIndex = 0;
             this.Logo.Text = "with Logo";
             // 
@@ -482,7 +480,7 @@ namespace QRCoderArt
             this.panelLogo.Controls.Add(this.logoBackColor);
             this.panelLogo.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelLogo.Enabled = false;
-            this.panelLogo.Location = new System.Drawing.Point(3, 29);
+            this.panelLogo.Location = new System.Drawing.Point(3, 49);
             this.panelLogo.Name = "panelLogo";
             this.panelLogo.Size = new System.Drawing.Size(280, 89);
             this.panelLogo.TabIndex = 39;
@@ -543,7 +541,7 @@ namespace QRCoderArt
             | System.Windows.Forms.AnchorStyles.Left)));
             this.logoIconBorderWidth.BackColor = System.Drawing.SystemColors.Window;
             this.logoIconBorderWidth.Location = new System.Drawing.Point(234, 24);
-            this.logoIconBorderWidth.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.logoIconBorderWidth.Margin = new System.Windows.Forms.Padding(2);
             this.logoIconBorderWidth.Maximum = new decimal(new int[] {
             10,
             0,
@@ -636,8 +634,8 @@ namespace QRCoderArt
             this.Art.Controls.Add(this.artIconButton);
             this.Art.Location = new System.Drawing.Point(4, 22);
             this.Art.Name = "Art";
-            this.Art.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.Art.Size = new System.Drawing.Size(286, 121);
+            this.Art.Padding = new System.Windows.Forms.Padding(3);
+            this.Art.Size = new System.Drawing.Size(286, 120);
             this.Art.TabIndex = 1;
             this.Art.Text = "with Art";
             // 
@@ -669,7 +667,7 @@ namespace QRCoderArt
             this.panelArt.Controls.Add(this.label14);
             this.panelArt.Controls.Add(this.artQuietZoneRenderingStyle);
             this.panelArt.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelArt.Location = new System.Drawing.Point(3, 29);
+            this.panelArt.Location = new System.Drawing.Point(3, 28);
             this.panelArt.Margin = new System.Windows.Forms.Padding(0);
             this.panelArt.Name = "panelArt";
             this.panelArt.Size = new System.Drawing.Size(280, 89);
@@ -779,27 +777,18 @@ namespace QRCoderArt
         "ode picture");
             this.QRCodeString.TextChanged += new System.EventHandler(this.Setting_Changed);
             // 
-            // panel2
-            // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.panelPayload);
-            this.panel2.Location = new System.Drawing.Point(408, 188);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(296, 371);
-            this.panel2.TabIndex = 33;
-            // 
             // panelPayload
             // 
+            this.panelPayload.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPayload.AutoScroll = true;
-            this.panelPayload.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelPayload.Location = new System.Drawing.Point(0, 0);
+            this.panelPayload.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelPayload.Location = new System.Drawing.Point(409, 192);
             this.panelPayload.Margin = new System.Windows.Forms.Padding(0);
             this.panelPayload.Name = "panelPayload";
             this.panelPayload.Padding = new System.Windows.Forms.Padding(0, 2, 0, 2);
-            this.panelPayload.Size = new System.Drawing.Size(294, 369);
+            this.panelPayload.Size = new System.Drawing.Size(295, 367);
             this.panelPayload.TabIndex = 3;
             // 
             // outSplitContainer
@@ -809,7 +798,7 @@ namespace QRCoderArt
             | System.Windows.Forms.AnchorStyles.Right)));
             this.outSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.outSplitContainer.Location = new System.Drawing.Point(3, 7);
-            this.outSplitContainer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.outSplitContainer.Margin = new System.Windows.Forms.Padding(2);
             this.outSplitContainer.Name = "outSplitContainer";
             this.outSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -848,7 +837,7 @@ namespace QRCoderArt
             this.panel3.Controls.Add(this.buttonSave);
             this.panel3.Controls.Add(this.label4);
             this.panel3.Location = new System.Drawing.Point(3, 526);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(400, 33);
             this.panel3.TabIndex = 3;
@@ -857,15 +846,25 @@ namespace QRCoderArt
             // 
             this.openFileDialogSetting.FileName = "openFileDialog1";
             // 
+            // panelSelectPayload
+            // 
+            this.panelSelectPayload.Controls.Add(this.tbConstructor);
+            this.panelSelectPayload.Controls.Add(this.cbPayload);
+            this.panelSelectPayload.Location = new System.Drawing.Point(408, 156);
+            this.panelSelectPayload.Name = "panelSelectPayload";
+            this.panelSelectPayload.Size = new System.Drawing.Size(296, 33);
+            this.panelSelectPayload.TabIndex = 29;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(706, 561);
+            this.Controls.Add(this.panelSelectPayload);
+            this.Controls.Add(this.panelPayload);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.outSplitContainer);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelSettings);
             this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -878,7 +877,7 @@ namespace QRCoderArt
             this.Shown += new System.EventHandler(this.FormMain_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxQRCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.artPixelSizeFactor)).EndInit();
-            this.panel1.ResumeLayout(false);
+            this.panelSettings.ResumeLayout(false);
             this.baseTabControl.ResumeLayout(false);
             this.Base.ResumeLayout(false);
             this.Base.PerformLayout();
@@ -893,7 +892,6 @@ namespace QRCoderArt
             this.Art.PerformLayout();
             this.panelArt.ResumeLayout(false);
             this.panelArt.PerformLayout();
-            this.panel2.ResumeLayout(false);
             this.outSplitContainer.Panel1.ResumeLayout(false);
             this.outSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.outSplitContainer)).EndInit();
@@ -901,6 +899,7 @@ namespace QRCoderArt
             ((System.ComponentModel.ISupportInitialize)(this.qRCodeBindingSource)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            this.panelSelectPayload.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -961,7 +960,7 @@ namespace QRCoderArt
         /// <summary>
         /// The panel1
         /// </summary>
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelSettings;
         /// <summary>
         /// The label11
         /// </summary>
@@ -970,10 +969,6 @@ namespace QRCoderArt
         /// The tool tip1
         /// </summary>
         private System.Windows.Forms.ToolTip toolTip1;
-        /// <summary>
-        /// The panel2
-        /// </summary>
-        private System.Windows.Forms.Panel panel2;
         /// <summary>
         /// The out split container
         /// </summary>
@@ -1026,6 +1021,7 @@ namespace QRCoderArt
         private System.Windows.Forms.OpenFileDialog openFileDialogSetting;
         private System.Windows.Forms.SaveFileDialog saveFileDialogSetting;
         private System.Windows.Forms.CheckBox baseMode;
+        private System.Windows.Forms.Panel panelSelectPayload;
     }
 }
 
