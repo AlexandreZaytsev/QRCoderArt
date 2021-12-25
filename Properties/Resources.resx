@@ -123,9 +123,8 @@
   </data>
   <data name="AboutString" xml:space="preserve">
     <value>Demo project WinForm application
-creating a file with a picture of a QR code based on QRCoder (1.4.1).
-  - the ability to create a label (top layer)
-  - or a background image (background) based on ArtQRCode.cs.
+creating a file with a picture of a QR code based on QRCoder (1.4.3).
+  - the ability to create a label (top layer) - or a background image (background)
 
 using
    1. Select payload
@@ -134,14 +133,9 @@ using
 
 Payload interface - dynamic (Reflection) QRCoder.dll
 
-QR code picture generator QRCoder 1.4.1 QRCoder.dll + QRCoderDemo
+QR code picture generator QRCoder 1.4.3 QRCoder.dll + QRCoderDemo
 (Raffael Herrmann)
-https://github.com/codebude/QRCoder
-
-ArtQRCode.cs file background image
-(NigelThorne)
-https://github.com/codebude/QRCoder/pull/295
-https://github.com/codebude/QRCoder/tree/91839cfe9c445832a61a993893eccfab9e264ee8/QRCoder</value>
+https://github.com/codebude/QRCoder</value>
     <comment>/*just links to study the question reflection
 
  https://blog.rc21net.ru/рефлексия-отражение-reflection-в-c-sharp/

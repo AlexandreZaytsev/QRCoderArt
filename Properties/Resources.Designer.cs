@@ -72,9 +72,8 @@ namespace QRCoderArt.Properties {
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Demo project WinForm application
-        ///creating a file with a picture of a QR code based on QRCoder (1.4.1).
-        ///  - the ability to create a label (top layer)
-        ///  - or a background image (background) based on ArtQRCode.cs.
+        ///creating a file with a picture of a QR code based on QRCoder (1.4.3).
+        ///  - the ability to create a label (top layer) - or a background image (background)
         ///
         ///using
         ///   1. Select payload
@@ -83,11 +82,9 @@ namespace QRCoderArt.Properties {
         ///
         ///Payload interface - dynamic (Reflection) QRCoder.dll
         ///
-        ///QR code picture generator QRCoder 1.4.1 QRCoder.dll + QRCoderDemo
+        ///QR code picture generator QRCoder 1.4.3 QRCoder.dll + QRCoderDemo
         ///(Raffael Herrmann)
-        ///https://github.com/codebude/QRCoder
-        ///
-        ///ArtQRCode.cs file backgro [остаток строки не уместился]&quot;;.
+        ///https://github.com/codebude/QRCoder.
         /// </summary>
         internal static string AboutString {
             get {
