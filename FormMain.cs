@@ -44,12 +44,12 @@ namespace QRCoderArt
             ReflectionData = guiTree;
 
             string baseName = "Payload";                                        //проще сразу указать имя
-          //this.cbPayload.DataSource = ReflectionData.GetMembersClassName_(baseName);    //get list names classes members QRCoder.PayloadGenerator
+                                                                                //this.cbPayload.DataSource = ReflectionData.GetMembersClassName_(baseName);    //get list names classes members QRCoder.PayloadGenerator
             this.cbPayload.DataSource = new BindingSource(ReflectionData.GetMembersClassName(baseName), null);
             this.cbPayload.DisplayMember = "Key";                                            //Имя    
             this.cbPayload.ValueMember = "Value";                                            //значение  
-       //     this.cbPayload.SelectedItem = 0;
-                                                                                         //    }
+                                                                                             //     this.cbPayload.SelectedItem = 0;
+                                                                                             //    }
             this.viewMode.DataSource = Enum.GetValues(typeof(ImageLayout));
             this.viewMode.SelectedIndex = 4;
             this.QRCodeString.Dock = DockStyle.Fill;
@@ -67,7 +67,7 @@ namespace QRCoderArt
         {
             //заполним выпадающие списки из enum
             eccLevel.DataSource = Enum.GetValues(typeof(QRCodeGenerator.ECCLevel));
-//            eccLevel.SelectedIndex = eccLevel.FindStringExact(QRCodeGenerator.ECCLevel.Q.ToString());
+            //            eccLevel.SelectedIndex = eccLevel.FindStringExact(QRCodeGenerator.ECCLevel.Q.ToString());
             eccLevel.SelectedItem = QRCodeGenerator.ECCLevel.M;
 
             artQuietZoneRenderingStyle.DataSource = Enum.GetValues(typeof(ArtQRCode.QuietZoneStyle));
@@ -89,7 +89,7 @@ namespace QRCoderArt
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            RebuildingGUITreePanel(this.cbPayload,null);
+            RebuildingGUITreePanel(this.cbPayload, null);
             readyState[2] = true;           //Main form is Show
         }
 
@@ -212,7 +212,7 @@ namespace QRCoderArt
                             panels.Peek().Controls.Add(chtb);
                             tb.Enabled = false;// chtb.Checked;
                         }
-             //           DataBindings.Add("Text", ReflectionData.pointTree.Value.formValue, "formValue");
+                        //           DataBindings.Add("Text", ReflectionData.pointTree.Value.formValue, "formValue");
 
                         break;
                     case "CheckBox":
@@ -800,7 +800,7 @@ namespace QRCoderArt
 
             openFileDialogSetting.Title = name;
             openFileDialogSetting.Filter = filter;
-//            openFileDialogSetting.DefaultExt = defaultExt;
+            //            openFileDialogSetting.DefaultExt = defaultExt;
 
             DialogResult dr = openFileDialogSetting.ShowDialog();
             if (dr == DialogResult.Abort)

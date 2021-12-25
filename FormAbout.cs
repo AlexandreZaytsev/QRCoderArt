@@ -1,17 +1,4 @@
-﻿// ***********************************************************************
-// Assembly         : QRCoderArt
-// Author           : zaytsev
-// Created          : 07-14-2021
-//
-// Last Modified By : zaytsev
-// Last Modified On : 07-14-2021
-// ***********************************************************************
-// <copyright file="FormAbout.cs" company="">
-//     MIT ©  2021
-// </copyright>
-// <summary></summary>
-// ***********************************************************************
-using QRCoderArt.Properties;
+﻿using QRCoderArt.Properties;
 using System;
 using System.Reflection;
 using System.Windows.Forms;

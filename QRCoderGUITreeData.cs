@@ -131,7 +131,7 @@ namespace QRCoderArt
         public GUITree()
         {
             basePayloads = typeof(QRCoder.PayloadGenerator);    //node reflection
-//            extPayloads = typeof(QRCoderArt.PayloadExt);        //node reflection
+                                                                //            extPayloads = typeof(QRCoderArt.PayloadExt);        //node reflection
 
             rootTree = new Node<ValueNode>(new ValueNode());
             rootTree.Value.name = "Payload";
@@ -274,7 +274,7 @@ namespace QRCoderArt
 #pragma warning restore CS1572 // Комментарий XML имеет тег param для "guiTree", но параметр с таким именем отсутствует.
         {
             ValueNode dataNode = new ValueNode();//  new GUITreeNode()
-                                               // DataNodeTree<DataNode> currentNode = rootNode;
+                                                 // DataNodeTree<DataNode> currentNode = rootNode;
 
             if (nodeType.IsClass && nodeType.Namespace != "System" && !nodeType.IsGenericType)
             {

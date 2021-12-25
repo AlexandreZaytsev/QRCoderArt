@@ -1,17 +1,4 @@
-﻿// ***********************************************************************
-// Assembly         : QRCoderArt
-// Author           : NigelThorne
-// Created          : 07-14-2021
-//
-// Last Modified By : zaytsev
-// Last Modified On : 07-14-2021
-// ***********************************************************************
-// <copyright file="Program.cs" company="">
-//     MIT ©  2021
-// </copyright>
-// <summary></summary>
-// ***********************************************************************
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace QRCoderArt
@@ -27,7 +14,7 @@ namespace QRCoderArt
         [STAThread]
         static void Main()
         {
-//            GUITree ReflectionData = new GUITree(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName);
+            //            GUITree ReflectionData = new GUITree(typeof(QRCoder.PayloadGenerator).AssemblyQualifiedName);
             GUITree ReflectionData = new GUITree();
 
             Application.EnableVisualStyles();

@@ -1,19 +1,5 @@
-﻿// ***********************************************************************
-// Assembly         : QRCoderArt
-// Author           : zaytsev
-// Created          : 07-14-2021
-//
-// Last Modified By : zaytsev
-// Last Modified On : 07-14-2021
-// ***********************************************************************
-// <copyright file="FormDictionary.cs" company="">
-//     MIT ©  2021
-// </copyright>
-// <summary></summary>
-// ***********************************************************************
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 
