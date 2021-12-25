@@ -1,17 +1,4 @@
-﻿// ***********************************************************************
-// Assembly         : QRCoderArt
-// Author           : zaytsev
-// Created          : 07-14-2021
-//
-// Last Modified By : zaytsev
-// Last Modified On : 07-14-2021
-// ***********************************************************************
-// <copyright file="QRCoderReflection.cs" company="">
-//     MIT ©  2021
-// </copyright>
-// <summary></summary>
-// ***********************************************************************
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -135,7 +122,6 @@ namespace QRCoderArt
         /// node (entry point) in Reflection
         /// </summary>
         private readonly Type basePayloads;             // Payload from QRCoder.Dll
-        private readonly Type extPayloads;              // Payload from PayloadExt.cs
         private readonly Node<ValueNode> rootTree;      // root node in the tree data
         public Node<ValueNode> pointTree;               // current point node in the tree data
 

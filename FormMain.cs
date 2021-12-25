@@ -7,7 +7,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace QRCoderArt
@@ -785,7 +784,7 @@ namespace QRCoderArt
         /// <returns></returns>
         private string getFileName(string name, string filter)
         {
-            filter = string.Empty;
+            //filter = string.Empty;
             /*
             ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
             string sep = string.Empty;
@@ -818,7 +817,7 @@ namespace QRCoderArt
         /// <returns></returns>
         private SaveFileDialog setFileName(string name, string filter, string filename)
         {
-            filter = string.Empty;
+            //filter = string.Empty;
             filter = "png Image|*.png|jpeg Image|*.jpg|gif Image|*.gif|bmp Image|*.bmp";
             saveFileDialogSetting.Title = name;
             saveFileDialogSetting.Filter = filter;

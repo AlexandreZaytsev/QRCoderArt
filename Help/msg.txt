@@ -1,0 +1,55 @@
+dll 1.4.2 1.4.3 through reflection
+1.4.2 - ок
+1.4.3 - PayloadGenerator.cs - causes an exception (I didn't change anything in my code, just reconnected the dll from 1.4.2 to 1.4.3) **with default parameters from the constructor** (when using only Reflection for Payloads)
+
+what exactly has changed? what should I pay attention to? checking valid values?
+
+using the assembly dll for .framework 3.5; 4   
+payloadgenerator.cs 1.4.3
+**ok:**
+wifi, mail, sms, mms, geolocation, phonenumber, skypecall, url, whatsappmessage, bookmark, contactdata, bitcoinlikecryptocurrencyaddress, calendarevent, slovenianupnqr
+ 
+**ecxeption:**
+swissqrcode, girocode  
+```
+private static bool IsValidIban(string iban)
+...
+var sum = $"{ibanCleared.Substring(4)}{ibanCleared.Substring(0, 4)}".ToCharArray().Aggregate("", (current, c) => current + (char.IsLetter(c) ? (c - 55).ToString() : c.ToString()));
+...
+System.ArgumentOutOfRangeException: "startIndex cannot be greater than the length of the string.
+Parameter name: startIndex"
+```
+  
+bezahcode
+```
+QRCoder.PayloadGenerator.BezahlCode.BezahlCodeException: "The constructor without an amount may only ne used with authority types 'contact' and 'contact_v2'."
+
+onetimepassword
+System.Exception: "Secret must be a filled out base32 encoded string"
+
+shadowsocksconfig
+public ShadowSocksConfig(string hostname, int port, string password, Method method, Dictionary<string, string> parameters, string tag = null)
+...
+QRCoder.PayloadGenerator.ShadowSocksConfig.ShadowSocksConfigException: "Value of 'port' must be within 0 and 65535."
+
+```
+monerotransaction
+```
+public MoneroTransaction(string address, float? txAmount = null, string txPaymentId = null, string recipientName = null, string txDescription = null)
+...
+"The address is mandatory and has to be set."
+```
+
+russiapaymentorder 1.4.3
+```
+byte[] bytesOut = Encoding.Convert(Encoding.UTF8, Encoding.GetEncoding(cp), Encoding.UTF8.GetBytes(ret));
+...
+System.ArgumentException: "Encoding name "0" is not supported. For information about defining custom encodings, see the Encoding method documentation.RegisterProvider.
+Parameter name: name"
+```
+russiapaymentorder 1.4.2
+```
+System.Reflection.TargetInvocationException
+Internal Exception 1:
+RussiaPaymentOrderException: The input for 'Sum' () doesn't match the pattern ^\d{1,18}$
+```
