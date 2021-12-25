@@ -7,9 +7,9 @@ using System.Reflection;
 
 namespace QRCoderArt
 {
-    //----------------------------------------------------------------------------------------------------
+    #region Node Structure and Class
+
     /// <summary>Class DataNode.</summary>
-    //----------------------------------------------------------------------------------------------------
     public class ValueNode
     {
         public ValueNode() { id = Guid.NewGuid(); }
@@ -26,10 +26,8 @@ namespace QRCoderArt
         public Type metaDataSource;                      //the current data source form control
     }
 
-    //----------------------------------------------------------------------------------------------------
     /// <summary>Class DataNodeTree.</summary>
     /// <typeparam name="T"></typeparam>
-    //----------------------------------------------------------------------------------------------------
     public class Node<T>
     {
         //https://codengineering.ru/q/tree-data-structure-in-c-sharp-23594
@@ -84,6 +82,8 @@ namespace QRCoderArt
             return new[] { Value }.Concat(_children.SelectMany(x => x.Flatten()));
         }
     }
+
+    #endregion
 
     //----------------------------------------------------------------------------------------------------
     /// <summary>
