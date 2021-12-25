@@ -9,7 +9,7 @@ idea:
 - **dynamically create parameter type controls**
 - If control values change - > initialize payload constructor parameters with type mapping
 
-_Windows/collected under the .NET Framework 4.0_  
+_Windows/collected under the .NET Framework 4.5_  
 _Uses dynamic creation of the payload interface (one dynamic panel for all views) (without saving parameters) reflection QRCoder.dll_
 ***
 1. Select payload
