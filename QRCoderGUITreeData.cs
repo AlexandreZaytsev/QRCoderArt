@@ -85,29 +85,6 @@ namespace QRCoderArt
 
     #endregion
 
-    #region Class Error Invoke
-
-    /// <summary>
-    /// Class InvokeError.
-    /// </summary>
-    public class InvokeError
-    {
-        public InvokeError(string name) { ConstructorName = name; }
-        public string ConstructorName { get; set; }
-        /// <summary>
-        /// Gets or sets the errors.
-        /// </summary>
-        /// <value>The errors.</value>
-        public List<string> Errors { get; set; } = new List<string>();
-        /// <summary>
-        /// Adds the message.
-        /// </summary>
-        /// <param name="val">The value.</param>
-        public void AddMessage(string val) { Errors.Add(val); }
-    }
-
-    #endregion
-
     #region Class GUI Tree  
 
     /// <summary>
@@ -391,6 +368,29 @@ namespace QRCoderArt
             }
             return 0;// guiTree.Count;
         }
+    }
+
+    #endregion
+
+    #region Class Error Invoke
+
+    /// <summary>
+    /// Class InvokeError.
+    /// </summary>
+    public class InvokeError
+    {
+        public InvokeError(string name) { ConstructorName = name; }
+        public string ConstructorName { get; set; }
+        /// <summary>
+        /// Gets or sets the errors.
+        /// </summary>
+        /// <value>The errors.</value>
+        public List<string> Errors { get; set; } = new List<string>();
+        /// <summary>
+        /// Adds the message.
+        /// </summary>
+        /// <param name="val">The value.</param>
+        public void AddMessage(string val) { Errors.Add(val); }
     }
 
     #endregion
