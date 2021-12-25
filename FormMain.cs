@@ -96,6 +96,8 @@ namespace QRCoderArt
 
         #region //REFLECTION
 
+        #region //GuiTreePanel
+
         /// <summary>
         /// ClearGUITreePanel
         /// очистить все CTRL из плавающей панели payload
@@ -116,7 +118,7 @@ namespace QRCoderArt
         }
 
         /// <summary>
-        /// CreateControlPlayloadPanel
+        /// CreateGUITreePanel
         /// создать CTRL panel из GUITree
         /// </summary>
         /// <param name="panelGUITree">плавающая панель CTRL из GUITree</param>
@@ -348,88 +350,6 @@ namespace QRCoderArt
             panelPayload.Visible = true;    //render on
         }
 
-        #endregion
-
-        /*--------------------------------------------------------------------------------------------  
-                     EVENTS
-        --------------------------------------------------------------------------------------------*/
-
-        /// <summary>
-        /// ToolTipMouseHover
-        /// отобразить всплывающую подсказку из AccessibleDescription
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void ToolTipMouseHover(object sender, EventArgs e)
-        {
-            toolTip1.SetToolTip((System.Windows.Forms.Control)sender,
-                               ((System.Windows.Forms.Control)sender).AccessibleDescription);
-        }
-
-        /// <summary>
-        /// FilterOnlyReal
-        /// проверка ввода на числа с плавающей точкой (контролируя системный разделитель)
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="KeyPressEventArgs" /> instance containing the event data.</param>
-        private void FilterOnlyReal(object sender, KeyPressEventArgs e)
-        {
-            string sep = ((float)1 / 2).ToString().Substring(1, 1);  // system sparator
-/*
-            bool lCheck = false;
-            TextBox cnt = sender as TextBox;
-            string txt = (cnt.Text + e.KeyChar).Replace(" ", "");
-            switch (cnt.AccessibleDescription)
-            {
-                case "Single":
-                    lCheck = Regex.IsMatch(txt, @"^([0-9\b\" + sep + "]){1,10}$");
-                    break;
-                case "Int32":
-                    break;
-                case "UInt32":
-                    lCheck = Regex.IsMatch(txt, @"^([0-9\b\" + sep + "]){1,10}$");   
-                    break;
-                case "UInt64":
-                    lCheck = Regex.IsMatch(txt, @"^([0-9\b\" + sep + "]){1,20}$");
-                    break;
-                case "Decimal":
-                    break;
-                case "Double":
-                    break;
-                default:
-                    lCheck = Regex.IsMatch(txt, @"^([0-9\b])");
-                    break;
-            }
-            e.Handled = !lCheck;
-*/
-            if (!(Char.IsDigit(e.KeyChar)) && !((e.KeyChar == Convert.ToChar(sep)) && (((TextBox)sender).Text.IndexOf(sep) == -1) && (((TextBox)sender).Text.Length != 0)))
-            {
-                if (e.KeyChar != (char)Keys.Back)
-                {
-                    e.Handled = true;
-                }
-            }
-        }
-
-        /// <summary>
-        /// SetPropretyPairs
-        /// передать через асинхронное сообщение (callback) пары параметров ключ-значение во внешнюю форму на редактирование
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void SetPropretyPairs(object sender, EventArgs e)
-        {
-            Button bt = sender as Button;
-            FormDictionary a = new FormDictionary();
-
-            Control[] cntrl = this.FilterControls(c => c.Name != null && c.Name.Equals(bt.Name) && c is DataGridView);
-            CallBack_GetParam.callbackEventHandler(bt.Name, bt.Parent.Name, (Dictionary<String, String>)((DataGridView)cntrl[0]).DataSource);  //send a general notification
-            a.Owner = this;
-            a.ShowDialog();
-        }
-
-        /*-----------------------------------------------------------------------------------------------------------------------------------------*/
-
         /// <summary>
         /// RebuildingGUITreePanel
         /// обновить GUITree панель или ее фрагмент GUITreeNodes
@@ -449,9 +369,9 @@ namespace QRCoderArt
                 ClearGUITreePanel(panel.First());                  //clear payload panel
                 if (combo.Name == "cbPayload")
                 {
-                //    ReflectionData.GetGUITree(ReflectionData.GetMemberByName(combo.Text));//, combo.Name);
+                    //    ReflectionData.GetGUITree(ReflectionData.GetMemberByName(combo.Text));//, combo.Name);
                     ReflectionData.GetGUITree(((KeyValuePair<string, object>)combo.SelectedItem).Value);
-               //     ReflectionData.GetGUITree(ReflectionData.GetMemberByName(combo.Name));
+                    //     ReflectionData.GetGUITree(ReflectionData.GetMemberByName(combo.Name));
                 }
                 else
                 {
@@ -466,8 +386,6 @@ namespace QRCoderArt
                 GetPayloadStringFromGUITreePanel(null, null);
             }
         }
-
-        /*-----------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// ReadGUITreePanel
@@ -486,10 +404,10 @@ namespace QRCoderArt
                 foreach (Control cntrl in panelGUITree.Controls)
                 {
 
-//                    if (cntrl.Created && cntrl.AccessibleName == "Get" && cntrl.Parent.Name == panelGUITree.Name)
+                    //                    if (cntrl.Created && cntrl.AccessibleName == "Get" && cntrl.Parent.Name == panelGUITree.Name)
                     if (cntrl.Created && Guid.TryParse(cntrl.AccessibleName, out var newGuid) && cntrl.Parent.Name == panelGUITree.Name)
-                        {
-                            ret = null;
+                    {
+                        ret = null;
                         if (cntrl.Enabled)
                         {
                             switch (cntrl.AccessibleDescription)
@@ -594,6 +512,88 @@ namespace QRCoderArt
                 }
             }
         }
+
+        #endregion
+
+        #region //EventGuiTreePanel
+
+        /// <summary>
+        /// ToolTipMouseHover
+        /// отобразить всплывающую подсказку из AccessibleDescription
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
+        private void ToolTipMouseHover(object sender, EventArgs e)
+        {
+            toolTip1.SetToolTip((System.Windows.Forms.Control)sender,
+                               ((System.Windows.Forms.Control)sender).AccessibleDescription);
+        }
+
+        /// <summary>
+        /// FilterOnlyReal
+        /// проверка ввода на числа с плавающей точкой (контролируя системный разделитель)
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="KeyPressEventArgs" /> instance containing the event data.</param>
+        private void FilterOnlyReal(object sender, KeyPressEventArgs e)
+        {
+            string sep = ((float)1 / 2).ToString().Substring(1, 1);  // system sparator
+            /*
+                        bool lCheck = false;
+                        TextBox cnt = sender as TextBox;
+                        string txt = (cnt.Text + e.KeyChar).Replace(" ", "");
+                        switch (cnt.AccessibleDescription)
+                        {
+                            case "Single":
+                                lCheck = Regex.IsMatch(txt, @"^([0-9\b\" + sep + "]){1,10}$");
+                                break;
+                            case "Int32":
+                                break;
+                            case "UInt32":
+                                lCheck = Regex.IsMatch(txt, @"^([0-9\b\" + sep + "]){1,10}$");   
+                                break;
+                            case "UInt64":
+                                lCheck = Regex.IsMatch(txt, @"^([0-9\b\" + sep + "]){1,20}$");
+                                break;
+                            case "Decimal":
+                                break;
+                            case "Double":
+                                break;
+                            default:
+                                lCheck = Regex.IsMatch(txt, @"^([0-9\b])");
+                                break;
+                        }
+                        e.Handled = !lCheck;
+            */
+            if (!(Char.IsDigit(e.KeyChar)) && !((e.KeyChar == Convert.ToChar(sep)) && (((TextBox)sender).Text.IndexOf(sep) == -1) && (((TextBox)sender).Text.Length != 0)))
+            {
+                if (e.KeyChar != (char)Keys.Back)
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// SetPropretyPairs
+        /// передать через асинхронное сообщение (callback) пары параметров ключ-значение во внешнюю форму на редактирование
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
+        private void SetPropretyPairs(object sender, EventArgs e)
+        {
+            Button bt = sender as Button;
+            FormDictionary a = new FormDictionary();
+
+            Control[] cntrl = this.FilterControls(c => c.Name != null && c.Name.Equals(bt.Name) && c is DataGridView);
+            CallBack_GetParam.callbackEventHandler(bt.Name, bt.Parent.Name, (Dictionary<String, String>)((DataGridView)cntrl[0]).DataSource);  //send a general notification
+            a.Owner = this;
+            a.ShowDialog();
+        }
+
+        #endregion
+
+        #endregion
 
         #region //Interface
 
