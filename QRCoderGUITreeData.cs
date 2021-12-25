@@ -33,21 +33,21 @@ namespace QRCoderArt
         //https://codengineering.ru/q/tree-data-structure-in-c-sharp-23594
         private readonly T _value;
         private readonly List<Node<T>> _children = new List<Node<T>>();
-        public Node<T> Parent { get; private set; }             // parent node
-        public Node(T value) { _value = value; }                                    // first constructor node    
-        public Node<T> this[int i] { get { return _children[i]; } }                             // get node from List by index
+        public Node<T> Parent { get; private set; }                     // parent node
+        public Node(T value) { _value = value; }                        // first constructor node    
+        public Node<T> this[int i] { get { return _children[i]; } }     // get node from List by index
         public T Value { get { return _value; } }                       // get value data (T) node
-        public ReadOnlyCollection<Node<T>> Children             // get collection childrens node  
+        public ReadOnlyCollection<Node<T>> Children                     // get collection childrens node  
         {
             get { return _children.AsReadOnly(); }
         }
-        public Node<T> AddChild(T value)                        // add single node (List)     
+        public Node<T> AddChild(T value)                                // add single node (List)     
         {
             var node = new Node<T>(value) { Parent = this };
             _children.Add(node);
             return node;
         }
-        public void RemoveChildren(Node<T> node, Node<T> root_node) // remove node (List)
+        public void RemoveChildren(Node<T> node, Node<T> root_node)     // remove node (List)
         {
             if (node != null)
             {
@@ -85,11 +85,11 @@ namespace QRCoderArt
 
     #endregion
 
-    //----------------------------------------------------------------------------------------------------
+    #region Class Error Invoke
+
     /// <summary>
     /// Class InvokeError.
     /// </summary>
-    //----------------------------------------------------------------------------------------------------
     public class InvokeError
     {
         public InvokeError(string name) { ConstructorName = name; }
@@ -106,14 +106,16 @@ namespace QRCoderArt
         public void AddMessage(string val) { Errors.Add(val); }
     }
 
-    //----------------------------------------------------------------------------------------------------
+    #endregion
+
+    #region Class GUI Tree  
+
     /// <summary>
     /// Class GUITree.
     /// A class for working with Reflection crqoder.dll
     /// Implements the <see cref="System.IDisposable" />
     /// </summary>
     /// <seealso cref="System.IDisposable" />
-    //----------------------------------------------------------------------------------------------------
     public class GUITree : IDisposable
     {
         //https://www.nookery.ru/c-search-in-depthdfs-using-a-list/
@@ -391,9 +393,11 @@ namespace QRCoderArt
         }
     }
 
-    //----------------------------------------------------------------------------------------------------
+    #endregion
+
+    #region Class GUI Invoke
+
     /// <summary>Class GUIInvoke.</summary>
-    //----------------------------------------------------------------------------------------------------
     public class GUIInvoke
     {
         /// <summary>Gets the invoke member.</summary>
@@ -572,5 +576,8 @@ namespace QRCoderArt
             return strMsg;
         }
     }
+
+    #endregion
+
 }
 
