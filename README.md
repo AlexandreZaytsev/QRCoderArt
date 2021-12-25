@@ -1,15 +1,12 @@
 # QRCoderArt
-Demo project WinForm application - creating a file with a picture of QR code based on QRCoder (1.4.1). With the possibility of creating a label (top layer) or background picture (substrate) based on ArtQRCode.cs. Payload Interface - QRCoder.dll Dynamic (Reflection)
+Demo project WinForm application - creating a file with a picture of QR code based on QRCoder (1.4.x). With the possibility of creating a label (top layer) or background picture (substrate) based on ArtQRCode.cs. Payload Interface - QRCoder.dll Dynamic (Reflection)
 
-- QR Code Picture Generator QRCoder.dll (base 1.4.1) + QRCoderDemo (Raffael Herrmann)
+- QR Code Picture Generator QRCoder.dll (base 1.4.x) + QRCoderDemo (Raffael Herrmann)
   (https://github.com/codebude/QRCoder) 
-- file ArtQRCode.cs background picture (NigelThorne)
-  (https://github.com/codebude/QRCoder/pull/295)
-  (https://github.com/codebude/QRCoder/tree/91839cfe9c445832a61a993893eccfab9e264ee8/QRCoder) 
 
 idea:
 - read the parameters of the payload designer (attribute [obsolete] - checked)
-- dynamically create parameter type controls
+- **dynamically create parameter type controls**
 - If control values change - > initialize payload constructor parameters with type mapping
 
 _Windows/collected under the .NET Framework 4.0_  
@@ -20,6 +17,19 @@ _Uses dynamic creation of the payload interface (one dynamic panel for all views
 3. If there are no errors, a QR picture of the code will be created
 3. If there are errors, follow the troubleshooting guidelines = Complete the settings  
 ***
+### with *.dll 1.4.2-1.4.3 pre-release 24.12.2021 
+- add base setting panel   
+_couldn't make a nice angular patterns!!! ))) I don't know the proportions - the picture on the right is hard to read_
+
+![image](https://user-images.githubusercontent.com/16114000/147327712-6167e552-4967-4ac4-a2dc-0ea77210ee41.png)
+
+***
+### with *.dll 1.4.1 release 19.07.2021 
+- extension file ArtQRCode.cs background picture (NigelThorne)
+  (https://github.com/codebude/QRCoder/pull/295)
+  (https://github.com/codebude/QRCoder/tree/91839cfe9c445832a61a993893eccfab9e264ee8/QRCoder) 
+- extension file PayloadExt.cs local RussiaPaymentOrder
+
 ![QRCoderView](https://user-images.githubusercontent.com/16114000/126315774-471ed7eb-81a6-43ff-baeb-9702f5a6340c.png)
 ***
 ps.<br/>
@@ -28,7 +38,7 @@ pps.<br/>
 _all payloads of the version are supported qrcoder.dll (1.4.1) - but there are very few default values or restrictions on the ranges of values through attributes_<br/>
 ppps.<br/>
 _I tried to use clean code - but a beginner in c#, you can definitely write better and easier ))_<br/>
-### base QRCoder.dll
+### base QRCoder.dll 1.4.1
 - [x] WiFi
   - (string ssid, string password, Authentication authenticationMode, bool isHiddenSSID = false)
 - [x] Mail 

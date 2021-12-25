@@ -66,29 +66,20 @@ namespace QRCoderArt
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void FormMain_Load(object sender, EventArgs e)
         {
+            //заполним выпадающие списки из enum
             eccLevel.DataSource = Enum.GetValues(typeof(QRCodeGenerator.ECCLevel));
-            eccLevel.SelectedIndex = 0; //Pre-select ECC level "L"
-            QRCodeString.Text = "enter your text or select payload + constructor + fill in the parameters";
-            readyState[1] = true;           //MainForm is Load
-            Art.Parent = null;
-            artQuietZoneRenderingStyle.DataSource = Enum.GetValues(typeof(ArtQRCode.QuietZoneStyle))
-                .Cast<ArtQRCode.QuietZoneStyle>()
-                .Select(p => new { Key = (int)p, Value = p.ToString() })
-                .ToList();
-            artQuietZoneRenderingStyle.DisplayMember = "Value";
-            artQuietZoneRenderingStyle.ValueMember = "Key";
-            artQuietZoneRenderingStyle.SelectedValue = "Flat";
-            artQuietZoneRenderingStyle.SelectedText = "Flat";
-            artQuietZoneRenderingStyle.SelectedItem = 0;
+//            eccLevel.SelectedIndex = eccLevel.FindStringExact(QRCodeGenerator.ECCLevel.Q.ToString());
+            eccLevel.SelectedItem = QRCodeGenerator.ECCLevel.M;
 
-
-
-            //            artQuietZoneRenderingStyle.DataSource = ArtQRCode.QuietZoneStyle    Enum.GetValues(typeof(ArtQRCode.QuietZoneStyle)).Cast<ArtQRCode.QuietZoneStyle>().ToDictionary(t => (int)(object)t, t => t.ToString());
-            //            artQuietZoneRenderingStyle.SelectedItem = ArtQRCode.QuietZoneStyle;
+            artQuietZoneRenderingStyle.DataSource = Enum.GetValues(typeof(ArtQRCode.QuietZoneStyle));
+            artQuietZoneRenderingStyle.SelectedItem = ArtQRCode.QuietZoneStyle.Dotted;
 
             artBackgroundImageStyle.DataSource = Enum.GetValues(typeof(ArtQRCode.BackgroundImageStyle));
             artBackgroundImageStyle.SelectedItem = ArtQRCode.BackgroundImageStyle.DataAreaOnly;
 
+            QRCodeString.Text = "enter your text or select payload + constructor + fill in the parameters";
+            readyState[1] = true;           //MainForm is Load
+            Art.Parent = null;
         }
 
         /// <summary>
@@ -706,63 +697,51 @@ namespace QRCoderArt
         /// </summary>
         private void RenderQrCode()
         {
-            if (eccLevel.SelectedItem != null)
+            using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
             {
-                string level = this.eccLevel.SelectedItem.ToString();
-                QRCodeGenerator.ECCLevel eccLevel = (QRCodeGenerator.ECCLevel)(level == "L" ? 0 : level == "M" ? 1 : level == "Q" ? 2 : 3);
-                using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
-//                QRCodeGenerator.ECCLevel eccLevel = (QRCodeGenerator.ECCLevel)eccLevel.SelectedItem;
-                using (QRCodeData qrCodeData = qrGenerator.CreateQrCode(QRCodeString.Text, eccLevel))
-                if (!baseMode.Checked)
+                using (QRCodeData qrCodeData = qrGenerator.CreateQrCode(QRCodeString.Text, (QRCodeGenerator.ECCLevel)eccLevel.SelectedItem))
                 {
-                    using (QRCode qrCode = new QRCode(qrCodeData))
+                    if (!baseMode.Checked)
                     {
-                        pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic(
-                            (int)basePixelsPerModule.Value,
-                            baseDarkColor.BackColor,
-                            baseLightColor.BackColor,
-                            GetIconBitmap(),
-                            (int)logoIconSizePercent.Value,
-                            (int)logoIconBorderWidth.Value,
-                            baseDrawQuietZones.Checked,
-                            logoIconPath.Text != "" && logoIconBorderWidth.Value > 0 ? logoBackColor.BackColor : baseLightColor.BackColor
-                        );
-                        this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
-                        //Set the SizeMode to center the image.
-                        this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
-                        pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
-                    }
-                }
-                else
-                {
-                    using (ArtQRCode qrCode = new ArtQRCode(qrCodeData))
-                    {
-
-                //            ArtQRCode.QuietZoneStyle QuietZoneRenderingStyle;
-                //            Enum.TryParse<ArtQRCode.QuietZoneStyle>(artQuietZoneRenderingStyle.SelectedValue.ToString(), out QuietZoneRenderingStyle);
-
-                            var QuietZoneRenderingStyle = (ArtQRCode.QuietZoneStyle)artQuietZoneRenderingStyle.SelectedValue;
-                            //         ArtQRCode.BackgroundImageStyle BackgroundImageStyle = (ArtQRCode.BackgroundImageStyle)artBackgroundImageStyle.SelectedItem;
+                        using (QRCode qrCode = new QRCode(qrCodeData))
+                        {
                             pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic(
-                            (int)basePixelsPerModule.Value,
-                            baseDarkColor.BackColor,
-                            baseLightColor.BackColor,
-                            artBackgroundColor.BackColor,
-                            GetArtBitmap(),
-                            (double)artPixelSizeFactor.Value,
-                            baseDrawQuietZones.Checked,
-                            ArtQRCode.QuietZoneStyle.Dotted,
-                            ArtQRCode.BackgroundImageStyle.DataAreaOnly,
-                            null
-                        );
-                        this.pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
-                        //Set the SizeMode to center the image.
-                        this.pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
-                        pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
+                                (int)basePixelsPerModule.Value,
+                                baseDarkColor.BackColor,
+                                baseLightColor.BackColor,
+                                GetIconBitmap(),
+                                (int)logoIconSizePercent.Value,
+                                (int)logoIconBorderWidth.Value,
+                                baseDrawQuietZones.Checked,
+                                logoIconPath.Text != "" && logoIconBorderWidth.Value > 0 ? logoBackColor.BackColor : baseLightColor.BackColor
+                            );
+                            pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
+                        }
                     }
-
+                    else
+                    {
+                        using (ArtQRCode qrCode = new ArtQRCode(qrCodeData))
+                        {
+                            pictureBoxQRCode.BackgroundImage = qrCode.GetGraphic(
+                                (int)basePixelsPerModule.Value,
+                                baseDarkColor.BackColor,
+                                baseLightColor.BackColor,
+                                artBackgroundColor.BackColor,
+                                GetArtBitmap(),
+                                (double)artPixelSizeFactor.Value,
+                                baseDrawQuietZones.Checked,
+                                (ArtQRCode.QuietZoneStyle)artQuietZoneRenderingStyle.SelectedItem,
+                                (ArtQRCode.BackgroundImageStyle)artBackgroundImageStyle.SelectedItem,
+                                GetArtPatternBitmap()
+                            );
+                            pictureBoxQRCode.Size = new System.Drawing.Size(pictureBoxQRCode.Width, pictureBoxQRCode.Height);
+                        }
+                    }
                 }
             }
+            //Set the SizeMode to center the image.
+            //pictureBoxQRCode.SizeMode = PictureBoxSizeMode.CenterImage;
+            pictureBoxQRCode.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
         /// <summary>
@@ -1098,30 +1077,6 @@ namespace QRCoderArt
             }
             return l;
         }
-
-        /// <summary>
-        /// Returns a Dictionary&lt;int, string&gt; of the parent enumeration. Note that the extension method must
-        /// be called with one of the enumeration values, it does not matter which one is used.
-        /// Sample call: var myDictionary = StringComparison.Ordinal.ToDictionary().
-        /// </summary>
-        /// <param name="enumValue">An enumeration value (e.g. StringComparison.Ordinal).</param>
-        /// <returns>Dictionary with Key = enumeration numbers and Value = associated text.</returns>
-        public static Dictionary<int, string> ToDictionary(this Enum enumValue)
-        {
-            var enumType = enumValue.GetType();
-            return Enum.GetValues(enumType)
-                .Cast<Enum>()
-                .ToDictionary(t => (int)(object)t, t => t.ToString());
-        }
-        /*
-        public IDictionary<string, object> getEnumToDictionary(Type param)
-        {
-            //            return param.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
-            return (from t in param.GetFields(BindingFlags.Static | BindingFlags.Public)
-                    where !t.IsDefined(typeof(ObsoleteAttribute), true)
-                    select new { v = t.Name, k = t.GetValue(new object()) }).ToDictionary(k => k.v, v => v.k);
-        }
-        */
 
     }
     #endregion
