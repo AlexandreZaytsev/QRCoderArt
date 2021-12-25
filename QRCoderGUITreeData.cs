@@ -145,7 +145,7 @@ namespace QRCoderArt
         public GUITree()
         {
             basePayloads = typeof(QRCoder.PayloadGenerator);    //node reflection
-            extPayloads = typeof(QRCoderArt.PayloadExt);        //node reflection
+//            extPayloads = typeof(QRCoderArt.PayloadExt);        //node reflection
 
             rootTree = new Node<ValueNode>(new ValueNode());
             rootTree.Value.name = "Payload";
@@ -176,7 +176,7 @@ namespace QRCoderArt
         /// <returns>list of payload Dictionary&lt;System.String, System.Object&gt;.</returns>
         public Dictionary<string, object> GetMembersClassName(string cName)
         {
-            return (from t in basePayloads.GetMembers(BindingFlags.Public).Concat(extPayloads.GetMembers(BindingFlags.Public))
+            return (from t in basePayloads.GetMembers(BindingFlags.Public) //.Concat(extPayloads.GetMembers(BindingFlags.Public))
                     where (!((System.Type)t).IsAbstract) &&
                           ((System.Type)t).BaseType.Name == cName
                     select new
@@ -220,7 +220,6 @@ namespace QRCoderArt
         /// (if the constructor is not declared (there are no parameters), we read the properties)
         /// </summary>
         /// <param name="ctor">The constructor.</param>
-        /// <param name="Params">The parameters (current GIU tree).</param>
         /// <param name="nestingLevel">The nesting level (current nesting level of the parameter).</param>
         /// <param name="parentName">Name of the parent (current name of the parameter parent).</param>
         private void GetParamsConstuctor(ConstructorInfo ctor, int nestingLevel, string parentName)
