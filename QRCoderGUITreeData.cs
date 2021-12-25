@@ -170,7 +170,11 @@ namespace QRCoderArt
                     }).ToDictionary(k => k.name, v => (Object)v.ctor);
         }
 
-        //get enum dictionary 
+        /// <summary>
+        /// get enum dictionary
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
         private IDictionary<string, object> GetParamEnum(Type param)
         {
             //            return param.GetEnumValues().Cast<object>().ToDictionary(k => k.ToString(), v => v);
@@ -203,15 +207,15 @@ namespace QRCoderArt
             foreach (object Param in ctor.GetParameters().Length == 0 ? queryProp : queryParam) { }  //run function from query
         }
 
-        /**********************************************************************************************************
-          START
-        ************************************************************************************************************/
+        #region //START
+
         /// <summary>
         /// Gets the GUI tree.
         /// return the entire GUI tree from the Reflection payload node to create the entire payload panel
         /// </summary>
         /// <param name="obj">The object (payload Reflection node).</param>
         /// <returns>payload GUI tree IList.</returns>
+
         public IList GetGUITree(Object obj)
         {
             pointTree = rootTree;
@@ -219,6 +223,8 @@ namespace QRCoderArt
             GetGUITreeNode(((Type)obj).Name, (Type)obj, null, 0, "");      //get parameter list
             return null;// GUITree;
         }
+
+        #endregion
 
         /// <summary>
         /// Gets the GUI tree nodes.
@@ -236,8 +242,6 @@ namespace QRCoderArt
             return null;// GUITreeNodes;
         }
 
-
-#pragma warning disable CS1572 // Комментарий XML имеет тег param для "guiTree", но параметр с таким именем отсутствует.
         /// <summary>
         /// Gets the GUI tree node.
         /// return the GUI tree node with the parameters
@@ -245,12 +249,10 @@ namespace QRCoderArt
         /// <param name="nodeName">Name of the node.</param>
         /// <param name="nodeType">Type of the node (converted to Type).</param>
         /// <param name="nodeDefValue">The node definition value.</param>
-        /// <param name="guiTree">The GUI tree.</param>
         /// <param name="nodeNestingLevel">CCurrent nesting level of the node in the GUI tree.</param>
         /// <param name="nodeParentName">Name of the node parent.</param>
         /// <returns>System.Int32.</returns>
         private int GetGUITreeNode(string nodeName, Type nodeType, object nodeDefValue, int nodeNestingLevel, string nodeParentName)
-#pragma warning restore CS1572 // Комментарий XML имеет тег param для "guiTree", но параметр с таким именем отсутствует.
         {
             ValueNode dataNode = new ValueNode();//  new GUITreeNode()
                                                  // DataNodeTree<DataNode> currentNode = rootNode;
@@ -450,6 +452,7 @@ namespace QRCoderArt
             }
             return payloadStr;
         }
+
         /// <summary>
         /// Gets the invoke ctor.
         /// </summary>
