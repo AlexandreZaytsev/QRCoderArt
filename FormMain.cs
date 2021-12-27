@@ -78,7 +78,18 @@ namespace QRCoderArt
 
             QRCodeString.Text = "enter your text or select payload + constructor + fill in the parameters";
             readyState[1] = true;           //MainForm is Load
-            Art.Parent = null;
+            Art.Parent = null;              //скрыть вкладку
+
+            /*
+            var account = "40702810138250123017";
+            var bic = "044525225";
+            var bankName = "ОАО \"БАНК\"";
+            var name = "ООО «Три кита»";
+            var correspAcc = "30101810965770000413";
+            PayloadGenerator.RussiaPaymentOrder.OptionalFields of = new PayloadGenerator.RussiaPaymentOrder.OptionalFields() { KPP = "12345", Category ="zzz" };
+            var generator = new PayloadGenerator.RussiaPaymentOrder(name, account, bankName, bic, correspAcc, of);
+            string payload = generator.ToString();
+            */
         }
 
         /// <summary>
