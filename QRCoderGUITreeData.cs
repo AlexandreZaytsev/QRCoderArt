@@ -467,14 +467,16 @@ namespace QRCoderArt
             if (ctor.GetParameters().Length == 0)           //constrictor without parameters = there is no constructor
             {
                 ctorObj = ctor.Invoke(new object[] { });
-                //сопоставить параметры по имени
-                foreach (KeyValuePair<string, object> entry in cntrlFromForm)
+
+                try
+                {
+                    //сопоставить параметры по имени
+                    foreach (KeyValuePair<string, object> entry in cntrlFromForm)
                 {
                     ctorObj.GetType().GetProperty(entry.Key).SetValue(ctorObj, entry.Value);
                 }
 
-                try
-                {
+
                     object instance = ctor.Invoke(ctorObj, new object[] { });
                 }
                 catch (Exception e)
